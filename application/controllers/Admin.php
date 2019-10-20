@@ -10,6 +10,8 @@ class Admin extends CI_Controller {
   public function gaji(){
     $this->_make_sure_is_admin();
     $data['title'] = "Gaji Pegawai";
+    $this->db->order_by('nama', 'asc');
+    $data['pegawai'] = $this->db->get('pegawai')->result();
     $this->load->view('admin/page/gaji', $data);
   }
   function _make_sure_is_super_admin(){
