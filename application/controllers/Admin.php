@@ -4,7 +4,8 @@ class Admin extends CI_Controller {
   public function index()
   {
     $this->_make_sure_is_admin();
-    echo "admin";
+    $data['title'] = "Dashboard";
+    $this->load->view('admin/page/dashboard', $data);
   }
   function _make_sure_is_super_admin(){
     $status = $this->session->userdata('status_login');
