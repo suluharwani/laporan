@@ -7,6 +7,11 @@ class Admin extends CI_Controller {
     $data['title'] = "Dashboard";
     $this->load->view('admin/page/dashboard', $data);
   }
+  public function gaji(){
+    $this->_make_sure_is_admin();
+    $data['title'] = "Gaji Pegawai";
+    $this->load->view('admin/page/gaji', $data);
+  }
   function _make_sure_is_super_admin(){
     $status = $this->session->userdata('status_login');
   	$id_admin = $this->session->userdata('id_admin_login');
