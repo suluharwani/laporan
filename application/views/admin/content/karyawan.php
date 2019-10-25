@@ -254,6 +254,7 @@
     $('#karyawan_list').on('click','.karyawan_tunjangan',function(){
       var id = $(this).attr('karyawan_id');
       var nama = $(this).attr('karyawan_nama');
+      show_tunjangan(id)
       $('#id_karyawan').val(id);
       $('#nama_karyawan').html(nama);
       $('#modal_tunjangan_karyawan').modal('show');
@@ -277,4 +278,27 @@
       });
       return false;
     });
+    function show_tunjangan(id){
+      $.ajax({
+        type  : 'POST',
+        url   : "<?php echo base_url('admin/tunjangan_list')?>",
+        dataType : 'json',
+        data : {id:id},
+        success : function(data){
+          var html = '';
+          var i;
+          for(i=0; i<data.length; i++){
+            no = i+1;
+            html += '<tr>'+
+            '<td>'+ no++ +'</td>'+
+            '<td>'+data[i].nama_tunjangan+'</td>'+
+            '<td>'+data[i].nominal+'</td>'+
+            '<td style="text-align:center;">'+
+            '<a href="javascript:void(0);" class="btn btn-danger btn-sm tunjangan_delete" tunjangan_id="'+data[i].id+'" nama_tunjangan="'+data[i].nama_tunjangan+'">Hapus</a>'+'</td>'+
+            '</tr>';
+          }
+          $('#data_tunjangan').html(html);
+        }
+      });
+    }
     </script>

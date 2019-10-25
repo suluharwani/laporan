@@ -12,6 +12,11 @@ class Mdl_karyawan extends CI_Model {
       $data = $this->db->select('pegawai_shift');
       return $data;
   }
+  public function tunjangan_list($id){
+    $this->db->where('id_pegawai', $id);
+    $data = $this->db->get('tunjangan');
+    return $data;
+  }
 }
 /* End of file ${TM_FILENAME:mdl_karyawan.php} */
 /* Location: ./${TM_FILEPATH/.+((?:application).+)/Mdl_karyawan/:application/models/mdl_karyawan.php} */

@@ -8,15 +8,25 @@ class Admin extends CI_Controller {
     $this->load->view('admin/page/dashboard', $data);
   }
   public function karyawan(){
+    $this->_make_sure_is_admin();
     $data['title'] = "Karyawan";
     $this->load->view('admin/page/karyawan', $data);
   }
   function karyawan_list(){
+    $this->_make_sure_is_admin();
     $this->load->model('Mdl_karyawan');
     $data = $this->Mdl_karyawan->karyawan_list();
     echo json_encode($data->result());
   }
+  function tunjangan_list(){
+    $this->_make_sure_is_admin();
+    $id = $this->input->post('id');
+    $this->load->model('Mdl_karyawan');
+    $data = $this->Mdl_karyawan->tunjangan_list($id);
+    echo json_encode($data->result());
+  }
   function get_karyawan_shift(){
+    $this->_make_sure_is_admin();
     $data = $this->db->get('pegawai_shift');
     echo json_encode($data->result());
   }
@@ -28,6 +38,7 @@ class Admin extends CI_Controller {
     $this->load->view('admin/page/gaji', $data);
   }
   function get_tanggal_absen(){
+    $this->_make_sure_is_admin();
     $tgl_awal = $this->input->post('tanggal_awal');
     $tgl_akhir = $this->input->post('tanggal_akhir');
     $id_karyawan = $this->input->post('id_karyawan');
