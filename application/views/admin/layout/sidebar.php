@@ -60,6 +60,7 @@
             <h6 class="collapse-header">Pengeluaran:</h6>
             <a class="collapse-item" href="utilities-color.html">Supplier</a>
             <a class="collapse-item" href="<?=base_url('admin/gaji')?>">Gaji</a>
+            <a class="collapse-item" href="utilities-animation.html">Bon Karyawan</a>
             <a class="collapse-item" href="utilities-animation.html">Operasional</a>
             <a class="collapse-item" href="utilities-other.html">Mutasi Kas</a>
           </div>
@@ -123,7 +124,7 @@
       </div>
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="<?=base_url('admin/karyawan')?>">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Data Karyawan</span></a>
       </li>

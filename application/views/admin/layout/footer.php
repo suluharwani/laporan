@@ -39,7 +39,7 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="<?=base_url('assets/sb/')?>vendor/jquery/jquery.min.js"></script>
+<!-- <script src="<?=base_url('assets/sb/')?>vendor/jquery/jquery.min.js"></script> -->
 <script src="<?=base_url('assets/sb/')?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
@@ -54,6 +54,7 @@
 <!-- Page level custom scripts -->
 <script src="<?=base_url('assets/sb/')?>js/demo/chart-area-demo.js"></script>
 <script src="<?=base_url('assets/sb/')?>js/demo/chart-pie-demo.js"></script>
+
 
 </body>
 

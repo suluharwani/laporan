@@ -17,5 +17,5 @@
 
   <!-- Custom styles for this template-->
   <link href="<?=base_url('assets/sb/')?>css/sb-admin-2.min.css" rel="stylesheet">
-
+  <script src="<?=base_url('assets/sb/')?>vendor/jquery/jquery.min.js"></script>
 </head>
