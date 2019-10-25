@@ -73,7 +73,7 @@
           </div>
           <div class="form-group row">
             <div class="col text-center">
-              <button type="button" class="btn btn-primary tambah_tunjangan">Tambah</button>
+              <button type="button" class="btn btn-primary" id="tambah_tunjangan">Tambah</button>
             </div>
           </div>
         </form>
@@ -254,7 +254,7 @@
     $('#karyawan_list').on('click','.karyawan_tunjangan',function(){
       var id = $(this).attr('karyawan_id');
       var nama = $(this).attr('karyawan_nama');
-      show_tunjangan(id)
+      show_tunjangan(id);
       $('#id_karyawan').val(id);
       $('#nama_karyawan').html(nama);
       $('#modal_tunjangan_karyawan').modal('show');
@@ -269,11 +269,11 @@
         dataType : "JSON",
         data : {id:id, nama:nama,jumlah:jumlah},
         success: function(data){
-          show_tunjangan();
+          show_tunjangan(id);
           swal ( "Sukses" ,  "Tunjangan Berhasil Ditambahkan!" ,  "success", {
-          buttons: false,
-          timer: 1000,
-        } );
+            buttons: false,
+            timer: 1000,
+          } );
         }
       });
       return false;
@@ -292,7 +292,7 @@
             html += '<tr>'+
             '<td>'+ no++ +'</td>'+
             '<td>'+data[i].nama_tunjangan+'</td>'+
-            '<td>'+data[i].nominal+'</td>'+
+            '<td>'+convertToRupiah(data[i].nominal)+'</td>'+
             '<td style="text-align:center;">'+
             '<a href="javascript:void(0);" class="btn btn-danger btn-sm tunjangan_delete" tunjangan_id="'+data[i].id+'" nama_tunjangan="'+data[i].nama_tunjangan+'">Hapus</a>'+'</td>'+
             '</tr>';
@@ -300,5 +300,11 @@
           $('#data_tunjangan').html(html);
         }
       });
+    }
+    function convertToRupiah(angka){
+      var rupiah = '';
+      var angkarev = angka.toString().split('').reverse().join('');
+      for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+      return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
     }
     </script>
