@@ -12,6 +12,12 @@ class Admin extends CI_Controller {
     $data['title'] = "Karyawan";
     $this->load->view('admin/page/karyawan', $data);
   }
+  function hapus_tunjangan(){
+    $id = $this->input->post('id');
+    $this->db->where('id', $id);
+    $data = $this->db->delete('tunjangan');
+    echo json_encode($data);
+  }
   function tambah_tunjangan(){
     $this->_make_sure_is_admin();
     $this->form_validation->set_rules('nama', 'nama', 'required');

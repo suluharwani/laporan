@@ -106,8 +106,10 @@
         <div class="form-group row">
           <label for="jatah_libur" class="col-sm-6 col-form-label">Total Tunjangan Bulanan</label>
           <div class="col-sm-6" form-row>
-            <input type="number" class="form-control" id="total_tunjangan_bulanan" disabled>
+            <input type="text" class="form-control" id="total_tunjangan_bulanan" disabled>
+            <span id="total_tunjangan_bulanan_terbilang"></span>
           </div>
+
         </div>
       </div>
       <div class="modal-footer">
@@ -119,6 +121,29 @@
 </div>
 </div>
 <!-- end modal Tunjangan -->
+<!-- modal delete tunjangan -->
+<div class="modal fade" id="modal_hapus_tunjangan_karyawan" tabindex="-1" role="dialog" aria-labelledby="modal_hapus_tunjangan" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_hapus_tunjangan">Hapus Tunjangan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hapus tunjangan <span id="nama_nominal_tunjangan_hapus"></span>?
+        <input type="text" name="" id="id_tunjangan_karyawan" hidden>
+        <input type="text" name="" id="id_karyawan_tunjangan" hidden>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-danger confirm_hapus_tunjangan">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal delete tunjangan -->
 <!-- Modal -->
 <div class="modal fade" id="modal_gaji_karyawan" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -171,7 +196,6 @@
                 <label for="jatah_libur" class="col-sm-2 col-form-label">Jatah Libur/Bulan</label>
                 <div class="col-sm-4" form-row>
                   <input type="number" class="form-control" id="jatah_libur" placeholder="...Hari">
-
                 </div>
               </div>
               <div class="form-group row">
@@ -251,6 +275,28 @@
       $('#shiftmasuk2').val(masuk2);
       $('#modal_gaji_karyawan').modal('show');
     });
+    function archiveFunction() {
+      event.preventDefault(); // prevent form submit
+      var form = event.target.form; // storing the form
+      swal({
+        title: "Apakah anda yakin?",
+        text: "But you will still be able to retrieve this file.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, archive it!",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          form.submit();          // submitting the form when user press yes
+        } else {
+          swal("Cancelled", "Data masih aman :)", "error");
+        }
+      });
+    }
     $('#karyawan_list').on('click','.karyawan_tunjangan',function(){
       var id = $(this).attr('karyawan_id');
       var nama = $(this).attr('karyawan_nama');
@@ -278,6 +324,8 @@
       });
       return false;
     });
+
+
     function show_tunjangan(id){
       $.ajax({
         type  : 'POST',
@@ -286,20 +334,119 @@
         data : {id:id},
         success : function(data){
           var html = '';
+          var jumlah_nominal = 0;
           var i;
           for(i=0; i<data.length; i++){
+            jumlah_nominal+=parseFloat(data[i].nominal);
             no = i+1;
             html += '<tr>'+
             '<td>'+ no++ +'</td>'+
             '<td>'+data[i].nama_tunjangan+'</td>'+
             '<td>'+convertToRupiah(data[i].nominal)+'</td>'+
             '<td style="text-align:center;">'+
-            '<a href="javascript:void(0);" class="btn btn-danger btn-sm tunjangan_delete" tunjangan_id="'+data[i].id+'" nama_tunjangan="'+data[i].nama_tunjangan+'">Hapus</a>'+'</td>'+
+            '<a href="javascript:void(0);" class="btn btn-danger btn-sm tunjangan_delete" id_karyawan_tunjangan="'+id+'" tunjangan_id="'+data[i].id+'" nominal_tunjangan="'+data[i].nominal+'" nama_tunjangan="'+data[i].nama_tunjangan+'">Hapus</a>'+'</td>'+
             '</tr>';
           }
           $('#data_tunjangan').html(html);
+          $('#total_tunjangan_bulanan').val(convertToRupiah(jumlah_nominal));
+          $('#total_tunjangan_bulanan_terbilang').html(sayit(jumlah_nominal));
         }
       });
+    }
+    $('#data_tunjangan').on('click','.tunjangan_delete',function(){
+      var id = $(this).attr('tunjangan_id');
+      var id_karyawan = $(this).attr('id_karyawan_tunjangan');
+      var nama_tunjangan = $(this).attr('nama_tunjangan');
+      var nominal = $(this).attr('nominal_tunjangan');
+      // $('#id_karyawan').val(id);
+      $('#nama_nominal_tunjangan_hapus').html(nama_tunjangan+' senilai '+convertToRupiah(nominal)+'');
+      $('#id_tunjangan_karyawan').val(id);
+      $('#id_karyawan_tunjangan').val(id_karyawan);
+      $('#modal_hapus_tunjangan_karyawan').modal('show');
+    });
+    $('.confirm_hapus_tunjangan').on('click',function(){
+      var id = $('#id_tunjangan_karyawan').val();
+      var id_karyawan = $('#id_karyawan_tunjangan').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('admin/hapus_tunjangan')?>",
+        dataType : "JSON",
+        data : {id:id},
+        success: function(data){
+          $('#modal_hapus_tunjangan_karyawan').modal('hide');
+          show_tunjangan(id_karyawan);
+          swal ( "Sukses" ,  "Tunjangan Berhasil Dihapus!" ,  "success", {
+            buttons: false,
+            timer: 1000,
+          } );
+        }
+      });
+      return false;
+    });
+
+    var thoudelim=".";
+    var decdelim=",";
+    var curr="Rp ";
+    var d=document;
+
+    // format(1000000.5,3) : 1.000.000,500
+    // format(1000000.55555,3) : 1.000.000,556
+
+    function format(s,r) {
+      s=Math.round(s*Math.pow(10,r))/Math.pow(10,r);
+      s=String(s);s=s.split(".");var l=s[0].length;var t="";var c=0;
+      while(l>0){t=s[0][l-1]+(c%3==0&&c!=0?thoudelim:"")+t;l--;c++;}
+      s[1]=s[1]==undefined?"0":s[1];
+      for(i=s[1].length;i<r;i++) {s[1]+="0";}
+      return curr+t+decdelim+s[1];
+    }
+
+    function threedigit(word) {
+      eja=Array("Nol","Satu","Dua","Tiga","Empat","Lima","Enam","Tujuh","Delapan","Sembilan");
+      while(word.length<3) word="0"+word;
+      word=word.split("");
+      a=word[0];b=word[1];c=word[2];
+      word="";
+      word+=(a!="0"?(a!="1"?eja[parseInt(a)]:"Se"):"")+(a!="0"?(a!="1"?" Ratus":"ratus"):"");
+      word+=" "+(b!="0"?(b!="1"?eja[parseInt(b)]:"Se"):"")+(b!="0"?(b!="1"?" Puluh":"puluh"):"");
+      word+=" "+(c!="0"?eja[parseInt(c)]:"");
+      word=word.replace(/Sepuluh ([^ ]+)/gi, "$1 Belas");
+      word=word.replace(/Satu Belas/gi, "Sebelas");
+      word=word.replace(/^[ ]+$/gi, "");
+
+      return word;
+    }
+
+    // 1 SEN = 1/100 RUPIAH = 0.01 RUPIAH
+
+    // sayit(1000000) : SATU JUTA RUPIAH
+    // sayit(1000000.5) = 1000000.50 : SATU JUTA RUPIAH LIMA PULUH SEN
+    // sayit(1000000.05) : SATU JUTA RUPIAH LIMA SEN
+    // sayit(1000000.11) : SATU JUTA RUPIAH SEBELAS SEN
+    // sayit(1000000.55555) = 1000000.56 : SATU JUTA RUPIAH LIMA PULUH ENAM SEN
+
+    function sayit(s) {
+      var thousand=Array("","Ribu","Juta","Milyar","Trilyun","Quadrilyun","Quintillion","Sextillion","Septillion","Octillion");
+      s=Math.round(s*Math.pow(10,2))/Math.pow(10,2);
+      s=String(s);s=s.split(".");
+      var word=s[0];
+      var cent=s[1]?s[1]:"0";
+      if(cent.length<2) cent+="0";
+
+      var subword="";i=0;
+      while(word.length>3) {
+        subdigit=threedigit(word.substr(word.length-3, 3));
+        subword=subdigit+(subdigit!=""?" "+thousand[i]+" ":"")+subword;
+        word=word.substring(0, word.length-3);
+        i++;
+      }
+      subword=threedigit(word)+" "+thousand[i]+" "+subword;
+      subword=subword.replace(/^ +$/gi,"");
+
+      word=(subword==""?"NOL":subword.toUpperCase())+" RUPIAH";
+      subword=threedigit(cent);
+      cent=(subword==""?"":" ")+subword.toUpperCase()+(subword==""?"":" SEN");
+      return word+cent;
     }
     function convertToRupiah(angka){
       var rupiah = '';
