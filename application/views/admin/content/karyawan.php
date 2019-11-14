@@ -41,10 +41,7 @@
     </div>
   </div>
 
-</div>
-<!-- /.container-fluid -->
 
-</div>
 <!-- End of Main Content -->
 <!-- Modal Tunjangan-->
 <div class="modal fade" id="modal_tunjangan_karyawan" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -118,9 +115,9 @@
     </div>
   </div>
 </div>
-</div>
-</div>
+
 <!-- end modal Tunjangan -->
+
 <!-- modal delete tunjangan -->
 <div class="modal fade" id="modal_hapus_tunjangan_karyawan" tabindex="-1" role="dialog" aria-labelledby="modal_hapus_tunjangan" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -149,7 +146,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Gaji <span id="nama_karyawan"></span></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Gaji <span id="gaji_nama_karyawan"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -198,27 +195,78 @@
                   <input type="number" class="form-control" id="jatah_libur" placeholder="...Hari">
                 </div>
               </div>
-              <div class="form-group row">
-                <div class="col-sm-2">Checkbox</div>
-                <div class="col-sm-10">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1">
-                    <label class="form-check-label" for="gridCheck1">
-                      Example checkbox
-                    </label>
-                  </div>
-                </div>
-              </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            <button type="button" class="btn btn-primary">Simpan</button>
+            <button type="button" class="btn btn-primary" id="simpan_data_karyawan">Simpan</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  </div>
     <!-- end modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="modal_info_karyawan" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Informasi Tentang <span id="info_nama_karyawan"></span></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group row">
+                <label for="masuk_kerja" class="col-sm-2 col-form-label">Masuk Kerja</label>
+                <div class="col-sm-10">
+                  <input type="date" class="form-control" id="masuk_kerja" >
+                  <input type="hidden" class="form-control" id="id_pegawai_info" hidden>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="berhenti_kerja" class="col-sm-2 col-form-label">Sampai</label>
+                <div class="col-sm-10">
+                  <input type="date" class="form-control" id="berhenti_kerja" >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Jabatan</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="posisi">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Kontak</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="kontak">
+                </div>
+              </div>
+                  <div class="form-group row">
+                    <label for="jatah_libur" class="col-sm-2 col-form-label">Status Kerja</label>
+                    <div class="col-sm-6" form-row>
+                      <select class="form-control" name="status" id="status">
+                        <option value="" selected disabled>Status</option>
+                        <option value="1">Aktif</option>
+                        <option value="2">Cuti</option>
+                        <option value="3">Resign</option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="simpan_data_karyawan_info">Simpan</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+        <!-- end modal -->
     <script src="<?=base_url('assets/sb/')?>vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?=base_url('assets/sb/')?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
@@ -238,28 +286,92 @@
           var i;
           for(i=0; i<data.length; i++){
             no = i+1;
+            if (data[i].status == 1) {
+              status_kerja = '<font color="green">Aktif<font/>';
+            }else if (data[i].status == 2) {
+              status_kerja = '<font color="yellow">Cuti<font/>';
+            }else if (data[i].status == 3) {
+              status_kerja = '<font color="red">Resign<font/>';
+            }else{
+              status_kerja = '<font color="blue">Belum Ada<font/>';
+            }
             html += '<tr>'+
             '<td>'+ no++ +'</td>'+
             '<td>'+data[i].nama+'</td>'+
             '<td>'+data[i].posisi+'</td>'+
             '<td>'+data[i].kontak+'</td>'+
-            '<td>'+data[i].status+'</td>'+
-            // '<td>'+ status_contact +'</td>'+
+            '<td>'+status_kerja+'</td>'+
             '<td style="text-align:center;">'+
-            '<a href="javascript:void(0);" class="btn btn-primary btn-sm karyawan_tunjangan" karyawan_id="'+data[i].id+'" karyawan_nama="'+data[i].nama+'">Tunjangan</a>'+
-            '<a href="javascript:void(0);" class="btn btn-warning btn-sm karyawan_gaji" pulang2 = "'+data[i].pulang2+'" pulang1 = "'+data[i].pulang1+'" masuk2 = "'+data[i].masuk2+'" masuk1 = "'+data[i].masuk1+'" id_shift = "'+data[i].shift_id+'" karyawan_id="'+data[i].id+'" karyawan_nama="'+data[i].nama+'">Gaji&Shift</a>'+
+            '<a href="javascript:void(0);" class="btn btn-primary btn-sm karyawan_tunjangan"  karyawan_id="'+data[i].id+'" karyawan_nama="'+data[i].nama+'">Tunjangan</a>'+
+            '<a href="javascript:void(0);" class="btn btn-warning btn-sm karyawan_gaji" gaji_pokok="'+data[i].gaji_pokok+'" jatah_libur = "'+data[i].jatah_libur+'" jatah_libur_id = "'+data[i].jatah_libur_id+'" pulang2 = "'+data[i].pulang2+'" pulang1 = "'+data[i].pulang1+'" masuk2 = "'+data[i].masuk2+'" masuk1 = "'+data[i].masuk1+'" id_shift = "'+data[i].shift_id+'" karyawan_id="'+data[i].id+'" karyawan_nama="'+data[i].nama+'">Gaji&Shift</a>'+
             '<a href="javascript:void(0);" class="btn btn-info btn-sm karyawan_informasi" karyawan_id="'+data[i].id+'" karyawan_nama="'+data[i].nama+'">Informasi</a>'+
-            '<a href="javascript:void(0);" class="btn btn-danger btn-sm karyawan_delete" karyawan_id="'+data[i].id+'" karyawan_nama="'+data[i].nama+'">Hapus</a>'+
-            '<a href="javascript:void(0);" class="btn btn-success btn-sm karyawan_aktivasi" karyawan_id="'+data[i].id+'" karyawan_nama="'+data[i].nama+'">Aktifkan</a>'+
             '</td>'+
             '</tr>';
           }
           $('#karyawan_list').html(html);
-
         }
-
       });
     }
+    $('#modal_info_karyawan').on('hidden.bs.modal',function(){
+      $('#status').val('');
+      $('#id_pegawai_info').val('');
+      $('#posisi').val('');
+      $('#masuk_kerja').val('');
+      $('#kontak').val('');
+      $('#berhenti_kerja').val('');
+    });
+    $('#simpan_data_karyawan_info').on('click',function(){
+      var status = $('#status').val();
+      var id_pegawai = $('#id_pegawai_info').val();
+      var posisi = $('#posisi').val();
+      var kontak = $('#kontak').val();
+      var masuk_kerja = $('#masuk_kerja').val();
+      var berhenti_kerja = $('#berhenti_kerja').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('admin/simpan_data_karyawan_info')?>",
+        // dataType : "JSON",
+        data : {kontak:kontak,status:status,id_pegawai:id_pegawai,posisi:posisi,masuk_kerja:masuk_kerja,berhenti_kerja:berhenti_kerja},
+        success: function(data){
+          swal ( "Sukses" ,  "Data Berhasil Diupdate!" ,  "success", {
+            buttons: false,
+            timer: 1000,
+          } );
+          show_karyawan();
+        }
+      });
+      return false;
+    });
+    $('#karyawan_list').on('click','.karyawan_informasi',function(){
+      var id = $(this).attr('karyawan_id');
+      var nama = $(this).attr('karyawan_nama');
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('admin/get_info_karyawan')?>",
+        dataType : "JSON",
+        data : {id:id},
+        success: function(data){
+          var id_pegawai = data[0].id_pegawai;
+          var posisi = data[0].posisi;
+          var kontak = data[0].kontak;
+          var status = data[0].status;
+          var masuk = data[0].masuk;
+          var kontak = data[0].kontak;
+          var berhenti = data[0].berhenti;
+
+          $('#status').val(status);
+          $('#posisi').val(posisi);
+          $('#masuk_kerja').val(masuk);
+          $('#kontak').val(kontak);
+          $('#berhenti_kerja').val(berhenti);
+        }
+      });
+      $('#id_pegawai_info').val(id);
+      $('#info_nama_karyawan').html(nama);
+      $('#modal_info_karyawan').modal('show');
+        // $('#modal_info_karyawan').modal('show');
+        return false;
+    });
     $('#karyawan_list').on('click','.karyawan_gaji',function(){
       var id = $(this).attr('karyawan_id');
       var nama = $(this).attr('karyawan_nama');
@@ -267,14 +379,44 @@
       var masuk2 = $(this).attr('masuk2');
       var pulang1 = $(this).attr('pulang1');
       var pulang2 = $(this).attr('pulang2');
+      var jatah_libur = $(this).attr('jatah_libur');
+      var gaji_pokok = $(this).attr('gaji_pokok');
       $('#id_karyawan').val(id);
-      $('#nama_karyawan').html(nama);
+      $('#gaji_nama_karyawan').html(nama);
       $('#shiftpulang1').val(pulang1);
       $('#shiftpulang2').val(pulang2);
       $('#shiftmasuk1').val(masuk1);
       $('#shiftmasuk2').val(masuk2);
+      $('#jatah_libur').val(jatah_libur);
+      $('#gaji_pokok').val(gaji_pokok);
       $('#modal_gaji_karyawan').modal('show');
     });
+    $('#simpan_data_karyawan').on('click',function(){
+      var id = $('#id_karyawan').val();
+      // var nama = $('#nama_karyawan').val();
+      var shiftpulang1 = $('#shiftpulang1').val();
+      var shiftpulang2 = $('#shiftpulang2').val();
+      var shiftpulang1 = $('#shiftpulang1').val();
+      var shiftmasuk1 = $('#shiftmasuk1').val();
+      var shiftmasuk2 = $('#shiftmasuk2').val();
+      var jatah_libur = $('#jatah_libur').val();
+      var gaji_pokok = $('#gaji_pokok').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('admin/simpan_data_karyawan')?>",
+        // dataType : "JSON",
+        data : {gaji_pokok:gaji_pokok,jatah_libur:jatah_libur,id:id,shiftpulang1:shiftpulang1,shiftpulang2:shiftpulang2,shiftmasuk1:shiftmasuk1,shiftmasuk2:shiftmasuk2},
+        success: function(data){
+          swal ( "Sukses" ,  "Data Berhasil Diupdate!" ,  "success", {
+            buttons: false,
+            timer: 1000,
+          } );
+          show_karyawan();
+        }
+      });
+      return false;
+    });
+
     function archiveFunction() {
       event.preventDefault(); // prevent form submit
       var form = event.target.form; // storing the form

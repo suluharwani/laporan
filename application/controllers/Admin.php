@@ -12,6 +12,118 @@ class Admin extends CI_Controller {
     $data['title'] = "Karyawan";
     $this->load->view('admin/page/karyawan', $data);
   }
+  function get_info_karyawan(){
+    $this->_make_sure_is_admin();
+    $id =   $this->input->post('id');
+    $this->load->model('Mdl_karyawan');
+    $data = $this->Mdl_karyawan->get_info($id);
+    echo json_encode($data->result());
+  }
+  function simpan_data_karyawan_info(){
+    $this->_make_sure_is_admin();
+    $this->load->model('Mdl_karyawan');
+    $this->form_validation->set_rules('status', 'Status', 'required');
+    $this->form_validation->set_rules('id_pegawai', 'Id Pegawai', 'required');
+    $this->form_validation->set_rules('masuk_kerja', 'masuk kerja', 'required');
+    if ($this->form_validation->run() == FALSE){
+      header('HTTP/1.1 500 Internal Server Booboo');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }else{
+      $status = $this->input->post('status');
+      $id_pegawai = $this->input->post('id_pegawai');
+      $posisi = $this->input->post('posisi');
+      $kontak = $this->input->post('kontak');
+      $masuk_kerja = $this->input->post('masuk_kerja');
+      $berhenti_kerja = $this->input->post('berhenti_kerja');
+      if ($status == 1) {
+        $berhenti = null;
+      }elseif ($status == 2) {
+        $berhenti = $berhenti_kerja;
+      }elseif ($status == 3) {
+        $berhenti = $berhenti_kerja;
+      }else{
+        $berhenti = null;
+      }
+      $check_id =  $this->Mdl_karyawan->get_info($id_pegawai)->num_rows();
+      if ($check_id  < 1) {
+        $obj = array(
+          'id_pegawai' => $id_pegawai,
+          'posisi'=> $posisi,
+          'kontak'=> $kontak,
+          'status'=> $status,
+          'masuk'=> $masuk_kerja,
+          'berhenti'=> $berhenti,
+        );
+        $data =  $this->Mdl_karyawan->insert_info($obj);
+      }else{
+        $obj = array(
+          'posisi'=> $posisi,
+          'kontak'=> $kontak,
+          'status'=> $status,
+          'masuk'=> $masuk_kerja,
+          'berhenti'=> $berhenti,
+        );
+        $data =  $this->Mdl_karyawan->update_info($obj,$id_pegawai);
+      }
+      echo json_encode($data);
+    }
+  }
+  function simpan_data_karyawan(){
+    $this->_make_sure_is_admin();
+    $gaji_pokok =   $this->input->post('gaji_pokok');
+    $jatah_libur =  $this->input->post('jatah_libur');
+    $id =   $this->input->post('id');
+    // $nama =   $this->input->post('nama');
+    $jumlah =   $this->input->post('jumlah');
+    $shiftpulang1 =   $this->input->post('shiftpulang1');
+    $shiftpulang2 =   $this->input->post('shiftpulang2');
+    $shiftmasuk1 =  $this->input->post('shiftmasuk1');
+    $shiftmasuk2 =  $this->input->post('shiftmasuk2');
+
+
+    $check_data_gaji = $this->db->get_where('gaji_pokok', array('id_karyawan'=>$id))->num_rows();
+    $check_data_libur = $this->db->get_where('jatah_libur', array('id_karyawan'=>$id))->num_rows();
+    $check_data_shift = $this->db->get_where('pegawai_shift', array('id_pegawai'=>$id))->num_rows();
+
+    if ($check_data_gaji != 0) {
+      $object_data_gaji = array('gaji_pokok' => $gaji_pokok );
+      $this->db->where('id_karyawan', $id);
+      $this->db->update('gaji_pokok', $object_data_gaji);
+      $update_gaji = $this->db->affected_rows();
+    }else {
+      $object_data_gaji = array('gaji_pokok' => $gaji_pokok, 'id_karyawan'=> $id );
+      $this->db->insert('gaji_pokok', $object_data_gaji);
+      $update_gaji = $this->db->affected_rows();
+    }
+    if ($check_data_libur != 0) {
+      $object_data_libur = array('libur' => $jatah_libur );
+      $this->db->where('id_karyawan', $id);
+      $this->db->update('jatah_libur', $object_data_libur);
+      $update_libur = $this->db->affected_rows();
+    }else {
+      $object_data_libur = array('libur' => $jatah_libur,'id_karyawan'=> $id );
+      $this->db->insert('jatah_libur', $object_data_libur);
+      $update_libur = $this->db->affected_rows();
+    }
+    if ($check_data_shift !=0) {
+      $object_data_shift = array('shift_pulang1' => $shiftpulang1, 'shift_pulang2'=>$shiftpulang2,'shift_masuk1'=>$shiftmasuk1,'shift_masuk2'=>$shiftmasuk2 );
+      $this->db->where('id_pegawai', $id);
+      $this->db->update('pegawai_shift', $object_data_shift);
+      $update_shift = $this->db->affected_rows();
+    }else {
+      $object_data_shift = array('id_pegawai'=> $id, 'shift_pulang1' => $shiftpulang1, 'shift_pulang2'=>$shiftpulang2,'shift_masuk1'=>$shiftmasuk1,'shift_masuk2'=>$shiftmasuk2 );
+      $this->db->insert('pegawai_shift', $object_data_shift);
+      $update_shift = $this->db->affected_rows();
+    }
+    if ($update_gaji >=1 || $update_libur >=1 || $update_shift>=1) {
+      header('HTTP/1.1 200 OK');
+    }else{
+      header('HTTP/1.1 500 Internal Server Error');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+  }
   function hapus_tunjangan(){
     $id = $this->input->post('id');
     $this->db->where('id', $id);
@@ -34,9 +146,9 @@ class Admin extends CI_Controller {
       $nama = $this->input->post('nama');
       $jumlah = $this->input->post('jumlah');
       $object = array('id_pegawai'=>$id,
-                      'nama_tunjangan' => $nama,
-                      'nominal'=> $jumlah
-                      );
+      'nama_tunjangan' => $nama,
+      'nominal'=> $jumlah
+    );
     $data = $this->db->insert('tunjangan', $object);
     echo json_encode($data);
   }
