@@ -3,7 +3,7 @@
 
   <!-- Page Heading -->
   <h1 class="h3 mb-1 text-gray-800">Gaji</h1>
-  <p class="mb-4">Gaji karyawan dihitung otomatis, apabila ada perubahan jumlah mohon diubah di konfigurasi karyawan</p>
+  <p class="mb-4">Gaji karyawan dihitung otomatis, apabila ada perubahan jumlah mohon diubah di <a href="<?=base_url('admin/karyawan')?>">Data karyawan</a> </p>
   <!-- Content Row -->
   <div class="row">
 
@@ -107,6 +107,7 @@
                     <th>Masuk</th>
                     <th>Keluar</th>
                     <th>validasi</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody id="show_data_presensi_bulan_ini">
@@ -123,6 +124,40 @@
 </div>
 <!-- /.container-fluid -->
 </div>
+<div class="modal fade" id="modal_edit_presensi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Informasi Tentang <span id="info_nama_karyawan"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="masuk_kerja" class="col-sm-2 col-form-label">Masuk Kerja</label>
+            <div class="col-sm-10">
+              <input type="time" class="form-control" id="masuk_kerja" >
+              <input type="text" class="form-control" id="presensi_id" >
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="berhenti_kerja" class="col-sm-2 col-form-label">Pulang</label>
+            <div class="col-sm-10">
+              <input type="time" class="form-control" id="pulang_kerja" >
+            </div>
+          </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-primary" id="simpan_data_karyawan_info">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
 <!-- End of Main Content -->
 <script type="text/javascript" charset="utf-8" async defer>
 $(document).ready(function() {
@@ -145,8 +180,10 @@ $(document).ready(function() {
 
           if (presensi[i].selisih_hari == 0 && (presensi[i].selisih_masuk == 0 && presensi[i].selisih_pulang == 0 ) ) {
             validasi_absen = '<font color="green">Presensi Valid</font>';
+            edit = '';
           }else if (presensi[i].selisih_masuk == 0 || presensi[i].selisih_pulang == 0 ) {
               validasi_absen = '<font color="#ffcc00">Peringatan Presensi Belum Valid</font>';
+              edit =   '<a href="javascript:void(0);" class="btn btn-primary btn-sm edit_presensi" pulang="'+presensi[i].jam_pulang+'" masuk="'+presensi[i].jam_masuk+'" presensi_id="'+presensi[i].id_presensi+'" >Edit</a>';
           }
           else{
             validasi_absen = '<font color="red">Presensi Tidak Valid</font>';
@@ -157,6 +194,11 @@ $(document).ready(function() {
           '<td>'+presensi[i].jam_masuk+'</td>'+
           '<td>'+presensi[i].jam_pulang+'</td>'+
           '<td>'+validasi_absen+'</td>'+
+          '<td style="text-align:center;">'+
+          edit
+          +
+          // '<a href="javascript:void(0);" class="btn btn-primary btn-sm edit_presensi"  presendi_id="'+presensi[i].id_presensi+'" >Edit</a>'+
+          '</td>'+
           '</tr>';
         }
         lap = html;
@@ -174,6 +216,22 @@ $(document).ready(function() {
   // show_product();
 
 } );
+
+$('#show_data_presensi_bulan_ini').on('click','.edit_presensi',function(){
+  var id = $(this).attr('presensi_id');
+  var masuk = $(this).attr('masuk');
+  var pulang = $(this).attr('pulang');
+  // var id_karyawan = $(this).attr('id_karyawan_tunjangan');
+  // var nama_tunjangan = $(this).attr('nama_tunjangan');
+  // var nominal = $(this).attr('nominal_tunjangan');
+  // // $('#id_karyawan').val(id);
+  // $('#nama_nominal_tunjangan_hapus').html(nama_tunjangan+' senilai '+convertToRupiah(nominal)+'');
+  // $('#id_tunjangan_karyawan').val(id);
+  $('#masuk_kerja').val(masuk);
+  $('#pulang_kerja').val(pulang);
+  $('#presensi_id').val(id);
+  $('#modal_edit_presensi').modal('show');
+});
 function datediff(first, second) {
     return Math.round((second-first)/(1000*60*60*24));
 }
