@@ -128,7 +128,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Informasi Tentang <span id="info_nama_karyawan"></span></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Presensi tanggal <span id="tanggal_presensi_karyawan1"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -139,7 +139,8 @@
             <label for="masuk_kerja" class="col-sm-2 col-form-label">Masuk Kerja</label>
             <div class="col-sm-10">
               <input type="time" class="form-control" id="masuk_kerja" >
-              <input type="text" class="form-control" id="presensi_id" >
+              <input type="hidden" class="form-control" id="presensi_id" hidden>
+              <input type="hidden" class="form-control" id="tanggal_presensi_karyawan" hidden>
             </div>
           </div>
           <div class="form-group row">
@@ -149,19 +150,19 @@
             </div>
           </div>
 
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            <button type="button" class="btn btn-primary" id="simpan_data_karyawan_info">Simpan</button>
-          </div>
-        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" id="simpan_presensi_karyawan">Simpan</button>
       </div>
     </div>
+  </div>
+</div>
 <!-- End of Main Content -->
 <script type="text/javascript" charset="utf-8" async defer>
 $(document).ready(function() {
-  $('#btn_cari_presensi').on('click',function(){
+  function show_presensi(){
     var id_karyawan = $('#id_karyawan').val();
     var tanggal_awal = $('#tanggal_awal').val();
     var tanggal_akhir = $('#tanggal_akhir').val();
@@ -182,8 +183,8 @@ $(document).ready(function() {
             validasi_absen = '<font color="green">Presensi Valid</font>';
             edit = '';
           }else if (presensi[i].selisih_masuk == 0 || presensi[i].selisih_pulang == 0 ) {
-              validasi_absen = '<font color="#ffcc00">Peringatan Presensi Belum Valid</font>';
-              edit =   '<a href="javascript:void(0);" class="btn btn-primary btn-sm edit_presensi" pulang="'+presensi[i].jam_pulang+'" masuk="'+presensi[i].jam_masuk+'" presensi_id="'+presensi[i].id_presensi+'" >Edit</a>';
+            validasi_absen = '<font color="#ffcc00">Peringatan Presensi Belum Valid</font>';
+            edit =   '<a href="javascript:void(0);" class="btn btn-primary btn-sm edit_presensi" tanggal_presensi = "'+presensi[i].tanggal+'" pulang="'+presensi[i].jam_pulang+'" masuk="'+presensi[i].jam_masuk+'" presensi_id="'+presensi[i].id_presensi+'" >Edit</a>';
           }
           else{
             validasi_absen = '<font color="red">Presensi Tidak Valid</font>';
@@ -197,23 +198,40 @@ $(document).ready(function() {
           '<td style="text-align:center;">'+
           edit
           +
-          // '<a href="javascript:void(0);" class="btn btn-primary btn-sm edit_presensi"  presendi_id="'+presensi[i].id_presensi+'" >Edit</a>'+
           '</td>'+
           '</tr>';
         }
         lap = html;
         $('#show_data_presensi_bulan_ini').html(lap);
-        // $('#tabel_presensi').DataTable({
-        //   "pageLength": 50000,
-        //   dom: 'Bfrtip',
-        //   buttons: [
-        //   'copy', 'csv', 'excel', 'pdf', 'print'
-        //   ]
-        // });
       }
     });
+  }
+  $('#btn_cari_presensi').on('click',function(){
+    show_presensi()
   });
-  // show_product();
+
+$('#simpan_presensi_karyawan').on('click',function(){
+  var id = $('#presensi_id').val();
+  var masuk_kerja = $('#masuk_kerja').val();
+  var pulang_kerja = $('#pulang_kerja').val();
+  var tanggal_presensi = $('#tanggal_presensi_karyawan').val();
+
+  $.ajax({
+    type : "POST",
+    url  : "<?php echo site_url('admin/update_presensi_karyawan')?>",
+    dataType : "JSON",
+    data : {masuk_kerja:masuk_kerja,pulang_kerja:pulang_kerja,id:id,tanggal_presensi:tanggal_presensi},
+    success: function(data){
+      swal ( "Sukses" ,  "Data Berhasil Diupdate!" ,  "success", {
+        buttons: false,
+        timer: 1000,
+      } );
+      $('#modal_edit_presensi').modal('hide');
+      show_presensi();
+    }
+  });
+  return false;
+});
 
 } );
 
@@ -221,19 +239,16 @@ $('#show_data_presensi_bulan_ini').on('click','.edit_presensi',function(){
   var id = $(this).attr('presensi_id');
   var masuk = $(this).attr('masuk');
   var pulang = $(this).attr('pulang');
-  // var id_karyawan = $(this).attr('id_karyawan_tunjangan');
-  // var nama_tunjangan = $(this).attr('nama_tunjangan');
-  // var nominal = $(this).attr('nominal_tunjangan');
-  // // $('#id_karyawan').val(id);
-  // $('#nama_nominal_tunjangan_hapus').html(nama_tunjangan+' senilai '+convertToRupiah(nominal)+'');
-  // $('#id_tunjangan_karyawan').val(id);
+  var tanggal_presensi = $(this).attr('tanggal_presensi');
+  $('#tanggal_presensi_karyawan1').val(tanggal_presensi);
+  $('#tanggal_presensi_karyawan').val(tanggal_presensi);
   $('#masuk_kerja').val(masuk);
   $('#pulang_kerja').val(pulang);
   $('#presensi_id').val(id);
   $('#modal_edit_presensi').modal('show');
 });
 function datediff(first, second) {
-    return Math.round((second-first)/(1000*60*60*24));
+  return Math.round((second-first)/(1000*60*60*24));
 }
 function format(s,r) {
   s=Math.round(s*Math.pow(10,r))/Math.pow(10,r);
@@ -241,7 +256,7 @@ function format(s,r) {
   while(l>0){t=s[0][l-1]+(c%3==0&&c!=0?thoudelim:"")+t;l--;c++;}
   s[1]=s[1]==undefined?"0":s[1];
   for(i=s[1].length;i<r;i++) {s[1]+="0";}
-    return curr+t+decdelim+s[1];
+  return curr+t+decdelim+s[1];
 }
 
 function threedigit(word) {
@@ -287,6 +302,6 @@ function convertToRupiah(angka)
   var rupiah = '';
   var angkarev = angka.toString().split('').reverse().join('');
   for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-    return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+  return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
 }
 </script>

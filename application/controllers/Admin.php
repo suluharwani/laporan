@@ -12,6 +12,19 @@ class Admin extends CI_Controller {
     $data['title'] = "Karyawan";
     $this->load->view('admin/page/karyawan', $data);
   }
+  function update_presensi_karyawan(){
+    $this->_make_sure_is_admin();
+    $id =   $this->input->post('id');
+    $pulang_kerja =   $this->input->post('pulang_kerja');
+    $masuk_kerja =   $this->input->post('masuk_kerja');
+    $tanggal_presensi =   $this->input->post('tanggal_presensi');
+    $object = array('masuk' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $masuk_kerja")),
+                    'pulang' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $pulang_kerja")),
+                    );
+    $this->db->where('id_presensi', $id);
+    $data = $this->db->update('absensi', $object);
+    echo json_encode($data);
+  }
   function get_info_karyawan(){
     $this->_make_sure_is_admin();
     $id =   $this->input->post('id');
