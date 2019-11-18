@@ -40,11 +40,29 @@
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-4">
-          <a class="navbar-brand">Tunjangan</a>
+          <a class="navbar-brand">Gaji Pokok **</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="tunjangan" name="tunjangan" type="number" maxlength="15" />
+              <input id="gaji_pokok" disabled name="gaji_pokok" type="text" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+          <a class="navbar-brand">Tunjangan **</a>
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+              <span class="currency">Rp</span>
+              <input id="tunjangan" disabled name="tunjangan" type="text" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+          <a class="navbar-brand">Bonus Khusus *</a>
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+              <span class="currency">Rp</span>
+              <input id="bonus" name="bonus" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -58,11 +76,29 @@
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-4">
-          <a class="navbar-brand">Pengurangan Bon</a>
+          <a class="navbar-brand">Pengurangan Bon *</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
               <input id="pengurangan_bon" name="pengurangan_bon" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+          <a class="navbar-brand">Denda *</a>
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+              <span class="currency">Rp</span>
+              <input id="denda" name="denda" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+          <a class="navbar-brand">Diterima</a>
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+              <span class="currency">Rp</span>
+              <input id="diterima" disabled name="diterima" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -72,7 +108,7 @@
           </span>
           <span class="text">Tampilkan Presensi</span>
         </button>
-        <button  class="btn btn-success btn-icon-split">
+        <button id="btn_hitung_gaji"   class="btn btn-success btn-icon-split">
           <span class="icon text-white-50">
             <i class="fas fa-check"></i>
           </span>
@@ -86,6 +122,8 @@
         </button>
         <div class="my-2"></div>
         <p class="mb-0 small">Note: Lakukan pengubahan berkala menurut UMR atau standar gaji karyawan. </p>
+        <p class="mb-0 small">*: Tidak wajib diisi. </p>
+        <p class="mb-0 small">**: Otomatis, tidak boleh diganti, hanya diubah di <a href="<?=base_url('admin/karyawan')?>">Data karyawan</a> </p>
       </div>
     </div>
   </div>
@@ -209,6 +247,21 @@ $(document).ready(function() {
   $('#btn_cari_presensi').on('click',function(){
     show_presensi()
   });
+  $('#btn_hitung_gaji').on('click',function(){
+    var id_karyawan = $('#id_karyawan').val();
+    var tanggal_awal = $('#tanggal_awal').val();
+    var tanggal_akhir = $('#tanggal_akhir').val();
+    $.ajax({
+      type : "POST",
+      url  : "<?php echo site_url('admin/hitung_gaji')?>",
+      dataType : "JSON",
+      data : {tanggal_awal:tanggal_awal, tanggal_akhir:tanggal_akhir,id_karyawan:id_karyawan},
+      success: function(gaji){
+        // var obj = JSON.parse(gaji);
+          $('#gaji_pokok').val(gaji['gaji_pokok']);
+      }
+    });
+  });
 
 $('#simpan_presensi_karyawan').on('click',function(){
   var id = $('#presensi_id').val();
@@ -240,7 +293,7 @@ $('#show_data_presensi_bulan_ini').on('click','.edit_presensi',function(){
   var masuk = $(this).attr('masuk');
   var pulang = $(this).attr('pulang');
   var tanggal_presensi = $(this).attr('tanggal_presensi');
-  $('#tanggal_presensi_karyawan1').val(tanggal_presensi);
+  $('#tanggal_presensi_karyawan1').html(tanggal_presensi);
   $('#tanggal_presensi_karyawan').val(tanggal_presensi);
   $('#masuk_kerja').val(masuk);
   $('#pulang_kerja').val(pulang);
