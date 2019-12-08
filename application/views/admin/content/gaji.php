@@ -44,7 +44,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="gaji_pokok" disabled name="gaji_pokok" type="text" maxlength="15" />
+              <input id="gaji_pokok" disabled name="gaji_pokok" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -53,7 +53,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="tunjangan" disabled name="tunjangan" type="text" maxlength="15" />
+              <input id="tunjangan" disabled name="tunjangan" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -251,6 +251,9 @@ $(document).ready(function() {
     var id_karyawan = $('#id_karyawan').val();
     var tanggal_awal = $('#tanggal_awal').val();
     var tanggal_akhir = $('#tanggal_akhir').val();
+    var bonus = $('#bonus').val();
+    var pengurangan_bon = $('#pengurangan_bon').val();
+    var denda = $('#denda').val();
     $.ajax({
       type : "POST",
       url  : "<?php echo site_url('admin/hitung_gaji')?>",
@@ -258,33 +261,41 @@ $(document).ready(function() {
       data : {tanggal_awal:tanggal_awal, tanggal_akhir:tanggal_akhir,id_karyawan:id_karyawan},
       success: function(gaji){
         // var obj = JSON.parse(gaji);
-          $('#gaji_pokok').val(gaji['gaji_pokok']);
+        if (bonus=="") {
+          bns = 0;
+        }else {
+          bns = parseInt(bonus);
+        }
+        $('#gaji_pokok').val(gaji['gaji_pokok']);
+        $('#tunjangan').val(gaji['tunjangan']);
+        $('#sisa_bon').val(gaji['sisa_bon']);
+        $('#diterima').val(gaji['total']-pengurangan_bon-denda+bns);
       }
     });
   });
 
-$('#simpan_presensi_karyawan').on('click',function(){
-  var id = $('#presensi_id').val();
-  var masuk_kerja = $('#masuk_kerja').val();
-  var pulang_kerja = $('#pulang_kerja').val();
-  var tanggal_presensi = $('#tanggal_presensi_karyawan').val();
+  $('#simpan_presensi_karyawan').on('click',function(){
+    var id = $('#presensi_id').val();
+    var masuk_kerja = $('#masuk_kerja').val();
+    var pulang_kerja = $('#pulang_kerja').val();
+    var tanggal_presensi = $('#tanggal_presensi_karyawan').val();
 
-  $.ajax({
-    type : "POST",
-    url  : "<?php echo site_url('admin/update_presensi_karyawan')?>",
-    dataType : "JSON",
-    data : {masuk_kerja:masuk_kerja,pulang_kerja:pulang_kerja,id:id,tanggal_presensi:tanggal_presensi},
-    success: function(data){
-      swal ( "Sukses" ,  "Data Berhasil Diupdate!" ,  "success", {
-        buttons: false,
-        timer: 1000,
-      } );
-      $('#modal_edit_presensi').modal('hide');
-      show_presensi();
-    }
+    $.ajax({
+      type : "POST",
+      url  : "<?php echo site_url('admin/update_presensi_karyawan')?>",
+      dataType : "JSON",
+      data : {masuk_kerja:masuk_kerja,pulang_kerja:pulang_kerja,id:id,tanggal_presensi:tanggal_presensi},
+      success: function(data){
+        swal ( "Sukses" ,  "Data Berhasil Diupdate!" ,  "success", {
+          buttons: false,
+          timer: 1000,
+        } );
+        $('#modal_edit_presensi').modal('hide');
+        show_presensi();
+      }
+    });
+    return false;
   });
-  return false;
-});
 
 } );
 
