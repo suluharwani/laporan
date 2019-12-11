@@ -14,6 +14,7 @@ class Admin extends CI_Controller {
   }
   function hitung_gaji(){
     $this->_make_sure_is_admin();
+    $adm = $this->data_admin();
     $id_karyawan = $this->input->post('id_karyawan');
     $tgl_awal = $this->input->post('tanggal_awal');
     $tgl_akhir = $this->input->post('tanggal_akhir');
@@ -33,7 +34,9 @@ class Admin extends CI_Controller {
     $this->db->where('id_karyawan', $id_karyawan);
     $gp = $this->db->get('gaji_pokok')->row_array();
     $data['gaji_pokok'] = $gp['gaji_pokok'];
-
+    $data['nama_dapan'] = $adm['nama_dapan'];
+    $data['nama_belakang'] =$adm['nama_belakang'];
+    $data['level'] =$adm['level'];
     $this->db->select('sum(nominal) as nominal');
     $this->db->where('id_pegawai', $id_karyawan);
     $tj= $this->db->get('tunjangan')->row_array();
@@ -236,6 +239,18 @@ function get_tanggal_absen(){
   $this->db->where('tanggal <=', $tgl_akhir);
   $data = $this->db->get('absensi');
   echo json_encode($data->result());
+}
+function data_admin(){
+  $status = $this->session->userdata('status_login');
+  $id_admin = $this->session->userdata('id_admin_login');
+  $this->db->select('*');
+  $data_admin = $this->db->from('admin');
+  foreach ($data_admin->result() as $key) {
+    $data['nama_depan'] = $key->nama_depan;
+    $data['nama_belakang'] = $key->nama_belakang;
+    $data['level'] = $key->level;
+  }
+  return $data;
 }
 function _make_sure_is_super_admin(){
   $status = $this->session->userdata('status_login');

@@ -1,3 +1,11 @@
+<style type="text/css" media="print">
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}
+}
+</style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -118,7 +126,8 @@
           <span class="icon text-white-50">
             <i class="fas fa-print"></i>
           </span>
-          <span class="text">Cetak</span>
+          <span class="text" id="cetak_gaji">Cetak</span>
+
         </button>
         <div class="my-2"></div>
         <p class="mb-0 small">Note: Lakukan pengubahan berkala menurut UMR atau standar gaji karyawan. </p>
@@ -198,6 +207,46 @@
   </div>
 </div>
 <!-- End of Main Content -->
+<div class="modal fade" id="Modal_gaji" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+       <!--  <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">×</button> -->
+       <h3 class="modal-title" id="myModalLabel">Faktur</h3>
+     </div>
+     <form class="form-horizontal">
+      <div class="modal-body">
+       <x id="faktur_print">
+       </div>
+
+
+       <div class="modal-footer">
+        <input type="button" class="btn" id="print_nota" onclick="printDiv('printableArea')" value="print Nota!" />
+
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<script>
+	var mywindow;
+	function printDiv(divName) {
+		//document.getElementById("printableArea").style.margin = "-50px 0px 0px 0px";
+		 var printContents = document.getElementById(divName).innerHTML;
+		 //var headstr = "<html><head></head><body style='margin-top:-5000px;'>";
+		//var footstr = "</body></html>";
+
+		 var originalContents = document.body.innerHTML;
+
+		 document.body.innerHTML = printContents;
+
+		 mywindow=window.print();
+
+		 document.body.innerHTML = originalContents;
+	}
+</script>
 <script type="text/javascript" charset="utf-8" async defer>
 $(document).ready(function() {
   function show_presensi(){
@@ -273,6 +322,117 @@ $(document).ready(function() {
       }
     });
   });
+  $('#cetak_gaji').on('click',function(){
+    var id_karyawan = $('#id_karyawan').val();
+    var tanggal_awal = $('#tanggal_awal').val();
+    var tanggal_akhir = $('#tanggal_akhir').val();
+    var bonus = $('#bonus').val();
+    var pengurangan_bon = $('#pengurangan_bon').val();
+    var denda = $('#denda').val();
+    var logo="<?php echo site_url('assets/logo/logo.png')?>";
+    var tanggal = Date.now();
+    var nama_admin = <?=$nama_depan.' '.$nama_belakang?>;
+    $.ajax({
+      type : "POST",
+      url  : "<?php echo site_url('admin/hitung_gaji')?>",
+      dataType : "JSON",
+      data : {tanggal_awal:tanggal_awal, tanggal_akhir:tanggal_akhir,id_karyawan:id_karyawan},
+      success: function(gaji){
+        faktur_header = '<div id="printableArea">'+
+        '<div class="wrapper">'+
+        '<section class="invoice">'+
+        '<div class="row">'+
+        '<div class="col-xs-12">'+
+        '<h2 class="page-header">'+
+        '<img src="'+logo+'" height=80></i>'+
+        '<small class="pull-right">Date: '+tanggal+'</small>'+
+        '</h2>'+
+        '</div>'+
+        '</div>'+
+        '<div class="row invoice-info">'+
+        '<div class="col-sm-4 invoice-col">'+
+        'From'+
+        '<address>'+
+        '<strong>Admin, '+nama_admin+'.</strong><br>'+
+        '<br/>'+
+        '</address>'+
+        '</div>'+
+        '<div class="col-sm-4 invoice-col">'+
+        'To'+
+        '<address>'+
+        '<strong>'+nama_client+'</strong><br>'+
+        ''+alamat_client+'<br>'+
+        'Phone: '+hp_client+'<br>'+
+        'Email: '+email_client+'<br>'+
+        '</address>'+
+        '</div>'+
+        '<div class="col-sm-4 invoice-col">'+
+        '<b>Invoice #'+nomor_faktur+'</b><br>'+
+        '<br>'+
+        '<b>Nota:</b>Asli<br>'+
+        '</div>'+
+        '</div>'+
+        '<div class="row">'+
+        '<div class="col-xs-12 table-responsive">'+
+        '<table class="table table-striped">'+
+        '<thead>'+
+        '<tr>'+
+        '<th>No</th>'+
+        '<th>Kode</th>'+
+        '<th>Nama</th>'+
+        '<th>Qty</th>'+
+        '<th>Size</th>'+
+        '<th>Harga/produk</th>'+
+        '<th>Disc 1</th>'+
+        '<th>Disc 2</th>'+
+        '<th>Disc 3</th>'+
+        '<th>Potongan</th>'+
+        '<th>Harga</th>'+
+        '<th>Subtotal</th>'+
+        '</tr>'+
+        '</thead>'+
+        '<tbody>';
+        faktur_footer ='</tbody>'+
+        '</table>'+
+        '</div>'+
+        '</div>'+
+        '<div class="row">'+
+        '<div class="col-xs-6">'+
+        ' <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">'+
+        ' Tanda Tangan <br><br><br>'+
+        ' Penerima<br><br'+
+        ' ........'+
+        '</p>'+
+        '</div>'+
+        ' <div class="col-xs-6">'+
+        '<div class="table-responsive">'+
+        ' <table class="table">'+
+        '<tr>'+
+        '<th style="width:50%">Subtotal:</th>'+
+        '<td>'+convertToRupiah(total_barang_harga.toFixed(0))+'</td>'+
+        '</tr>'+
+        '<tr>'+
+        '<th>Potongan:</th>'+
+        '<td>'+convertToRupiah(total_potongan.toFixed(0))+'</td>'+
+        '</tr>'+
+        '<tr>'+
+        '<th>Total:</th>'+
+        ' <td>'+convertToRupiah(total_belanja.toFixed(0))+'</td>'+
+        '</tr>'+
+        '</table>'+
+        ' </div>'+
+        ' </div>'+
+        '</div>'+
+        '</section>'+
+        '</div>'+
+        '</div>';
+        faktur_print = ''+faktur_header+''+faktur_tabel_html+''+faktur_footer+'';
+        $('#faktur_print').html(faktur_print);
+        $('#Modal_gaji').modal('show');
+      }
+    });
+    return false;
+  });
 
   $('#simpan_presensi_karyawan').on('click',function(){
     var id = $('#presensi_id').val();
@@ -298,6 +458,9 @@ $(document).ready(function() {
   });
 
 } );
+
+
+
 
 $('#show_data_presensi_bulan_ini').on('click','.edit_presensi',function(){
   var id = $(this).attr('presensi_id');
