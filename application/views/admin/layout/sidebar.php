@@ -42,8 +42,8 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Saldo:</h6>
-            <a class="collapse-item" href="buttons.html">Kasir</a>
-            <a class="collapse-item" href="cards.html">Kas</a>
+            <a class="collapse-item" href="<?=base_url('admin/kasir')?>">Kasir</a>
+            <a class="collapse-item" href="cards.html">Kas Masuk</a>
             <a class="collapse-item" href="cards.html">Fisik</a>
           </div>
         </div>

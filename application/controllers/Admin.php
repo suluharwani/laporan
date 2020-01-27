@@ -12,6 +12,13 @@ class Admin extends CI_Controller {
     $data['title'] = "Karyawan";
     $this->load->view('admin/page/karyawan', $data);
   }
+  public function kasir(){
+    $this->_make_sure_is_admin();
+    $data['title'] = "Karyawan";
+    $this->db->order_by('nama', 'asc');
+    $data['pegawai'] = $this->db->get('pegawai')->result();
+    $this->load->view('admin/page/kasir', $data);
+  }
   function hitung_gaji(){
     $this->_make_sure_is_admin();
     $adm = $this->data_admin();
