@@ -15,9 +15,54 @@ class Admin extends CI_Controller {
   public function kasir(){
     $this->_make_sure_is_admin();
     $data['title'] = "Karyawan";
-    $this->db->order_by('nama', 'asc');
-    $data['pegawai'] = $this->db->get('pegawai')->result();
+    $this->db->select('pegawai.nama as nama, pegawai.pegawai_id as pegawai_id');
+    $this->db->from('pegawai');
+    $this->db->join('pegawai_info', 'pegawai.pegawai_id = pegawai_info.id_pegawai', 'left');
+    $this->db->where('pegawai_info.status', 1);
+    $this->db->order_by('pegawai.nama', 'asc');
+    $data['pegawai'] = $this->db->get()->result();
     $this->load->view('admin/page/kasir', $data);
+  }
+  function laporan_kasir_list(){
+    $this->_make_sure_is_admin();
+    $this->load->model('Mdl_laporan');
+    $data = $this->Mdl_laporan->laporan_kasir_lim(10)->result();
+    echo json_encode($data);
+  }
+  function hapus_laporan_kasir(){
+    $id = $this->input->post('id');
+    $this->db->where('id', $id);
+    $data = $this->db->delete('laporan_kasir');
+    echo json_encode($data);
+  }
+  function tambah_laporan_kasir(){
+    $this->_make_sure_is_admin();
+    $kas_masuk = $this->input->post('kas_masuk');
+    $pendapatan_kasir = $this->input->post('pendapatan_kasir');
+    $selisih = $this->input->post('selisih');
+    $kas_masuk = $this->input->post('kas_masuk');
+    $total_pengeluaran = $this->input->post('total_pengeluaran');
+    $total_setor = $this->input->post('total_setor');
+    $setor_ratusan = $this->input->post('setor_ratusan');
+    $setor_puluhan = $this->input->post('setor_puluhan');
+    $setor_koin = $this->input->post('setor_koin');
+    $tanggal_laporan= $this->input->post('tanggal_laporan');
+    $id_user_kasir= $this->input->post('id_user_kasir');
+    $id_karyawan= $this->input->post('id_karyawan');
+    $obj = array('pendapatan_kasir'=>$pendapatan_kasir,
+                'selisih'=>$selisih,
+                'kas_masuk'=>$kas_masuk,
+                'total_pengeluaran'=>$total_pengeluaran,
+                'total_setor'=>$total_setor,
+                'setor_ratusan'=>$setor_ratusan,
+                'setor_puluhan'=>$setor_puluhan,
+                'setor_koin'=>$setor_koin,
+                'tanggal_laporan'=>$tanggal_laporan,
+                'id_user_kasir'=>strtoupper($id_user_kasir),
+                'id_karyawan'=>$id_karyawan
+              );
+    $data = $this->db->insert('laporan_kasir', $obj);
+    echo json_encode($data);
   }
   function hitung_gaji(){
     $this->_make_sure_is_admin();

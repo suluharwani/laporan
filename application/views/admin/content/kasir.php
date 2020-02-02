@@ -6,6 +6,8 @@
 }
 }
 </style>
+<link href="<?=base_url('assets/sb/')?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -16,16 +18,16 @@
   <div class="row">
 
     <!-- Grow In Utility -->
-    <div class="col-lg-6">
+    <div class="col-lg-8">
 
       <div class="card position-relative">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Hitung Gaji Karyawan</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Laporan Kasir</h6>
         </div>
         <div class="card-body">
           <!-- <div class="mb-3">
         </div> -->
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Pelapor</a>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
@@ -40,22 +42,22 @@
             </li>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">ID Kasir</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Id</span>
-              <input id="id_user_kasir" name="id_user_kasir" type="text" maxlength="15" />
+              <input id="id_user_kasir" name="id_user_kasir" type="text"  style="text-transform:uppercase" maxlength="15" />
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Periode</a>
           <ul class="navbar-nav ml-auto">
             <input type="date" name="tanggal_laporan" id="tanggal_laporan" >
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Pendapatan Kasir</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
@@ -64,7 +66,16 @@
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <a class="navbar-brand">Kas Masuk(Tambahan Modal)</a>
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+              <span class="currency">Rp</span>
+              <input id="kas_masuk" name="kas_masuk" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Selisih</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
@@ -73,25 +84,25 @@
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Total Pengeluaran</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="pengeluaran" name="pengeluaran" type="number" maxlength="15" />
+              <input id="total_pengeluaran" name="total_pengeluaran" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
-          <a class="navbar-brand">Total Setor</a>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <a class="navbar-brand">Total Setor(Saldo Masuk)</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="setor" name="setor" type="number" maxlength="15" />
+              <input id="total_setor" name="total_setor" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Setor Ratusan</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
@@ -100,7 +111,7 @@
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Setor Puluhan</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
@@ -109,7 +120,7 @@
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Setor Koin</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
@@ -118,7 +129,7 @@
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Selisih Setor</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
@@ -127,69 +138,71 @@
             </div>
           </ul>
         </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Selisih Penghitungan</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="diterima" disabled name="diterima" type="number" maxlength="15" />
+              <input id="selisih_penghitungan" disabled name="selisih_penghitungan" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
-        <button id="btn_cari_presensi" class="btn btn-info btn-icon-split">
+        <!-- <button id="btn_check_selisih" class="btn btn-info btn-icon-split">
           <span class="icon text-white-50">
             <i class="fas fa-info-circle"></i>
           </span>
-          <span class="text">Tampilkan Presensi</span>
-        </button>
-        <button id="btn_hitung_gaji"   class="btn btn-success btn-icon-split">
+          <span class="text">Check Selisih</span>
+        </button> -->
+        <button id="simpan"   class="btn btn-success btn-icon-split">
           <span class="icon text-white-50">
             <i class="fas fa-check"></i>
           </span>
-          <span class="text">Hitung Gaji</span>
+          <span class="text">Simpan</span>
         </button>
-        <button class="btn btn-primary btn-icon-split">
+        <!-- <button class="btn btn-primary btn-icon-split">
           <span class="icon text-white-50">
             <i class="fas fa-print"></i>
           </span>
           <span class="text" id="cetak_gaji">Cetak</span>
-
-        </button>
+        </button> -->
         <div class="my-2"></div>
-        <p class="mb-0 small">Note: Lakukan pengubahan berkala menurut UMR atau standar gaji karyawan. </p>
-        <p class="mb-0 small">*: Tidak wajib diisi. </p>
-        <p class="mb-0 small">**: Otomatis, tidak boleh diganti, hanya diubah di <a href="<?=base_url('admin/karyawan')?>">Data karyawan</a> </p>
+        <p class="mb-0 small">Note: Diisi setiap kasir tutup </p>
+        <p class="mb-0 small">Yang mengisi adalah kasir atau pengawas </p>
+        <p class="mb-0 small">Selisih harus 0 </p>
       </div>
     </div>
   </div>
   <!-- Fade In Utility -->
-  <div class="col-lg-6">
+  <div class="col-lg-12">
     <div class="card position-relative">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Presensi Karyawan</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Setor Kasir</h6>
       </div>
       <div class="card-body">
         <div class="mb-3">
           <div class="box-body no-padding">
             <div class="table-responsive" >
-              <table class="table table-bordered table-striped" id="tabel_presensi">
+              <table class="table table-bordered table-striped" id="dataTable">
                 <thead>
                   <tr>
                     <th>No</th>
+                    <th>Id Kasir</th>
                     <th>Tanggal</th>
-                    <th>Masuk</th>
-                    <th>Keluar</th>
-                    <th>validasi</th>
+                    <th>Pendapatan</th>
+                    <th>Pengeluaran</th>
+                    <th>Saldo Masuk</th>
+                    <th>Selisih</th>
+                    <th>Pelapor</th>
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody id="show_data_presensi_bulan_ini">
+                <tbody id="show_data_laporan">
                 </tbody>
               </table>
             </div>
             <!-- /.row -->
           </div>
-          <p class="mb-0 small">Note: Edit dahulu presensi yang kosong agar penghitungan valid</p>
+          <p class="mb-0 small">Note: Tabel hanya menunjukkan 10 data terakhir</p>
         </div>
       </div>
     </div>
@@ -245,8 +258,6 @@
       <div class="modal-body">
        <x id="faktur_print">
        </div>
-
-
        <div class="modal-footer">
         <input type="button" class="btn" id="print_nota" onclick="printDiv('printableArea')" value="print Nota!" />
 
@@ -256,6 +267,33 @@
   </div>
 </div>
 </div>
+<!-- modal delete laporan -->
+<div class="modal fade" id="modal_hapus_laporan" tabindex="-1" role="dialog" aria-labelledby="modal_hapus_tunjangan" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_hapus_laporan">Hapus Laporan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hapus Laporan Kasir <span id="id_kasir_hps"></span>, <span id="tanggal_laporan_hps"></span>?
+        <input type="text" name="" id="id_laporan_hps" hidden>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-danger confirm_hapus_laporan">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal delete laporan -->
+<script src="<?=base_url('assets/sb/')?>vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="<?=base_url('assets/sb/')?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
 <script>
 var date = new Date();
 
@@ -288,124 +326,155 @@ document.getElementById('tanggal_laporan').value = today;
 	}
 </script>
 <script type="text/javascript" charset="utf-8" async defer>
-
-
-$(document).ready(function() {
-  function show_presensi(){
-    var id_karyawan = $('#id_karyawan').val();
-    var tanggal_awal = $('#tanggal_awal').val();
-    var tanggal_akhir = $('#tanggal_akhir').val();
-    $.ajax({
-      type : "POST",
-      url  : "<?php echo site_url('admin/get_tanggal_absen')?>",
-      dataType : "JSON",
-      data : {tanggal_awal:tanggal_awal, tanggal_akhir:tanggal_akhir,id_karyawan:id_karyawan},
-      success: function(presensi){
-        $('#show_data_presensi_bulan_ini').val("");
-        var html = '';
-        var i;
-        var validasi_absen = "";
-        var no = 1;
-        for(i=0; i<presensi.length; i++){
-
-          if (presensi[i].selisih_hari == 0 && (presensi[i].selisih_masuk == 0 && presensi[i].selisih_pulang == 0 ) ) {
-            validasi_absen = '<font color="green">Presensi Valid</font>';
-            edit = '';
-          }else if (presensi[i].selisih_masuk == 0 || presensi[i].selisih_pulang == 0 ) {
-            validasi_absen = '<font color="#ffcc00">Peringatan Presensi Belum Valid</font>';
-            edit =   '<a href="javascript:void(0);" class="btn btn-primary btn-sm edit_presensi" tanggal_presensi = "'+presensi[i].tanggal+'" pulang="'+presensi[i].jam_pulang+'" masuk="'+presensi[i].jam_masuk+'" presensi_id="'+presensi[i].id_presensi+'" >Edit</a>';
-          }
-          else{
-            validasi_absen = '<font color="red">Presensi Tidak Valid</font>';
-          }
-          html += '<tr>'+
-          '<td>'+ no++ +'</td>'+
-          '<td>'+presensi[i].tanggal+'</td>'+
-          '<td>'+presensi[i].jam_masuk+'</td>'+
-          '<td>'+presensi[i].jam_pulang+'</td>'+
-          '<td>'+validasi_absen+'</td>'+
-          '<td style="text-align:center;">'+
-          edit
-          +
-          '</td>'+
-          '</tr>';
-        }
-        lap = html;
-        $('#show_data_presensi_bulan_ini').html(lap);
+show_laporan();
+function show_laporan(){
+  $.ajax({
+    type  : 'ajax',
+    url   : "<?php echo base_url('admin/laporan_kasir_list')?>",
+    async : false,
+    dataType : 'json',
+    success : function(data){
+      var html = '';
+      var i;
+      for(i=0; i<data.length; i++){
+        no = i+1;
+        // if (data[i].status == 1) {
+        //   status_kerja = '<font color="green">Aktif<font/>';
+        // }else if (data[i].status == 2) {
+        //   status_kerja = '<font color="yellow">Cuti<font/>';
+        // }else if (data[i].status == 3) {
+        //   status_kerja = '<font color="red">Resign<font/>';
+        // }else{
+        //   status_kerja = '<font color="blue">Belum Ada<font/>';
+        // }
+        html += '<tr>'+
+        '<td>'+ no++ +'</td>'+
+        '<td>'+data[i].id_user_kasir+'</td>'+
+        '<td>'+date_ind(data[i].tanggal_laporan)+'</td>'+
+        '<td>'+convertToRupiah(data[i].pendapatan_kasir)+'</td>'+
+        '<td>'+convertToRupiah(data[i].total_pengeluaran)+'</td>'+
+        '<td>'+convertToRupiah(data[i].total_setor)+'</td>'+
+        '<td>'+convertToRupiah(data[i].selisih)+'</td>'+
+        '<td>'+data[i].pelapor+'</td>'+
+        '<td style="text-align:center;">'+
+        '<a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_laporan" tanggal_laporan="'+data[i].tanggal_laporan+'"  id_laporan="'+data[i].id+'" id_kasir="'+data[i].id_user_kasir+'">Hapus Data</a>'+
+        '</td>'+
+        '</tr>';
       }
-    });
-  }
-  $('#btn_cari_presensi').on('click',function(){
-    show_presensi()
+      $('#show_data_laporan').html(html);
+    }
   });
-  $('#btn_hitung_gaji').on('click',function(){
-    var id_karyawan = $('#id_karyawan').val();
-    var tanggal_awal = $('#tanggal_awal').val();
-    var tanggal_akhir = $('#tanggal_akhir').val();
-    var bonus = $('#bonus').val();
-    var pengurangan_bon = $('#pengurangan_bon').val();
-    var denda = $('#denda').val();
+}
+$('#show_data_laporan').on('click','.hapus_laporan',function(){
+  var id = $(this).attr('id_laporan');
+  var id_kasir = $(this).attr('id_kasir');
+  var tanggal_laporan = $(this).attr('tanggal_laporan');
+
+  // $('#id_karyawan').val(id);
+  $('#id_laporan_hps').val(id);
+  $('#id_kasir_hps').html(id_kasir);
+  $('#tanggal_laporan_hps').html(date_ind(tanggal_laporan));
+  $('#modal_hapus_laporan').modal('show');
+});
+$('.confirm_hapus_laporan').on('click',function(){
+  var id = $('#id_laporan_hps').val();
+  $.ajax({
+    type : "POST",
+    url  : "<?php echo site_url('admin/hapus_laporan_kasir')?>",
+    dataType : "JSON",
+    data : {id:id},
+    success: function(data){
+      $('#modal_hapus_laporan').modal('hide');
+      show_laporan();
+      swal ( "Sukses" ,  "Laporan Berhasil Dihapus!" ,  "success", {
+        buttons: false,
+        timer: 1000,
+      } );
+    },
+    error: (function(data) {
+     show_product();
+       swal ( "Gagal" ,  "Laporan Gagal Dihapus!" ,  "error",  {
+         buttons: false,
+         timer: 1000,
+       } );
+     })
+  });
+  return false;
+});
+$('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#setor_puluhan,#setor_koin,#kas_masuk').on('keydown click change keyup paste blur load keyup',function(){
+  var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
+  var selisih = $('#selisih').val() || 0 ;
+  var kas_masuk = $('#kas_masuk').val() || 0 ;
+  var total_pengeluaran = $('#total_pengeluaran').val() || 0 ;
+  var total_setor = $('#total_setor').val() || 0 ;
+  var setor_ratusan = $('#setor_ratusan').val() || 0 ;
+  var setor_puluhan = $('#setor_puluhan').val() || 0 ;
+  var setor_koin = $('#setor_koin').val() || 0 ;
+  var selisih_penghitungan = parseInt(pendapatan_kasir)+parseInt(kas_masuk)-total_pengeluaran-total_setor;
+  var selisih_setor = total_setor-setor_ratusan-setor_puluhan-setor_koin;
+  $('[name="selisih_setor"]').val(selisih_setor);
+  $('[name="selisih_penghitungan"]').val(selisih_penghitungan);
+});
+
+  $('#simpan').on('click',function(){
+    var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
+    var selisih = $('#selisih').val() || 0 ;
+    var kas_masuk = $('#kas_masuk').val() || 0 ;
+    var total_pengeluaran = $('#total_pengeluaran').val() || 0 ;
+    var total_setor = $('#total_setor').val() || 0 ;
+    var setor_ratusan = $('#setor_ratusan').val() || 0 ;
+    var setor_puluhan = $('#setor_puluhan').val() || 0 ;
+    var setor_koin = $('#setor_koin').val() || 0 ;
+    var id_karyawan = $('#id_karyawan').val() || 0 ;
+    var id_user_kasir = $('#id_user_kasir').val() || 0 ;
+    var tanggal_laporan = $('#tanggal_laporan').val() ;
     $.ajax({
       type : "POST",
-      url  : "<?php echo site_url('admin/hitung_gaji')?>",
+      url  : "<?php echo site_url('admin/tambah_laporan_kasir')?>",
       dataType : "JSON",
-      data : {tanggal_awal:tanggal_awal, tanggal_akhir:tanggal_akhir,id_karyawan:id_karyawan},
-      success: function(gaji){
-        // var obj = JSON.parse(gaji);
-        if (bonus=="") {
-          bns = 0;
-        }else {
-          bns = parseInt(bonus);
-        }
-        $('#gaji_pokok').val(gaji['gaji_pokok']);
-        $('#tunjangan').val(gaji['tunjangan']);
-        $('#sisa_bon').val(gaji['sisa_bon']);
-        $('#diterima').val(gaji['total']-pengurangan_bon-denda+bns);
-      }
-    });
-  });
-
-
-  $('#simpan_presensi_karyawan').on('click',function(){
-    var id = $('#presensi_id').val();
-    var masuk_kerja = $('#masuk_kerja').val();
-    var pulang_kerja = $('#pulang_kerja').val();
-    var tanggal_presensi = $('#tanggal_presensi_karyawan').val();
-
-    $.ajax({
-      type : "POST",
-      url  : "<?php echo site_url('admin/update_presensi_karyawan')?>",
-      dataType : "JSON",
-      data : {masuk_kerja:masuk_kerja,pulang_kerja:pulang_kerja,id:id,tanggal_presensi:tanggal_presensi},
+      data : {tanggal_laporan:tanggal_laporan,id_user_kasir:id_user_kasir,id_karyawan:id_karyawan,pendapatan_kasir:pendapatan_kasir,selisih:selisih,kas_masuk:kas_masuk,total_pengeluaran:total_pengeluaran,total_setor:total_setor,setor_ratusan:setor_ratusan,setor_puluhan:setor_puluhan,setor_koin:setor_koin},
       success: function(data){
-        swal ( "Sukses" ,  "Data Berhasil Diupdate!" ,  "success", {
+        swal ( "Sukses" ,  "Laporan Berhasil Ditambahkan!" ,  "success", {
           buttons: false,
           timer: 1000,
         } );
-        $('#modal_edit_presensi').modal('hide');
-        show_presensi();
-      }
+        $('#pendapatan_kasir').val('');
+        $('#selisih').val('');
+        $('#kas_masuk').val('');
+        $('#total_pengeluaran').val('');
+        $('#total_setor').val('');
+        $('#setor_ratusan').val('');
+        $('#setor_puluhan').val('');
+        $('#setor_koin').val('');
+        $('#id_karyawan').val('');
+        $('#id_user_kasir').val('');
+        v$('#tanggal_laporan').val('');
+        // show_presensi();
+      },
+      error: (function(data) {
+       show_product();
+         swal ( "Gagal" ,  "Data Gagal Ditambahkan!" ,  "error",  {
+           buttons: false,
+           timer: 1000,
+         } );
+       })
     });
     return false;
   });
+function date_ind(date_conv){
+  var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
+  var date = new Date(date_conv);
+  var day = date.getDate();
+  var month = date.getMonth();
+  var thisDay = date.getDay(),
+      thisDay = myDays[thisDay];
+  var yy = date.getYear();
+  var year = (yy < 1000) ? yy + 1900 : yy;
+  var hasil = thisDay + ', ' + day + ' ' + months[month] + ' ' + year;
+return hasil;
+}
 
-} );
-
-
-
-
-$('#show_data_presensi_bulan_ini').on('click','.edit_presensi',function(){
-  var id = $(this).attr('presensi_id');
-  var masuk = $(this).attr('masuk');
-  var pulang = $(this).attr('pulang');
-  var tanggal_presensi = $(this).attr('tanggal_presensi');
-  $('#tanggal_presensi_karyawan1').html(tanggal_presensi);
-  $('#tanggal_presensi_karyawan').val(tanggal_presensi);
-  $('#masuk_kerja').val(masuk);
-  $('#pulang_kerja').val(pulang);
-  $('#presensi_id').val(id);
-  $('#modal_edit_presensi').modal('show');
-});
 function datediff(first, second) {
   return Math.round((second-first)/(1000*60*60*24));
 }
