@@ -10,6 +10,15 @@ class Mdl_karyawan extends CI_Model {
     $this->db->join('gaji_pokok', 'pegawai.pegawai_id = gaji_pokok.id_karyawan', 'left');
     return $this->db->get();
   }
+  public function active_karyawan(){
+    $this->db->select('pegawai.nama as nama, pegawai.pegawai_id as pegawai_id');
+    $this->db->from('pegawai');
+    $this->db->join('pegawai_info', 'pegawai.pegawai_id = pegawai_info.id_pegawai', 'left');
+    $this->db->where('pegawai_info.status', 1);
+    $this->db->order_by('pegawai.nama', 'asc');
+    $data = $this->db->get();
+    return $data;
+  }
   public function get_info($id){
     $data = $this->db->get_where('pegawai_info', array('id_pegawai' => $id ));
     return $data;

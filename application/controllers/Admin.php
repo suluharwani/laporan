@@ -7,6 +7,13 @@ class Admin extends CI_Controller {
     $data['title'] = "Dashboard";
     $this->load->view('admin/page/dashboard', $data);
   }
+  public function kas_masuk(){
+    $this->_make_sure_is_admin();
+    $data['title'] = "Kas Masuk";
+    $this->load->model('Mdl_karyawan');
+    $data['pegawai'] = $this->Mdl_karyawan->active_karyawan()->result();
+    $this->load->view('admin/page/kas_masuk', $data);
+  }
   public function karyawan(){
     $this->_make_sure_is_admin();
     $data['title'] = "Karyawan";
@@ -15,13 +22,17 @@ class Admin extends CI_Controller {
   public function kasir(){
     $this->_make_sure_is_admin();
     $data['title'] = "Karyawan";
-    $this->db->select('pegawai.nama as nama, pegawai.pegawai_id as pegawai_id');
-    $this->db->from('pegawai');
-    $this->db->join('pegawai_info', 'pegawai.pegawai_id = pegawai_info.id_pegawai', 'left');
-    $this->db->where('pegawai_info.status', 1);
-    $this->db->order_by('pegawai.nama', 'asc');
-    $data['pegawai'] = $this->db->get()->result();
+    $this->load->model('Mdl_karyawan');
+    $this->load->model('Mdl_laporan');
+    $data['pegawai'] = $this->Mdl_karyawan->active_karyawan()->result();
+    $data['tanggal_terakhir'] = $this->Mdl_laporan->last_date_kasir();
     $this->load->view('admin/page/kasir', $data);
+  }
+  function laporan_kasir_list_rekap(){
+    $this->_make_sure_is_admin();
+    $this->load->model('Mdl_laporan');
+    $data = $this->Mdl_laporan->laporan_last_date_kasir();
+    echo json_encode($data->result());
   }
   function laporan_kasir_list(){
     $this->_make_sure_is_admin();

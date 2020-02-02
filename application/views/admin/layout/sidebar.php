@@ -43,8 +43,8 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Saldo:</h6>
             <a class="collapse-item" href="<?=base_url('admin/kasir')?>">Kasir</a>
-            <a class="collapse-item" href="cards.html">Kas Masuk</a>
-            <a class="collapse-item" href="cards.html">Fisik</a>
+            <a class="collapse-item" href="<?=base_url('admin/kas_masuk')?>">Kas Masuk</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Fisik</a>
           </div>
         </div>
       </li>

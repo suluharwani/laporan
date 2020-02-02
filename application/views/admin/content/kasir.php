@@ -18,7 +18,7 @@
   <div class="row">
 
     <!-- Grow In Utility -->
-    <div class="col-lg-8">
+    <div class="col-lg-7">
 
       <div class="card position-relative">
         <div class="card-header py-3">
@@ -148,65 +148,126 @@
           </ul>
         </nav>
         <!-- <button id="btn_check_selisih" class="btn btn-info btn-icon-split">
-          <span class="icon text-white-50">
-            <i class="fas fa-info-circle"></i>
-          </span>
-          <span class="text">Check Selisih</span>
-        </button> -->
-        <button id="simpan"   class="btn btn-success btn-icon-split">
-          <span class="icon text-white-50">
-            <i class="fas fa-check"></i>
-          </span>
-          <span class="text">Simpan</span>
-        </button>
-        <!-- <button class="btn btn-primary btn-icon-split">
-          <span class="icon text-white-50">
-            <i class="fas fa-print"></i>
-          </span>
-          <span class="text" id="cetak_gaji">Cetak</span>
-        </button> -->
-        <div class="my-2"></div>
-        <p class="mb-0 small">Note: Diisi setiap kasir tutup </p>
-        <p class="mb-0 small">Yang mengisi adalah kasir atau pengawas </p>
-        <p class="mb-0 small">Selisih harus 0 </p>
-      </div>
+        <span class="icon text-white-50">
+        <i class="fas fa-info-circle"></i>
+      </span>
+      <span class="text">Check Selisih</span>
+    </button> -->
+    <button id="simpan"   class="btn btn-success btn-icon-split">
+      <span class="icon text-white-50">
+        <i class="fas fa-check"></i>
+      </span>
+      <span class="text">Simpan</span>
+    </button>
+    <!-- <button class="btn btn-primary btn-icon-split">
+    <span class="icon text-white-50">
+    <i class="fas fa-print"></i>
+  </span>
+  <span class="text" id="cetak_gaji">Cetak</span>
+</button> -->
+<div class="my-2"></div>
+<p class="mb-0 small">Note: Diisi setiap kasir tutup </p>
+<p class="mb-0 small">Yang mengisi adalah kasir atau pengawas </p>
+<p class="mb-0 small">Selisih harus 0 </p>
+</div>
+</div>
+</div>
+<!-- Fade In Utility -->
+<div class="col-lg-5">
+  <div class="card position-relative">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Rincian 1 Hari</h6>
     </div>
-  </div>
-  <!-- Fade In Utility -->
-  <div class="col-lg-12">
-    <div class="card position-relative">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Setor Kasir</h6>
-      </div>
-      <div class="card-body">
-        <div class="mb-3">
-          <div class="box-body no-padding">
-            <div class="table-responsive" >
-              <table class="table table-bordered table-striped" id="dataTable">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Id Kasir</th>
-                    <th>Tanggal</th>
-                    <th>Pendapatan</th>
-                    <th>Pengeluaran</th>
-                    <th>Saldo Masuk</th>
-                    <th>Selisih</th>
-                    <th>Pelapor</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="show_data_laporan">
-                </tbody>
-              </table>
-            </div>
-            <!-- /.row -->
+    <div class="card-body">
+      <div class="mb-3">
+        <div class="box-body no-padding">
+          <div class="container">
+            <h2>Rekap Tanggal <span id='tgl_akhir'></span></h2>
+            <p>Rekap Laporan Data Terakhir</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Keterangan</th>
+                  <th>Jumlah</th>
+                </tr>
+              </thead>
+              <tbody id="data_rekap">
+
+              </tbody>
+            </table>
           </div>
-          <p class="mb-0 small">Note: Tabel hanya menunjukkan 10 data terakhir</p>
+
+          <!-- /.row -->
         </div>
+        <p class="mb-0 small">Note: Tabel hanya menunjukkan data terakhir. Untuk mencetak laporan silakan tentukan tanggal dan pilih cetak.</p>
       </div>
     </div>
   </div>
+  <div class="card position-relative">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Cetak Laporan</h6>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <div class="box-body no-padding">
+          <div class="container">
+            <h2>Cetak Laporan</h2>
+            <p>Cetak laporan per tanggal</p>
+            <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+              <ul class="navbar-nav ml-auto">
+                <input type="date" name="tanggal_awal" id="tanggal_awal" > - <input type="date" name="tanggal_akhir" id="tanggal_akhir" >
+              </ul>
+            </nav>
+            <button id="btn_cari_laporan" class="btn btn-info btn-icon-split">
+              <span class="icon text-white-50">
+                <i class="fas fa-info-circle"></i>
+              </span>
+              <span class="text">Cetak</span>
+            </button>
+          </div>
+
+          <!-- /.row -->
+        </div>
+        <p class="mb-0 small">Note: Cetak dengan printer atau simpan sebagai .PDF</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-12">
+  <div class="card position-relative">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Setor Kasir</h6>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <div class="box-body no-padding">
+          <div class="table-responsive" >
+            <table class="table table-bordered table-striped" id="dataTable">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Id Kasir</th>
+                  <th>Tanggal</th>
+                  <th>Pendapatan</th>
+                  <th>Tambahan Modal</th>
+                  <th>Pengeluaran</th>
+                  <th>Saldo Masuk</th>
+                  <th>Selisih</th>
+                  <th>Pelapor</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="show_data_laporan">
+              </tbody>
+            </table>
+          </div>
+          <!-- /.row -->
+        </div>
+        <p class="mb-0 small">Note: Tabel hanya menunjukkan 10 data terakhir</p>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 <!-- /.container-fluid -->
 </div>
@@ -251,82 +312,83 @@
     <div class="modal-content">
 
       <div class="modal-header">
-       <!--  <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">×</button> -->
-       <h3 class="modal-title" id="myModalLabel">Faktur</h3>
-     </div>
-     <form class="form-horizontal">
-      <div class="modal-body">
-       <x id="faktur_print">
-       </div>
-       <div class="modal-footer">
-        <input type="button" class="btn" id="print_nota" onclick="printDiv('printableArea')" value="print Nota!" />
+        <!--  <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">×</button> -->
+        <h3 class="modal-title" id="myModalLabel">Faktur</h3>
+      </div>
+      <form class="form-horizontal">
+        <div class="modal-body">
+          <x id="faktur_print">
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn" id="print_nota" onclick="printDiv('printableArea')" value="print Nota!" />
 
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
-      </div>
-    </form>
-  </div>
-</div>
-</div>
-<!-- modal delete laporan -->
-<div class="modal fade" id="modal_hapus_laporan" tabindex="-1" role="dialog" aria-labelledby="modal_hapus_tunjangan" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_hapus_laporan">Hapus Laporan</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Hapus Laporan Kasir <span id="id_kasir_hps"></span>, <span id="tanggal_laporan_hps"></span>?
-        <input type="text" name="" id="id_laporan_hps" hidden>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-danger confirm_hapus_laporan">Hapus</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</div>
-<!-- modal delete laporan -->
-<script src="<?=base_url('assets/sb/')?>vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="<?=base_url('assets/sb/')?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <!-- modal delete laporan -->
+  <div class="modal fade" id="modal_hapus_laporan" tabindex="-1" role="dialog" aria-labelledby="modal_hapus_tunjangan" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_hapus_laporan">Hapus Laporan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Hapus Laporan Kasir <span id="id_kasir_hps"></span>, <span id="tanggal_laporan_hps"></span>?
+          <input type="text" name="" id="id_laporan_hps" hidden>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="button" class="btn btn-danger confirm_hapus_laporan">Hapus</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal delete laporan -->
+  <script src="<?=base_url('assets/sb/')?>vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="<?=base_url('assets/sb/')?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-<!-- Page level custom scripts -->
-<script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
-<script>
-var date = new Date();
+  <!-- Page level custom scripts -->
+  <script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
+  <script>
+  var date = new Date();
 
-var day = date.getDate();
-var month = date.getMonth() + 1;
-var year = date.getFullYear();
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
 
-if (month < 10) month = "0" + month;
-if (day < 10) day = "0" + day;
+  if (month < 10) month = "0" + month;
+  if (day < 10) day = "0" + day;
 
-var today = year + "-" + month + "-" + day;
+  var today = year + "-" + month + "-" + day;
 
 
-document.getElementById('tanggal_laporan').value = today;
+  document.getElementById('tanggal_laporan').value = today;
 
-	var mywindow;
-	function printDiv(divName) {
-		//document.getElementById("printableArea").style.margin = "-50px 0px 0px 0px";
-		 var printContents = document.getElementById(divName).innerHTML;
-		 //var headstr = "<html><head></head><body style='margin-top:-5000px;'>";
-		//var footstr = "</body></html>";
+  var mywindow;
+  function printDiv(divName) {
+    //document.getElementById("printableArea").style.margin = "-50px 0px 0px 0px";
+    var printContents = document.getElementById(divName).innerHTML;
+    //var headstr = "<html><head></head><body style='margin-top:-5000px;'>";
+    //var footstr = "</body></html>";
 
-		 var originalContents = document.body.innerHTML;
+    var originalContents = document.body.innerHTML;
 
-		 document.body.innerHTML = printContents;
+    document.body.innerHTML = printContents;
 
-		 mywindow=window.print();
+    mywindow=window.print();
 
-		 document.body.innerHTML = originalContents;
-	}
+    document.body.innerHTML = originalContents;
+  }
 </script>
 <script type="text/javascript" charset="utf-8" async defer>
 show_laporan();
+show_rekap();
 function show_laporan(){
   $.ajax({
     type  : 'ajax',
@@ -352,6 +414,7 @@ function show_laporan(){
         '<td>'+data[i].id_user_kasir+'</td>'+
         '<td>'+date_ind(data[i].tanggal_laporan)+'</td>'+
         '<td>'+convertToRupiah(data[i].pendapatan_kasir)+'</td>'+
+        '<td>'+convertToRupiah(data[i].kas_masuk)+'</td>'+
         '<td>'+convertToRupiah(data[i].total_pengeluaran)+'</td>'+
         '<td>'+convertToRupiah(data[i].total_setor)+'</td>'+
         '<td>'+convertToRupiah(data[i].selisih)+'</td>'+
@@ -362,6 +425,55 @@ function show_laporan(){
         '</tr>';
       }
       $('#show_data_laporan').html(html);
+    }
+  });
+}
+function show_rekap(){
+  $.ajax({
+    type  : 'ajax',
+    url   : "<?php echo base_url('admin/laporan_kasir_list_rekap')?>",
+    async : false,
+    dataType : 'json',
+    success : function(data){
+      var html = '';
+      var total_pendapatan = 0;
+      var total_kas_masuk = 0;
+      var total_pengeluaran_kasir = 0;
+      var total_tambahan_modal = 0;
+      var total_selisih = 0;
+      var i;
+      for(i=0; i<data.length; i++){
+        no = i+1;
+        total_pendapatan += parseInt(data[i].pendapatan_kasir);
+        total_kas_masuk += parseInt(data[i].total_setor);
+        total_pengeluaran_kasir += parseInt(data[i].total_pengeluaran);
+        total_tambahan_modal += parseInt(data[i].kas_masuk);
+        total_selisih += parseInt(data[i].selisih);
+      }
+      html =
+      '<tr>'+
+      '<td>Pendapatan</td>'+
+      '<td>'+ convertToRupiah(total_pendapatan) +'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<td>Tambahan Modal</td>'+
+      '<td>'+ convertToRupiah(total_tambahan_modal) +'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<td>Saldo Masuk</td>'+
+      '<td>'+ convertToRupiah(total_kas_masuk) +'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<td>Pengeluaran Kasir</td>'+
+      '<td>'+ convertToRupiah(total_pengeluaran_kasir) +'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<td>Selisih kasir</td>'+
+      '<td>'+ convertToRupiah(total_selisih) +'</td>'+
+      '</tr>';
+      $('#data_rekap').html(html);
+      $('#tgl_akhir').html('<?=$tanggal_terakhir?>');
+
     }
   });
 }
@@ -386,18 +498,20 @@ $('.confirm_hapus_laporan').on('click',function(){
     success: function(data){
       $('#modal_hapus_laporan').modal('hide');
       show_laporan();
+      show_rekap()
       swal ( "Sukses" ,  "Laporan Berhasil Dihapus!" ,  "success", {
         buttons: false,
         timer: 1000,
       } );
     },
     error: (function(data) {
-     show_product();
-       swal ( "Gagal" ,  "Laporan Gagal Dihapus!" ,  "error",  {
-         buttons: false,
-         timer: 1000,
-       } );
-     })
+      show_laporan();
+      show_rekap();
+      swal ( "Gagal" ,  "Laporan Gagal Dihapus!" ,  "error",  {
+        buttons: false,
+        timer: 1000,
+      } );
+    })
   });
   return false;
 });
@@ -416,51 +530,54 @@ $('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#se
   $('[name="selisih_penghitungan"]').val(selisih_penghitungan);
 });
 
-  $('#simpan').on('click',function(){
-    var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
-    var selisih = $('#selisih').val() || 0 ;
-    var kas_masuk = $('#kas_masuk').val() || 0 ;
-    var total_pengeluaran = $('#total_pengeluaran').val() || 0 ;
-    var total_setor = $('#total_setor').val() || 0 ;
-    var setor_ratusan = $('#setor_ratusan').val() || 0 ;
-    var setor_puluhan = $('#setor_puluhan').val() || 0 ;
-    var setor_koin = $('#setor_koin').val() || 0 ;
-    var id_karyawan = $('#id_karyawan').val() || 0 ;
-    var id_user_kasir = $('#id_user_kasir').val() || 0 ;
-    var tanggal_laporan = $('#tanggal_laporan').val() ;
-    $.ajax({
-      type : "POST",
-      url  : "<?php echo site_url('admin/tambah_laporan_kasir')?>",
-      dataType : "JSON",
-      data : {tanggal_laporan:tanggal_laporan,id_user_kasir:id_user_kasir,id_karyawan:id_karyawan,pendapatan_kasir:pendapatan_kasir,selisih:selisih,kas_masuk:kas_masuk,total_pengeluaran:total_pengeluaran,total_setor:total_setor,setor_ratusan:setor_ratusan,setor_puluhan:setor_puluhan,setor_koin:setor_koin},
-      success: function(data){
-        swal ( "Sukses" ,  "Laporan Berhasil Ditambahkan!" ,  "success", {
-          buttons: false,
-          timer: 1000,
-        } );
-        $('#pendapatan_kasir').val('');
-        $('#selisih').val('');
-        $('#kas_masuk').val('');
-        $('#total_pengeluaran').val('');
-        $('#total_setor').val('');
-        $('#setor_ratusan').val('');
-        $('#setor_puluhan').val('');
-        $('#setor_koin').val('');
-        $('#id_karyawan').val('');
-        $('#id_user_kasir').val('');
-        v$('#tanggal_laporan').val('');
-        // show_presensi();
-      },
-      error: (function(data) {
-       show_product();
-         swal ( "Gagal" ,  "Data Gagal Ditambahkan!" ,  "error",  {
-           buttons: false,
-           timer: 1000,
-         } );
-       })
-    });
-    return false;
+$('#simpan').on('click',function(){
+  var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
+  var selisih = $('#selisih').val() || 0 ;
+  var kas_masuk = $('#kas_masuk').val() || 0 ;
+  var total_pengeluaran = $('#total_pengeluaran').val() || 0 ;
+  var total_setor = $('#total_setor').val() || 0 ;
+  var setor_ratusan = $('#setor_ratusan').val() || 0 ;
+  var setor_puluhan = $('#setor_puluhan').val() || 0 ;
+  var setor_koin = $('#setor_koin').val() || 0 ;
+  var id_karyawan = $('#id_karyawan').val() || 0 ;
+  var id_user_kasir = $('#id_user_kasir').val() || 0 ;
+  var tanggal_laporan = $('#tanggal_laporan').val() ;
+  $.ajax({
+    type : "POST",
+    url  : "<?php echo site_url('admin/tambah_laporan_kasir')?>",
+    dataType : "JSON",
+    data : {tanggal_laporan:tanggal_laporan,id_user_kasir:id_user_kasir,id_karyawan:id_karyawan,pendapatan_kasir:pendapatan_kasir,selisih:selisih,kas_masuk:kas_masuk,total_pengeluaran:total_pengeluaran,total_setor:total_setor,setor_ratusan:setor_ratusan,setor_puluhan:setor_puluhan,setor_koin:setor_koin},
+    success: function(data){
+      show_laporan();
+      show_rekap();
+      swal ( "Sukses" ,  "Laporan Berhasil Ditambahkan!" ,  "success", {
+        buttons: false,
+        timer: 1000,
+      } );
+      $('#pendapatan_kasir').val('');
+      $('#selisih').val('');
+      $('#kas_masuk').val('');
+      $('#total_pengeluaran').val('');
+      $('#total_setor').val('');
+      $('#setor_ratusan').val('');
+      $('#setor_puluhan').val('');
+      $('#setor_koin').val('');
+      $('#id_karyawan').val('');
+      $('#id_user_kasir').val('');
+      v$('#tanggal_laporan').val('');
+      // show_presensi();
+    },
+    error: (function(data) {
+      show_laporan();
+      show_rekap();
+      swal ( "Gagal" ,  "Data Gagal Ditambahkan!" ,  "error",  {
+        buttons: false,
+        timer: 1000,
+      } );
+    })
   });
+  return false;
+});
 function date_ind(date_conv){
   var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
@@ -468,11 +585,11 @@ function date_ind(date_conv){
   var day = date.getDate();
   var month = date.getMonth();
   var thisDay = date.getDay(),
-      thisDay = myDays[thisDay];
+  thisDay = myDays[thisDay];
   var yy = date.getYear();
   var year = (yy < 1000) ? yy + 1900 : yy;
   var hasil = thisDay + ', ' + day + ' ' + months[month] + ' ' + year;
-return hasil;
+  return hasil;
 }
 
 function datediff(first, second) {
