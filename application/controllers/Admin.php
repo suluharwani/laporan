@@ -28,6 +28,27 @@ class Admin extends CI_Controller {
     $data['tanggal_terakhir'] = $this->Mdl_laporan->last_date_kasir();
     $this->load->view('admin/page/kasir', $data);
   }
+  function cari_laporan_kasir(){
+    $this->_make_sure_is_admin();
+    $tanggal_awal = $this->input->post('tanggal_awal');
+    $tanggal_akhir = $this->input->post('tanggal_akhir');
+
+    if ($tanggal_awal>$tanggal_akhir) {
+      header('HTTP/1.1 500 Internal Server Booboo');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }else if(empty($tanggal_awal)||empty($tanggal_akhir)){
+      header('HTTP/1.1 500 Internal Server Booboo');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+    else{
+      $this->load->model('Mdl_laporan');
+      $data = $this->Mdl_laporan->cari_laporan_kasir($tanggal_awal, $tanggal_akhir);
+      echo json_encode($data->result());
+    }
+
+  }
   function laporan_kasir_list_rekap(){
     $this->_make_sure_is_admin();
     $this->load->model('Mdl_laporan');

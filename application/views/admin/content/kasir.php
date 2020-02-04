@@ -215,7 +215,7 @@
             <p>Cetak laporan per tanggal</p>
             <nav class="navbar navbar-expand navbar-light bg-light mb-4">
               <ul class="navbar-nav ml-auto">
-                <input type="date" name="tanggal_awal" id="tanggal_awal" > - <input type="date" name="tanggal_akhir" id="tanggal_akhir" >
+                <input type="date" name="tanggal_awal_laporan" id="tanggal_awal_laporan" > - <input type="date" name="tanggal_akhir_laporan" id="tanggal_akhir_laporan" >
               </ul>
             </nav>
             <button id="btn_cari_laporan" class="btn btn-info btn-icon-split">
@@ -271,7 +271,7 @@
 </div>
 <!-- /.container-fluid -->
 </div>
-<div class="modal fade" id="modal_edit_presensi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- <div class="modal fade" id="modal_edit_presensi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -305,7 +305,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- End of Main Content -->
 <div class="modal fade" id="Modal_gaji" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
   <div class="modal-dialog">
@@ -321,7 +321,6 @@
           </div>
           <div class="modal-footer">
             <input type="button" class="btn" id="print_nota" onclick="printDiv('printableArea')" value="print Nota!" />
-
             <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
           </div>
         </form>
@@ -349,6 +348,30 @@
       </div>
     </div>
   </div>
+  <!-- print -->
+  <div class="modal fade" id="Modal_Faktur" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+         <!--  <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">×</button> -->
+         <h3 class="modal-title" id="myModalLabel">Faktur</h3>
+       </div>
+       <form class="form-horizontal">
+        <div class="modal-body">
+         <x id="faktur_print">
+         </div>
+         <div class="modal-footer">
+          <input type="button" class="btn" id="print_nota" onclick="printDiv('printableArea')" value="print Nota!" />
+
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
+
+  <!-- print -->
   <!-- modal delete laporan -->
   <script src="<?=base_url('assets/sb/')?>vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="<?=base_url('assets/sb/')?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
@@ -372,21 +395,147 @@
 
   var mywindow;
   function printDiv(divName) {
-    //document.getElementById("printableArea").style.margin = "-50px 0px 0px 0px";
-    var printContents = document.getElementById(divName).innerHTML;
-    //var headstr = "<html><head></head><body style='margin-top:-5000px;'>";
-    //var footstr = "</body></html>";
+   var printContents = document.getElementById(divName).innerHTML;
+   var originalContents = document.body.innerHTML;
 
-    var originalContents = document.body.innerHTML;
+   document.body.innerHTML = printContents;
 
-    document.body.innerHTML = printContents;
+   window.print();
 
-    mywindow=window.print();
-
-    document.body.innerHTML = originalContents;
-  }
+   document.body.innerHTML = originalContents;
+ }
 </script>
 <script type="text/javascript" charset="utf-8" async defer>
+
+$('#btn_cari_laporan').on('click',function(){
+  var tanggal_awal = $('#tanggal_awal_laporan').val();
+  var tanggal_akhir = $('#tanggal_akhir_laporan').val();
+  $.ajax({
+    type : "POST",
+    url  : "<?php echo site_url('admin/cari_laporan_kasir')?>",
+    dataType : "JSON",
+    data : {tanggal_awal:tanggal_awal,tanggal_akhir:tanggal_akhir},
+    success: function(data){
+      var test = 'aaa';
+      var faktur_tabel_html = '';
+      for(i=0; i<data.length; i++){
+        faktur_tabel_html += '<tr>'+
+        '<td>'+ no++ +'</td>'+
+        '<td>'+data[i].id_user_kasir+'</td>'+
+        '<td>'+date_ind(data[i].tanggal_laporan)+'</td>'+
+        '<td>'+convertToRupiah(data[i].pendapatan_kasir)+'</td>'+
+        '<td>'+convertToRupiah(data[i].kas_masuk)+'</td>'+
+        '<td>'+convertToRupiah(data[i].total_pengeluaran)+'</td>'+
+        '<td>'+convertToRupiah(data[i].total_setor)+'</td>'+
+        '<td>'+convertToRupiah(data[i].selisih)+'</td>'+
+        '<td>'+data[i].pelapor+'</td>'+
+        '</tr>';
+      }
+      faktur_header = '<div id="printableArea">'+
+      '<div class="wrapper">'+
+      '<section class="Laporan Kasir">'+
+      '<div class="row">'+
+      '<div class="col-xs-12">'+
+      '<h2 class="page-header">'+
+      '<img src="'+test+'" height=80></i>'+
+      '<small> Date: '+test+'</small>'+
+      '</h2>'+
+      '</div>'+
+      '</div>'+
+      '<div class="row invoice-info">'+
+      '<div class="col-sm-4 invoice-col">'+
+      'From'+
+      '<address>'+
+      '<strong>Admin, '+test+'.</strong><br>'+
+      ''+test+'<br/>'+
+      'Phone: '+test+'<br>'+
+      'Email: '+test+'<br>'+
+      '</address>'+
+      '</div>'+
+      '<div class="col-sm-4 invoice-col">'+
+      'To'+
+      '<address>'+
+      '<strong>'+test+'</strong><br>'+
+      ''+test+'<br>'+
+      'Phone: '+test+'<br>'+
+      'Email: '+test+'<br>'+
+      '</address>'+
+      '</div>'+
+      '<div class="col-sm-4 invoice-col">'+
+      '<b>Invoice #'+test+'</b><br>'+
+      '<br>'+
+      '<b>Nota:</b>Asli<br>'+
+      '</div>'+
+      '</div>'+
+      '<div class="row">'+
+      '<div class="col-xs-12 table-responsive">'+
+      '<table class="table table-striped">'+
+      '<thead>'+
+      '<tr>'+
+      '<th>No</th>'+
+      '<th>Id Kasir</th>'+
+      '<th>Tanggal</th>'+
+      '<th>Pendapatan</th>'+
+      '<th>Tambahan Modal</th>'+
+      '<th>Pengeluaran</th>'+
+      '<th>Saldo Masuk</th>'+
+      '<th>Selisih</th>'+
+      '<th>Pelapor</th>'+
+      '</tr>'+
+      '</thead>'+
+      '<tbody>';
+      faktur_footer ='</tbody>'+
+      '</table>'+
+      '</div>'+
+      '</div>'+
+      '<div class="row">'+
+      '<div class="col-xs-6">'+
+      ' <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">'+
+      ' Tanda Tangan <br><br><br>'+
+      ' Penerima<br><br'+
+      ' ........'+
+      '</p>'+
+      '</div>'+
+      ' <div class="col-xs-6">'+
+      '<div class="table-responsive">'+
+      ' <table class="table">'+
+      '<tr>'+
+      '<th style="width:50%">Subtotal:</th>'+
+      '<td>'+test+'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<th>Potongan:</th>'+
+      '<td>'+test+'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<th>Total:</th>'+
+      ' <td>'+test+'</td>'+
+      '</tr>'+
+      '</table>'+
+      ' </div>'+
+      ' </div>'+
+      '</div>'+
+      '</section>'+
+      '</div>'+
+      '</div>';
+      faktur_print = ''+faktur_header+''+faktur_tabel_html+''+faktur_footer+'';
+
+      $('#faktur_header').html(faktur_header);
+      $('#faktur_tabel').html(faktur_tabel_html);
+      $('#faktur_footer').html(faktur_footer);
+      $('#faktur_id').val('kode_faktur');
+      $('#faktur_print').html(faktur_print);
+      $('#Modal_Faktur').modal('show');
+    },
+    error: (function(data) {
+      swal ( "Gagal" ,  "Laporan Gagal Ditampilkan!" ,  "error",  {
+        buttons: false,
+        timer: 1000,
+      } );
+    })
+  });
+  return false;
+});
 show_laporan();
 show_rekap();
 function show_laporan(){
@@ -400,15 +549,6 @@ function show_laporan(){
       var i;
       for(i=0; i<data.length; i++){
         no = i+1;
-        // if (data[i].status == 1) {
-        //   status_kerja = '<font color="green">Aktif<font/>';
-        // }else if (data[i].status == 2) {
-        //   status_kerja = '<font color="yellow">Cuti<font/>';
-        // }else if (data[i].status == 3) {
-        //   status_kerja = '<font color="red">Resign<font/>';
-        // }else{
-        //   status_kerja = '<font color="blue">Belum Ada<font/>';
-        // }
         html += '<tr>'+
         '<td>'+ no++ +'</td>'+
         '<td>'+data[i].id_user_kasir+'</td>'+
