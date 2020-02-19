@@ -307,26 +307,6 @@
   </div>
 </div> -->
 <!-- End of Main Content -->
-<div class="modal fade" id="Modal_gaji" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <!--  <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">×</button> -->
-        <h3 class="modal-title" id="myModalLabel">Faktur</h3>
-      </div>
-      <form class="form-horizontal">
-        <div class="modal-body">
-          <x id="faktur_print">
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn" id="print_nota" onclick="printDiv('printableArea')" value="print Nota!" />
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
   <!-- modal delete laporan -->
   <div class="modal fade" id="modal_hapus_laporan" tabindex="-1" role="dialog" aria-labelledby="modal_hapus_tunjangan" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -355,7 +335,7 @@
 
         <div class="modal-header">
          <!--  <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">×</button> -->
-         <h3 class="modal-title" id="myModalLabel">Faktur</h3>
+         <h3 class="modal-title" id="myModalLabel">Laporan Kasir</h3>
        </div>
        <form class="form-horizontal">
         <div class="modal-body">
@@ -416,8 +396,18 @@ $('#btn_cari_laporan').on('click',function(){
     dataType : "JSON",
     data : {tanggal_awal:tanggal_awal,tanggal_akhir:tanggal_akhir},
     success: function(data){
+      var logo = "<?=base_url('assets/logo/logo.png')?>";
       var test = 'aaa';
       var faktur_tabel_html = '';
+      no = 1;
+      var total_pendapatan = 0;
+      var total_kas_masuk = 0;
+      var total_pengeluaran_kasir = 0;
+      var total_setor_kasir = 0;
+      var total_selisih = 0;
+      var nama_admin = "<?php if (isset($nama_admin)) {
+        echo $nama_admin;
+      } ?>";
       for(i=0; i<data.length; i++){
         faktur_tabel_html += '<tr>'+
         '<td>'+ no++ +'</td>'+
@@ -430,6 +420,11 @@ $('#btn_cari_laporan').on('click',function(){
         '<td>'+convertToRupiah(data[i].selisih)+'</td>'+
         '<td>'+data[i].pelapor+'</td>'+
         '</tr>';
+        total_pendapatan += parseInt(data[i].pendapatan_kasir);
+        total_kas_masuk += parseInt(data[i].kas_masuk);
+        total_pengeluaran_kasir += parseInt(data[i].total_pengeluaran);
+        total_setor_kasir += parseInt(data[i].total_setor);
+        total_selisih += parseInt(data[i].selisih);
       }
       faktur_header = '<div id="printableArea">'+
       '<div class="wrapper">'+
@@ -437,8 +432,8 @@ $('#btn_cari_laporan').on('click',function(){
       '<div class="row">'+
       '<div class="col-xs-12">'+
       '<h2 class="page-header">'+
-      '<img src="'+test+'" height=80></i>'+
-      '<small> Date: '+test+'</small>'+
+      '<img src="'+logo+'" height=180></i> </br>'+
+      '<small> &nbsp; Tanggal: '+date_ind(Date.now())+'</small>'+
       '</h2>'+
       '</div>'+
       '</div>'+
@@ -446,8 +441,7 @@ $('#btn_cari_laporan').on('click',function(){
       '<div class="col-sm-4 invoice-col">'+
       'From'+
       '<address>'+
-      '<strong>Admin, '+test+'.</strong><br>'+
-      ''+test+'<br/>'+
+      '<strong>Admin, '+nama_admin+'.</strong><br>'+
       'Phone: '+test+'<br>'+
       'Email: '+test+'<br>'+
       '</address>'+
@@ -489,27 +483,31 @@ $('#btn_cari_laporan').on('click',function(){
       '</div>'+
       '</div>'+
       '<div class="row">'+
-      '<div class="col-xs-6">'+
-      ' <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">'+
-      ' Tanda Tangan <br><br><br>'+
-      ' Penerima<br><br'+
-      ' ........'+
-      '</p>'+
+      '<div class="col-xs-12">'+
+      ' <p class="text-muted well well-sm no-shadow" style="margin-top: 20px;">'+
       '</div>'+
-      ' <div class="col-xs-6">'+
+      ' <div class="col-xs-12">'+
       '<div class="table-responsive">'+
       ' <table class="table">'+
       '<tr>'+
-      '<th style="width:50%">Subtotal:</th>'+
-      '<td>'+test+'</td>'+
+      '<th style="width:60%">Total Pendapatan:</th>'+
+      '<td>'+convertToRupiah(total_pendapatan)+'</td>'+
       '</tr>'+
       '<tr>'+
-      '<th>Potongan:</th>'+
-      '<td>'+test+'</td>'+
+      '<th>Total Modal Masuk:</th>'+
+      '<td>'+convertToRupiah(total_kas_masuk)+'</td>'+
       '</tr>'+
       '<tr>'+
-      '<th>Total:</th>'+
-      ' <td>'+test+'</td>'+
+      '<th>Total Pengeluaran Kasir:</th>'+
+      ' <td>'+convertToRupiah(total_pengeluaran_kasir)+'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<th>Total Setor Kasir:</th>'+
+      ' <td>'+convertToRupiah(total_setor_kasir)+'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<th>Total Selisih Kasir Kasir:</th>'+
+      ' <td>'+convertToRupiah(total_selisih)+'</td>'+
       '</tr>'+
       '</table>'+
       ' </div>'+
@@ -679,9 +677,9 @@ $('#simpan').on('click',function(){
   var setor_ratusan = $('#setor_ratusan').val() || 0 ;
   var setor_puluhan = $('#setor_puluhan').val() || 0 ;
   var setor_koin = $('#setor_koin').val() || 0 ;
-  var id_karyawan = $('#id_karyawan').val() || 0 ;
-  var id_user_kasir = $('#id_user_kasir').val() || 0 ;
-  var tanggal_laporan = $('#tanggal_laporan').val() ;
+  var id_karyawan = $('#id_karyawan').val();
+  var id_user_kasir = $('#id_user_kasir').val();
+  var tanggal_laporan = $('#tanggal_laporan').val();
   $.ajax({
     type : "POST",
     url  : "<?php echo site_url('admin/tambah_laporan_kasir')?>",
@@ -710,9 +708,9 @@ $('#simpan').on('click',function(){
     error: (function(data) {
       show_laporan();
       show_rekap();
-      swal ( "Gagal" ,  "Data Gagal Ditambahkan!" ,  "error",  {
+      swal ( "Gagal" ,  'Data Gagal Ditambahkan! Pelapor dan ID kasir wajib diisi, Selisih Setor dan Penghitungan harus 0' ,  "error",  {
         buttons: false,
-        timer: 1000,
+        timer: 7000,
       } );
     })
   });
