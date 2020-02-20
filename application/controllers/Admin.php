@@ -11,14 +11,45 @@ class Admin extends CI_Controller {
     $data['title'] = "Dashboard";
     $this->load->view('admin/page/dashboard', $data);
   }
+  public function backup_database(){
+    ini_set('memory_limit', '5024M');
+    $this->load->dbutil();
+
+    $prefs = array(
+      'format'      => 'zip',
+      'filename'    => 'my_db_backup.sql',
+    );
+
+
+    $backup =& $this->dbutil->backup($prefs);
+
+    $db_name = 'backup-on-'. date("Y-m-d-H-i-s") .'.zip';
+    $save = 'backup/'.$db_name;
+
+    $this->load->helper('file');
+    write_file($save, $backup);
+    $this->load->helper('download');
+    force_download($db_name, $backup);
+    return 0;
+  }
   function test_print(){
-    $connector = new Escpos\PrintConnectors\WindowsPrintConnector("LPT1");
-    // membuat objek $printer agar dapat di lakukan fungsinya
-    $printer = new Escpos\Printer($connector);
-    $printer ->initialize();
-    $printer -> text("Hello World!\n");
-    $printer -> cut();
-    $printer -> close();
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("smb://Guest@192.168.1.50/epson1");
+      // membuat objek $printer agar dapat di lakukan fungsinya
+      $printer = new Escpos\Printer($connector);
+      $data['title'] ="";
+      $a = $this->load->view('struk/struk','', true);
+        $printer ->initialize();
+      for ($i=0; $i <1 ; $i++) {
+
+        $printer -> text("$a \n");
+        $printer->feed(5);
+        $printer -> cut();
+      }
+        $printer -> close();
+    } catch (\Exception $e) {
+      echo "alert('ada kesalahan')";
+    }
   }
   function get_data_barang(){
     header('Content-Type: application/json');
