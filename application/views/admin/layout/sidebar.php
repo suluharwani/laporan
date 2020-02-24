@@ -27,6 +27,52 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider">
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Data
+      </div>
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsetabledata" aria-expanded="true" aria-controls="collapsetabledata">
+          <i class="fas fa-fw fa-dollar-sign"></i>
+          <span>Tabel Data</span>
+        </a>
+        <div id="collapsetabledata" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Data:</h6>
+            <a class="collapse-item" href="<?=base_url('admin/supplier')?>">Supplier</a>
+            <a class="collapse-item" href="<?=base_url('admin/kas_masuk')?>">Customer</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Grouping Barang</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Departemen Barang</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Sub Departemen</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Account Cabang/Pusat</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Daftar Kasir</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Data Table/Lokasi</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Setting Pajak</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Sales</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Pengirim</a>
+          </div>
+        </div>
+      </li>
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Stock
+      </div>
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsmasterdatabarang" aria-expanded="true" aria-controls="collapsmasterdatabarang">
+          <i class="fas fa-fw fa-dollar-sign"></i>
+          <span>Master Data Barang</span>
+        </a>
+        <div id="collapsmasterdatabarang" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Stock:</h6>
+            <a class="collapse-item" href="<?=base_url('admin/kasir')?>">Barang</a>
+            <a class="collapse-item" href="<?=base_url('admin/kas_masuk')?>">Barcode</a>
+            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Laporan</a>
+          </div>
+        </div>
+      </li>
 
       <!-- Heading -->
       <div class="sidebar-heading">

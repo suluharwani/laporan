@@ -4,12 +4,61 @@ class Admin extends CI_Controller {
   function __construct() {
     parent::__construct();
     date_default_timezone_set('Asia/Jakarta');
+    $this->load->model('Mdl_supplier');
   }
-  public function index()
-  {
+  public function index(){
     $this->_make_sure_is_admin();
     $data['title'] = "Dashboard";
     $this->load->view('admin/page/dashboard', $data);
+  }
+  public function supplier(){
+    $this->_make_sure_is_admin();
+    $data['title'] = "Supllier";
+    $this->load->view('admin/page/supplier', $data);
+  }
+  function tambah_supplier(){
+    $adm = $this->data_admin();
+    $data_admin['nama_admin'] = $adm['nama_depan'].' '.$adm['nama_belakang'];
+    $data_input = $this->input->post();
+    $data = array_merge($data_admin, $data_input);
+    $hasil = $this->Mdl_supplier->insert_data($data);
+    echo json_encode($hasil);
+  }
+  function data_supplier_dipilih(){
+    $code = $this->input->post('kode');
+    $data = $this->Mdl_supplier->get_data_supplier_dipilih($code);
+    echo json_encode($data->result());
+  }
+  //check input Supplier
+  function check_kode_supplier()
+  {
+    if($this->Mdl_supplier->check_kode($_POST['kode_supplier'])){
+      echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
+      </i> Kode telah digunakan, coba kode yang lain</span></label>';
+    }
+    else {
+      echo '<label class="text-success"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i> Kode tersedia</span></label>';
+    }
+  }
+  //serverside supplier data
+  function get_supplier_json() { //get product data and encode to be JSON object
+    header('Content-Type: application/json');
+    echo $this->Mdl_supplier->get_data();
+  }
+
+  function save_supplier(){ //insert record method
+    $this->Mdl_supplier->insert_product();
+    redirect('crud');
+  }
+
+  function update_supplier(){ //update record method
+    $this->Mdl_supplier->update_product();
+    redirect('crud');
+  }
+
+  function delete_supplier(){ //delete record method
+    $this->Mdl_supplier->delete_product();
+    redirect('crud');
   }
   public function backup_database(){
     ini_set('memory_limit', '5024M');
@@ -34,190 +83,207 @@ class Admin extends CI_Controller {
   }
   function test_print(){
     try {
-      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("smb://Guest@192.168.1.50/epson1");
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("smb://Guest@192.168.1.30/TM-U220");
       // membuat objek $printer agar dapat di lakukan fungsinya
       $printer = new Escpos\Printer($connector);
       $data['title'] ="";
       $a = $this->load->view('struk/struk','', true);
-        $printer ->initialize();
+      $printer ->initialize();
       for ($i=0; $i <1 ; $i++) {
 
         $printer -> text("$a \n");
         $printer->feed(5);
         $printer -> cut();
       }
-        $printer -> close();
+      $printer -> close();
     } catch (\Exception $e) {
       echo "alert('ada kesalahan')";
     }
   }
-  function get_data_barang(){
-    header('Content-Type: application/json');
-    $this->load->model('Mdl_pos');
-    echo $this->Mdl_pos->get_all_produk();
-  }
-  public function kas_masuk(){
-    $this->_make_sure_is_admin();
-    $data['title'] = "Kas Masuk";
-    $this->load->model('Mdl_karyawan');
-    $data['pegawai'] = $this->Mdl_karyawan->active_karyawan()->result();
-    $this->load->view('admin/page/kas_masuk', $data);
-  }
-  public function karyawan(){
-    $this->_make_sure_is_admin();
-    $data['title'] = "Karyawan";
-    $this->load->view('admin/page/karyawan', $data);
-  }
-  public function kasir(){
-    $this->_make_sure_is_admin();
-    $data['title'] = "Laporan Kasir";
-    $this->load->model('Mdl_karyawan');
-    $this->load->model('Mdl_laporan');
-    $adm = $this->data_admin();
-    $data['nama_admin'] = $adm['nama_depan'].' '.$adm['nama_belakang'];
-    $data['pegawai'] = $this->Mdl_karyawan->active_karyawan()->result();
-    $data['tanggal_terakhir'] = $this->Mdl_laporan->last_date_kasir();
-    $this->load->view('admin/page/kasir', $data);
-  }
-  function cari_laporan_kasir(){
-    $this->_make_sure_is_admin();
-    $tanggal_awal = $this->input->post('tanggal_awal');
-    $tanggal_akhir = $this->input->post('tanggal_akhir');
+  function test_barcode(){
+    try {
 
-    if ($tanggal_awal>$tanggal_akhir) {
-      header('HTTP/1.1 500 Internal Server Booboo');
-      header('Content-Type: application/json; charset=UTF-8');
-      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
-    }else if(empty($tanggal_awal)||empty($tanggal_akhir)){
-      header('HTTP/1.1 500 Internal Server Booboo');
-      header('Content-Type: application/json; charset=UTF-8');
-      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+      $connector = new Escpos\PrintConnectors\FilePrintConnector("LPT1");
+      $printer = new  Escpos\Printer($connector);
+
+      /* Barcodes */
+        $printer -> setBarcodeHeight(80);
+          $printer -> text("Barcode \n");
+          $printer -> barcode("9876", $barcodes[$i]);
+          $printer -> feed();
+        $printer -> cut();
+        $printer -> close();
+      } catch (\Exception $e) {
+        echo "<script>alert('ada kesalahan')</script>";
+      }
     }
-    else{
+    function get_data_barang(){
+      header('Content-Type: application/json');
+      $this->load->model('Mdl_pos');
+      echo $this->Mdl_pos->get_all_produk();
+    }
+    public function kas_masuk(){
+      $this->_make_sure_is_admin();
+      $data['title'] = "Kas Masuk";
+      $this->load->model('Mdl_karyawan');
+      $data['pegawai'] = $this->Mdl_karyawan->active_karyawan()->result();
+      $this->load->view('admin/page/kas_masuk', $data);
+    }
+    public function karyawan(){
+      $this->_make_sure_is_admin();
+      $data['title'] = "Karyawan";
+      $this->load->view('admin/page/karyawan', $data);
+    }
+    public function kasir(){
+      $this->_make_sure_is_admin();
+      $data['title'] = "Laporan Kasir";
+      $this->load->model('Mdl_karyawan');
       $this->load->model('Mdl_laporan');
-      $data_laporan = $this->Mdl_laporan->cari_laporan_kasir($tanggal_awal, $tanggal_akhir)->result();
-      // $id_admin = $this->session->userdata('id_admin_login');
-      // $this->db->select('*');
-      // $this->db->from('admin');
-      // $this->db->where('id', $id_admin);
-      // $data_admin = $this->db->get()->result();
-      // $data = array_merge($data_admin, $data_laporan);
-      echo json_encode($data_laporan);
+      $adm = $this->data_admin();
+      $data['nama_admin'] = $adm['nama_depan'].' '.$adm['nama_belakang'];
+      $data['pegawai'] = $this->Mdl_karyawan->active_karyawan()->result();
+      $data['tanggal_terakhir'] = $this->Mdl_laporan->last_date_kasir();
+      $this->load->view('admin/page/kasir', $data);
     }
+    function cari_laporan_kasir(){
+      $this->_make_sure_is_admin();
+      $tanggal_awal = $this->input->post('tanggal_awal');
+      $tanggal_akhir = $this->input->post('tanggal_akhir');
 
-  }
-  function laporan_kasir_list_rekap(){
-    $this->_make_sure_is_admin();
-    $this->load->model('Mdl_laporan');
-    $data = $this->Mdl_laporan->laporan_last_date_kasir();
-    echo json_encode($data->result());
-  }
-  function laporan_kasir_list(){
-    $this->_make_sure_is_admin();
-    $this->load->model('Mdl_laporan');
-    $data = $this->Mdl_laporan->laporan_kasir_lim(10)->result();
-    echo json_encode($data);
-  }
-  function hapus_laporan_kasir(){
-    $id = $this->input->post('id');
-    $this->db->where('id', $id);
-    $data = $this->db->delete('laporan_kasir');
-    echo json_encode($data);
-  }
-  function tambah_laporan_kasir(){
-    $this->_make_sure_is_admin();
-    $this->form_validation->set_rules('id_user_kasir', 'ID User Kasir', 'required');
-    $this->form_validation->set_rules('id_karyawan', 'ID Karyawan', 'required');
-    if ($this->form_validation->run() == TRUE){
-      $pendapatan_kasir = $this->input->post('pendapatan_kasir');
-      $selisih = $this->input->post('selisih');
-      $kas_masuk = $this->input->post('kas_masuk');
-      $total_pengeluaran = $this->input->post('total_pengeluaran');
-      $total_setor = $this->input->post('total_setor');
-      $setor_ratusan = $this->input->post('setor_ratusan');
-      $setor_puluhan = $this->input->post('setor_puluhan');
-      $setor_koin = $this->input->post('setor_koin');
-      $tanggal_laporan= $this->input->post('tanggal_laporan');
-      $id_user_kasir= $this->input->post('id_user_kasir');
-      $id_karyawan= $this->input->post('id_karyawan');
+      if ($tanggal_awal>$tanggal_akhir) {
+        header('HTTP/1.1 500 Internal Server Booboo');
+        header('Content-Type: application/json; charset=UTF-8');
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+      }else if(empty($tanggal_awal)||empty($tanggal_akhir)){
+        header('HTTP/1.1 500 Internal Server Booboo');
+        header('Content-Type: application/json; charset=UTF-8');
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+      }
+      else{
+        $this->load->model('Mdl_laporan');
+        $data_laporan = $this->Mdl_laporan->cari_laporan_kasir($tanggal_awal, $tanggal_akhir)->result();
+        // $id_admin = $this->session->userdata('id_admin_login');
+        // $this->db->select('*');
+        // $this->db->from('admin');
+        // $this->db->where('id', $id_admin);
+        // $data_admin = $this->db->get()->result();
+        // $data = array_merge($data_admin, $data_laporan);
+        echo json_encode($data_laporan);
+      }
 
-      $selisih_penghitungan = $pendapatan_kasir+$kas_masuk-$total_pengeluaran-$total_setor;
-      $selisih_setor = $total_setor-$setor_ratusan-$setor_puluhan-$setor_koin;
-      if ($selisih_penghitungan == 0 && $selisih_setor==0 && $pendapatan_kasir != 0) {
-        $obj = array('pendapatan_kasir'=>$pendapatan_kasir,
-        'selisih'=>$selisih,
-        'kas_masuk'=>$kas_masuk,
-        'total_pengeluaran'=>$total_pengeluaran,
-        'total_setor'=>$total_setor,
-        'setor_ratusan'=>$setor_ratusan,
-        'setor_puluhan'=>$setor_puluhan,
-        'setor_koin'=>$setor_koin,
-        'tanggal_laporan'=>$tanggal_laporan,
-        'id_user_kasir'=>strtoupper($id_user_kasir),
-        'id_karyawan'=>$id_karyawan
-      );
-      $data = $this->db->insert('laporan_kasir', $obj);
+    }
+    function laporan_kasir_list_rekap(){
+      $this->_make_sure_is_admin();
+      $this->load->model('Mdl_laporan');
+      $data = $this->Mdl_laporan->laporan_last_date_kasir();
+      echo json_encode($data->result());
+    }
+    function laporan_kasir_list(){
+      $this->_make_sure_is_admin();
+      $this->load->model('Mdl_laporan');
+      $data = $this->Mdl_laporan->laporan_kasir_lim(10)->result();
       echo json_encode($data);
+    }
+    function hapus_laporan_kasir(){
+      $id = $this->input->post('id');
+      $this->db->where('id', $id);
+      $data = $this->db->delete('laporan_kasir');
+      echo json_encode($data);
+    }
+    function tambah_laporan_kasir(){
+      $this->_make_sure_is_admin();
+      $this->form_validation->set_rules('id_user_kasir', 'ID User Kasir', 'required');
+      $this->form_validation->set_rules('id_karyawan', 'ID Karyawan', 'required');
+      if ($this->form_validation->run() == TRUE){
+        $pendapatan_kasir = $this->input->post('pendapatan_kasir');
+        $selisih = $this->input->post('selisih');
+        $kas_masuk = $this->input->post('kas_masuk');
+        $total_pengeluaran = $this->input->post('total_pengeluaran');
+        $total_setor = $this->input->post('total_setor');
+        $setor_ratusan = $this->input->post('setor_ratusan');
+        $setor_puluhan = $this->input->post('setor_puluhan');
+        $setor_koin = $this->input->post('setor_koin');
+        $tanggal_laporan= $this->input->post('tanggal_laporan');
+        $id_user_kasir= $this->input->post('id_user_kasir');
+        $id_karyawan= $this->input->post('id_karyawan');
+
+        $selisih_penghitungan = $pendapatan_kasir+$kas_masuk-$total_pengeluaran-$total_setor;
+        $selisih_setor = $total_setor-$setor_ratusan-$setor_puluhan-$setor_koin;
+        if ($selisih_penghitungan == 0 && $selisih_setor==0 && $pendapatan_kasir != 0) {
+          $obj = array('pendapatan_kasir'=>$pendapatan_kasir,
+          'selisih'=>$selisih,
+          'kas_masuk'=>$kas_masuk,
+          'total_pengeluaran'=>$total_pengeluaran,
+          'total_setor'=>$total_setor,
+          'setor_ratusan'=>$setor_ratusan,
+          'setor_puluhan'=>$setor_puluhan,
+          'setor_koin'=>$setor_koin,
+          'tanggal_laporan'=>$tanggal_laporan,
+          'id_user_kasir'=>strtoupper($id_user_kasir),
+          'id_karyawan'=>$id_karyawan
+        );
+        $data = $this->db->insert('laporan_kasir', $obj);
+        echo json_encode($data);
+      }else{
+        header('HTTP/1.1 500 Internal Server Error');
+        header('Content-Type: application/json; charset=UTF-8');
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+      }
     }else{
       header('HTTP/1.1 500 Internal Server Error');
       header('Content-Type: application/json; charset=UTF-8');
       die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
-  }else{
-    header('HTTP/1.1 500 Internal Server Error');
-    header('Content-Type: application/json; charset=UTF-8');
-    die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
   }
-}
-function hitung_gaji(){
-  $this->_make_sure_is_admin();
-  $adm = $this->data_admin();
-  $id_karyawan = $this->input->post('id_karyawan');
-  $tgl_awal = $this->input->post('tanggal_awal');
-  $tgl_akhir = $this->input->post('tanggal_akhir');
-  // $this->db->select('datediff(masuk,pulang) as selisih_hari, datediff(masuk,tanggal) as selisih_masuk, datediff(pulang,tanggal) as selisih_pulang, DATE_FORMAT(masuk, "%H:%i:%s") as jam_masuk, DATE_FORMAT(pulang, "%H:%i:%s") as jam_pulang, timediff(pulang,masuk) as jam_kerja');
-  // $this->db->where('pegawai_id', $id_karyawan);
-  // $this->db->where('tanggal >=', $tgl_awal);
-  // $this->db->where('tanggal <=', $tgl_akhir);
-  // $data = $this->db->get('absensi');
+  function hitung_gaji(){
+    $this->_make_sure_is_admin();
+    $adm = $this->data_admin();
+    $id_karyawan = $this->input->post('id_karyawan');
+    $tgl_awal = $this->input->post('tanggal_awal');
+    $tgl_akhir = $this->input->post('tanggal_akhir');
+    // $this->db->select('datediff(masuk,pulang) as selisih_hari, datediff(masuk,tanggal) as selisih_masuk, datediff(pulang,tanggal) as selisih_pulang, DATE_FORMAT(masuk, "%H:%i:%s") as jam_masuk, DATE_FORMAT(pulang, "%H:%i:%s") as jam_pulang, timediff(pulang,masuk) as jam_kerja');
+    // $this->db->where('pegawai_id', $id_karyawan);
+    // $this->db->where('tanggal >=', $tgl_awal);
+    // $this->db->where('tanggal <=', $tgl_akhir);
+    // $data = $this->db->get('absensi');
 
-  // $this->db->select('SEC_TO_TIME(SUM((TIME_TO_SEC(TIMEDIFF(pulang,masuk))))) as total_kerja');
-  // $this->db->where('pegawai_id', $id_karyawan);
-  // $this->db->where('tanggal >=', $tgl_awal);
-  // $this->db->where('tanggal <=', $tgl_akhir);
-  // $total_kerja = $this->db->get('absensi');
+    // $this->db->select('SEC_TO_TIME(SUM((TIME_TO_SEC(TIMEDIFF(pulang,masuk))))) as total_kerja');
+    // $this->db->where('pegawai_id', $id_karyawan);
+    // $this->db->where('tanggal >=', $tgl_awal);
+    // $this->db->where('tanggal <=', $tgl_akhir);
+    // $total_kerja = $this->db->get('absensi');
 
-  $this->db->select('gaji_pokok');
-  $this->db->where('id_karyawan', $id_karyawan);
-  $gp = $this->db->get('gaji_pokok')->row_array();
-  $data['gaji_pokok'] = $gp['gaji_pokok'];
-  $data['nama_dapan'] = $adm['nama_dapan'];
-  $data['nama_belakang'] =$adm['nama_belakang'];
-  $data['level'] =$adm['level'];
-  $this->db->select('sum(nominal) as nominal');
-  $this->db->where('id_pegawai', $id_karyawan);
-  $tj= $this->db->get('tunjangan')->row_array();
-  $data['tunjangan'] = $tj['nominal'];
+    $this->db->select('gaji_pokok');
+    $this->db->where('id_karyawan', $id_karyawan);
+    $gp = $this->db->get('gaji_pokok')->row_array();
+    $data['gaji_pokok'] = $gp['gaji_pokok'];
+    $data['nama_dapan'] = $adm['nama_dapan'];
+    $data['nama_belakang'] =$adm['nama_belakang'];
+    $data['level'] =$adm['level'];
+    $this->db->select('sum(nominal) as nominal');
+    $this->db->where('id_pegawai', $id_karyawan);
+    $tj= $this->db->get('tunjangan')->row_array();
+    $data['tunjangan'] = $tj['nominal'];
 
-  $this->db->select('sum(jumlah) as sisa_bon');
-  $this->db->where('id_karyawan', $id_karyawan);
-  $bon = $this->db->get('bon_karyawan')->row_array();
-  $data['sisa_bon'] = $bon['sisa_bon'];
-  $data['total'] =  $gp['gaji_pokok']+$tj['nominal']+$bon['sisa_bon'];
+    $this->db->select('sum(jumlah) as sisa_bon');
+    $this->db->where('id_karyawan', $id_karyawan);
+    $bon = $this->db->get('bon_karyawan')->row_array();
+    $data['sisa_bon'] = $bon['sisa_bon'];
+    $data['total'] =  $gp['gaji_pokok']+$tj['nominal']+$bon['sisa_bon'];
+    echo json_encode($data);
+  }
+  function update_presensi_karyawan(){
+    $this->_make_sure_is_admin();
+    $id =   $this->input->post('id');
+    $pulang_kerja =   $this->input->post('pulang_kerja');
+    $masuk_kerja =   $this->input->post('masuk_kerja');
+    $tanggal_presensi =   $this->input->post('tanggal_presensi');
+    $object = array('masuk' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $masuk_kerja")),
+    'pulang' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $pulang_kerja")),
+  );
+  $this->db->where('id_presensi', $id);
+  $data = $this->db->update('absensi', $object);
   echo json_encode($data);
-}
-function update_presensi_karyawan(){
-  $this->_make_sure_is_admin();
-  $id =   $this->input->post('id');
-  $pulang_kerja =   $this->input->post('pulang_kerja');
-  $masuk_kerja =   $this->input->post('masuk_kerja');
-  $tanggal_presensi =   $this->input->post('tanggal_presensi');
-  $object = array('masuk' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $masuk_kerja")),
-  'pulang' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $pulang_kerja")),
-);
-$this->db->where('id_presensi', $id);
-$data = $this->db->update('absensi', $object);
-echo json_encode($data);
 }
 function get_info_karyawan(){
   $this->_make_sure_is_admin();
