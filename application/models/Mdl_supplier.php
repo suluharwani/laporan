@@ -9,7 +9,7 @@ class Mdl_supplier extends CI_Model{
   function get_data() {
     $this->datatables->select('codesup,nama');
     $this->datatables->from('supplier');
-    $this->datatables->add_column('view', '<a href="javascript:void(0);" class="view_record btn btn-info" kode="$1">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" code="$1">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" nama=$2 code="$1">Hapus</a>','codesup,nama');
+    // $this->datatables->add_column('view', '<a href="javascript:void(0);" class="view_record btn btn-info" kode="$1">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" code="$1">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" nama=$2 code="$1">Hapus</a>','codesup,nama');
     return $this->datatables->generate();
   }
   //edit supplier

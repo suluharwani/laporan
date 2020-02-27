@@ -12,8 +12,8 @@
 <div class="container-fluid">
 
   <!-- Page Heading -->
-  <h1 class="h3 mb-1 text-gray-800">Data Supplier</h1>
-  <p class="mb-4">Data Supplier</p>
+  <h1 class="h3 mb-1 text-gray-800">Data Customer</h1>
+  <p class="mb-4">Data Customer</p>
   <!-- Content Row -->
   <div class="row">
 
@@ -22,7 +22,7 @@
 
       <div class="card position-relative">
         <div class="card-header py-3">
-          <div class="d-inline m-0 font-weight-bold text-primary">Daftar Supplier</div>
+          <div class="d-inline m-0 font-weight-bold text-primary">Daftar Customer</div>
           <div class="d-inline">
             <button class="btn btn-success float-right" data-toggle="modal" data-target="#modal_tambah_supplier">Tambah Supplier</button>
           </div>
@@ -32,8 +32,8 @@
             <table id="mytable" class="display" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Kode</th>
                   <th>Nama</th>
+                  <th>Alamat</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -41,17 +41,17 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <th>Kode</th>
                   <th>Nama</th>
+                  <th>Alamat</th>
                   <th>Action</th>
                 </tr>
               </tfoot>
             </table>
           </div>
           <div class="my-2"></div>
-          <p class="mb-0 small">Note: Kode supplier tidak bisa sama </p>
-          <p class="mb-0 small">Tombol View untuk melihat data supplier, Edit untuk mengubah data dan Hapus untuk menghapus data. </p>
-          <p class="mb-0 small">Pencarian dapat mencari kode maupun nama supplier </p>
+          <p class="mb-0 small">Note: Diisi setiap kasir tutup </p>
+          <p class="mb-0 small">Yang mengisi adalah kasir atau pengawas </p>
+          <p class="mb-0 small">Selisih harus 0 </p>
         </div>
       </div>
     </div>
@@ -400,10 +400,7 @@
           {"data": "nama"},
           //render number format for price
           // {"data": "product_price", render: $.fn.dataTable.render.number(',', '.', '')},
-          {"data": "codesup", mRender: function (data, type, row) {
-                       return '<a href="javascript:void(0);" class="view_record btn btn-info" kode="'+row[`codesup`]+'">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" code="'+row[`codesup`]+'">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" nama='+row["nama"]+' code="'+row[`codesup`]+'">Hapus</a>';
-          }
-        }
+          {"data": "view"}
         ],
         order: [[1, 'asc']],
         rowCallback: function(row, data, iDisplayIndex) {
