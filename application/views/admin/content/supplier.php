@@ -120,6 +120,70 @@
   </div>
   <!-- /.container-fluid -->
 </div>
+<div class="modal fade" id="modal_edit_supplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Supplier</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="kode_supplier_edit" class="col-sm-2 col-form-label">Kode Supplier</label>
+            <div class="col-sm-10">
+              <input type="text" id="kode_supplier_edit" class="form-control" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nama_supplier_edit" class="col-sm-2 col-form-label">Nama</label>
+            <div class="col-sm-10">
+              <input type="text" id="nama_supplier_edit" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="kota_supplier_edit" class="col-sm-2 col-form-label">Kota</label>
+            <div class="col-sm-10">
+              <input type="text" id="kota_supplier_edit" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="alamat_supplier_edit" class="col-sm-2 col-form-label">Alamat</label>
+            <div class="col-sm-10">
+              <input type="text" id="alamat_supplier_edit" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier_edit" class="col-sm-2 col-form-label">No. Telepon</label>
+            <div class="col-sm-10">
+              <input type="text" id="telepon_supplier_edit" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="catatan_supplier_edit" class="col-sm-2 col-form-label">Catatan</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="catatan_supplier_edit" rows="4"></textarea>
+            </div>
+
+          </div>
+          <div class="form-group row">
+            <label for="npwp_supplier_edit" class="col-sm-2 col-form-label">NPWP</label>
+            <div class="col-sm-10">
+              <input type="text" id="npwp_supplier_edit" class="form-control">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" id="simpan_data_supplier_edit">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Main Content -->
 <div class="modal fade" id="modal_tambah_supplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -186,22 +250,22 @@
 </div>
 <!-- End of Main Content -->
 <!-- modal delete laporan -->
-<div class="modal fade" id="modal_hapus_laporan" tabindex="-1" role="dialog" aria-labelledby="modal_hapus_tunjangan" aria-hidden="true">
+<div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal_hapus_laporan">Hapus Laporan</h5>
+        <h5 class="modal-title" id="ModalDelete">Hapus Supplier</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        Hapus Laporan Kasir <span id="id_kasir_hps"></span>, <span id="tanggal_laporan_hps"></span>?
-        <input type="text" name="" id="id_laporan_hps" hidden>
+        Hapus supplier <span id="kode_hapus"></span>, <span id="nama_hapus"></span>?
+        <input type="text" id="kode_hapus_supplier" hidden>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-danger confirm_hapus_laporan">Hapus</button>
+        <button type="button" class="btn btn-danger confirm_hapus_supplier">Hapus</button>
       </div>
     </div>
   </div>
@@ -349,6 +413,62 @@
       });
     };
     // endshow
+    //hapus Supplier
+    $('.confirm_hapus_supplier').on('click',function(){
+      var kode_supplier = $('#kode_hapus_supplier').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('admin/hapus_supplier')?>",
+        // dataType : "JSON",
+        data : {kode_supplier:kode_supplier},
+        success: function(data){
+          $('#ModalDelete').modal('hide');
+          show_supplier();
+          swal ( "Sukses" ,  "Supplier "+kode_supplier+" berhasil dihapus!" ,  "success", {
+            buttons: false,
+            timer: 3000,
+          } );
+        },
+        error: (function(data) {
+          swal ( "Gagal" ,  "Supplier gagal dihapus!" ,  "error",  {
+            buttons: false,
+            timer: 1000,
+          } );
+        })
+      });
+      return false;
+    });
+    //edit Supplier
+    $('#simpan_data_supplier_edit').on('click',function(){
+      var kode_supplier = $('#kode_supplier_edit').val();
+      var nama_supplier = $('#nama_supplier_edit').val();
+      var alamat_supplier = $('#alamat_supplier_edit').val();
+      var telepon_supplier = $('#telepon_supplier_edit').val();
+      var catatan_supplier = $('#catatan_supplier_edit').val();
+      var npwp_supplier = $('#npwp_supplier_edit').val();
+      var kota_supplier = $('#kota_supplier_edit').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('admin/edit_supplier')?>",
+        // dataType : "JSON",
+        data : {kota_supplier:kota_supplier,kode_supplier:kode_supplier, nama_supplier:nama_supplier, alamat_supplier:alamat_supplier, telepon_supplier:telepon_supplier, catatan_supplier:catatan_supplier, npwp_supplier:npwp_supplier},
+        success: function(data){
+          $('#modal_edit_supplier').modal('hide');
+          show_supplier();
+          swal ( "Sukses" ,  "Supplier "+kode_supplier+" berhasil diedit!" ,  "success", {
+            buttons: false,
+            timer: 3000,
+          } );
+        },
+        error: (function(data) {
+          swal ( "Gagal" ,  "Supplier gagal diedit!" ,  "error",  {
+            buttons: false,
+            timer: 1000,
+          } );
+        })
+      });
+      return false;
+    });
     //tambah Supplier
     $('#simpan_data_supplier').on('click',function(){
       var kode_supplier = $('#kode_supplier').val();
@@ -382,24 +502,39 @@
     });
     // get Edit Records
     $('#mytable').on('click','.edit_record',function(){
-      var code=$(this).data('code');
-      var name=$(this).data('name');
-      var price=$(this).data('price');
-      var category=$(this).data('category');
-      $('#ModalUpdate').modal('show');
-      $('[name="product_code"]').val(code);
-      $('[name="product_name"]').val(name);
-      $('[name="price"]').val(price);
-      $('[name="category"]').val(category);
+      var kode=$(this).attr('code');
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('admin/get_data_edit')?>",
+        dataType : "JSON",
+        data : {kode:kode},
+        success: function(data){
+          $('#kode_supplier_edit').val(data[0].code);
+          $('#nama_supplier_edit').val(data[0].nama);
+          $('#alamat_supplier_edit').val(data[0].alamat);
+          $('#telepon_supplier_edit').val(data[0].telepon);
+          $('#catatan_supplier_edit').val(data[0].catatan);
+          $('#npwp_supplier_edit').val(data[0].npwp);
+          $('#kota_supplier_edit').val(data[0].kota);
+          $('#modal_edit_supplier').modal('show');
+        },
+        error: (function(data) {
+          swal ( "Gagal" ,  "Data gagal ditampilkan!" ,  "error",  {
+            buttons: false,
+            timer: 1000,
+          } );
+        })
+      });
     });
     // End Edit Records
     // get delete Records
     $('#mytable').on('click','.delete_record',function(){
-      var code=$(this).data('code');
-      // $('#ModalDelete').modal('show');
-      show_supplier();
-      $('[name="product_code"]').val(code);
-
+      var kode=$(this).attr('code');
+      var nama=$(this).attr('nama');
+      $('#kode_hapus').html(kode);
+      $('#kode_hapus_supplier').val(kode);
+      $('#nama_hapus').html(nama);
+      $('#ModalDelete').modal('show');
     });
     // End delete Records
   });

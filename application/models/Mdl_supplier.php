@@ -9,8 +9,23 @@ class Mdl_supplier extends CI_Model{
   function get_data() {
     $this->datatables->select('codesup,nama');
     $this->datatables->from('supplier');
-    $this->datatables->add_column('view', '<a href="javascript:void(0);" class="view_record btn btn-info" kode="$1">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" nama="$2" code="$1">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" code="$1">Hapus</a>','codesup,nama');
+    $this->datatables->add_column('view', '<a href="javascript:void(0);" class="view_record btn btn-info" kode="$1">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" code="$1">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" nama=$2 code="$1">Hapus</a>','codesup,nama');
     return $this->datatables->generate();
+  }
+  //edit supplier
+  function edit_supplier($data){
+    $obj=array(
+      'nama'        => strtoupper($data['nama_supplier']),
+      'kota'       => strtoupper($data['kota_supplier']),
+      'alamat'       => strtoupper($data['alamat_supplier']),
+      'telpon' => $data['telepon_supplier'],
+      'catatan' => $data['catatan_supplier'],
+      'npwp' => $data['npwp_supplier'],
+      'opr' => $data['nama_admin'],
+      'dateopr' => date('d-m-Y H:i:s')
+    );
+    $this->db->where('codesup', $data['kode_supplier']);
+    return $this->db->update('supplier', $obj);
   }
   //insert data method
   function insert_data($data){
@@ -36,22 +51,10 @@ class Mdl_supplier extends CI_Model{
     }
   }
   //update data method
-  function update_data(){
-    $product_code=$this->input->post('product_code');
-    $data=array(
-      'product_name'         => $this->input->post('product_name'),
-      'product_price'        => $this->input->post('price'),
-      'product_category_id'  => $this->input->post('category')
-    );
-    $this->db->where('product_code',$product_code);
-    $result=$this->db->update('product', $data);
-    return $result;
-  }
   //delete data method
-  function delete_data(){
-    $product_code=$this->input->post('product_code');
-    $this->db->where('product_code',$product_code);
-    $result=$this->db->delete('product');
+  function hapus_supplier($kode){
+    $this->db->where('codesup',$kode);
+    $result=$this->db->delete('supplier');
     return $result;
   }
   function check_kode($str){

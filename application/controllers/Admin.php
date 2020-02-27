@@ -11,10 +11,48 @@ class Admin extends CI_Controller {
     $data['title'] = "Dashboard";
     $this->load->view('admin/page/dashboard', $data);
   }
+  public function customer(){
+    $this->_make_sure_is_admin();
+    $data['title'] = "Customer";
+    $this->load->view('admin/page/customer', $data);
+  }
   public function supplier(){
     $this->_make_sure_is_admin();
     $data['title'] = "Supllier";
     $this->load->view('admin/page/supplier', $data);
+  }
+  function hapus_supplier(){
+    $this->_make_sure_is_admin();
+    $kode = $this->input->post('kode_supplier');
+    $data_hapus = $this->Mdl_supplier->hapus_supplier($kode);
+    if ($this->db->affected_rows($data_hapus)>0) {
+      header('HTTP/1.1 200 OK');
+    }else{
+      header('HTTP/1.1 500 Internal Server Error');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+  }
+  function edit_supplier(){
+    $this->_make_sure_is_admin();
+    $adm = $this->data_admin();
+    $data_admin['nama_admin'] = $adm['nama_depan'].' '.$adm['nama_belakang'];
+    $data_input = $this->input->post();
+    $data = array_merge($data_admin, $data_input);
+    $data_edit = $this->Mdl_supplier->edit_supplier($data);
+    if ($this->db->affected_rows($data_edit)>0) {
+      header('HTTP/1.1 200 OK');
+    }else{
+      header('HTTP/1.1 500 Internal Server Error');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+  }
+  function get_data_edit(){
+    $this->_make_sure_is_admin();
+    $kode = $this->input->post('kode');
+    $data = $this->Mdl_supplier->get_data_supplier_dipilih($kode);
+    echo json_encode($data->result());
   }
   function tambah_supplier(){
     $adm = $this->data_admin();
