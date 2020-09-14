@@ -40,17 +40,17 @@
         <div id="collapsetabledata" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Data:</h6>
-            <a class="collapse-item" href="<?=base_url('admin/supplier')?>">Supplier</a>
-            <a class="collapse-item" href="<?=base_url('admin/customer')?>">Customer</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Grouping Barang</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Departemen Barang</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Sub Departemen</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Account Cabang/Pusat</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Daftar Kasir</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Data Table/Lokasi</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Setting Pajak</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Sales</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Pengirim</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/supplier')?>">Supplier</a>
+            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/customer')?>">Customer</a> -->
+            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Grouping Barang</a> -->
+            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Departemen Barang</a> -->
+            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Sub Departemen</a> -->
+            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Account Cabang/Pusat</a> -->
+            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Daftar Kasir</a> -->
+            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Data Table/Lokasi</a> -->
+            <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Setting Pajak</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/sales')?>">Sales</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Pengirim</a>
           </div>
         </div>
       </li>
@@ -59,7 +59,7 @@
         Stock
       </div>
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsmasterdatabarang" aria-expanded="true" aria-controls="collapsmasterdatabarang">
           <i class="fas fa-fw fa-dollar-sign"></i>
           <span>Master Data Barang</span>
@@ -67,12 +67,12 @@
         <div id="collapsmasterdatabarang" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Stock:</h6>
-            <a class="collapse-item" href="<?=base_url('admin/kasir')?>">Barang</a>
-            <a class="collapse-item" href="<?=base_url('admin/kas_masuk')?>">Barcode</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Laporan</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/kasir')?>">Barang</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/kas_masuk')?>">Barcode</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Laporan</a>
           </div>
         </div>
-      </li>
+      </li> -->
 
       <!-- Heading -->
       <div class="sidebar-heading">
@@ -88,9 +88,9 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Saldo:</h6>
-            <a class="collapse-item" href="<?=base_url('admin/kasir')?>">Kasir</a>
-            <a class="collapse-item" href="<?=base_url('admin/kas_masuk')?>">Kas Masuk</a>
-            <a class="collapse-item" href="<?=base_url('admin/fisik_uang')?>">Fisik</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/kasir')?>">Kasir</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/kas_masuk')?>">Kas Masuk</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Fisik</a>
           </div>
         </div>
       </li>
@@ -104,25 +104,25 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Pengeluaran:</h6>
-            <a class="collapse-item" href="utilities-color.html">Supplier</a>
-            <a class="collapse-item" href="<?=base_url('admin/gaji')?>">Gaji</a>
-            <a class="collapse-item" href="utilities-animation.html">Bon Karyawan</a>
-            <a class="collapse-item" href="utilities-animation.html">Operasional</a>
-            <a class="collapse-item" href="utilities-other.html">Mutasi Kas</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/supplier')?>">Supplier</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/gaji')?>">Gaji</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/gaji')?>">Bon Karyawan</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/gaji')?>">Operasional</a>
+            <a class="collapse-item" href="<?=base_url('index.php/admin/gaji')?>">Mutasi Kas</a>
           </div>
         </div>
       </li>
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
+      <!-- <hr class="sidebar-divider"> -->
 
       <!-- Heading -->
-      <div class="sidebar-heading">
+      <!-- <div class="sidebar-heading">
         Nota
-      </div>
+      </div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
           <span>Nota Supplier</span>
@@ -139,7 +139,7 @@
             <a class="collapse-item" href="blank.html">Blank Page</a>
           </div>
         </div>
-      </li>
+      </li> -->
       <!-- Divider -->
       <hr class="sidebar-divider">
 

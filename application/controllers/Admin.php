@@ -11,6 +11,18 @@ class Admin extends CI_Controller {
     $data['title'] = "Dashboard";
     $this->load->view('admin/page/dashboard', $data);
   }
+  public function sales(){
+    $this->_make_sure_is_admin();
+    $data['title'] = "Sales";
+
+    $this->load->view('admin/page/sales', $data);
+  }
+  function get_data_sales(){
+    $this->_make_sure_is_admin();
+    $kode = $this->input->post('kode');
+    $data = $this->Mdl_supplier->get_data_sales($kode);
+    echo json_encode($data->result());
+  }
   public function customer(){
     $this->_make_sure_is_admin();
     $data['title'] = "Customer";
@@ -67,9 +79,42 @@ class Admin extends CI_Controller {
     $data = $this->Mdl_supplier->get_data_supplier_dipilih($code);
     echo json_encode($data->result());
   }
+  function tambah_sales(){
+    $this->_make_sure_is_admin();
+    $this->form_validation->set_rules('nama_sales', 'Nama Sales', 'required');
+    if ($this->form_validation->run() == FALSE)
+    {
+      header('HTTP/1.1 500 Internal Server Error');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+    else
+    {
+      $obj = array(
+        'codesup' => $this->input->post('kode_supplier'),
+        'nama_sales' => $this->input->post('nama_sales'),
+        'hp' => $this->input->post('telepon'),
+        'status' => TRUE,
+        'catatan' => $this->input->post('catatan'),
+        'tanggal_daftar' => date('Y-m-d H:i:s'),
+        'tanggal_edit' => date('Y-m-d H:i:s')
+      );
+      return $this->Mdl_supplier->tambah_sales($obj);
+     }
+    }
+  function check_nama_sales(){
+    $nama_sales = $this->input->post('nama_sales');
+    $kode = $this->input->post('kode');
+    if($this->Mdl_supplier->check_nama_sales($nama_sales, $kode)){
+      echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
+      </i>Nama sudah ada</span></label>';
+    }
+    else {
+      echo '<label class="text-success"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i>Nama belum ada</span></label>';
+    }
+  }
   //check input Supplier
-  function check_kode_supplier()
-  {
+  function check_kode_supplier(){
     if($this->Mdl_supplier->check_kode($_POST['kode_supplier'])){
       echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
       </i> Kode telah digunakan, coba kode yang lain</span></label>';
@@ -543,7 +588,6 @@ function logout(){
   $this->session->sess_destroy();
   redirect('adm','refresh');
 }
-
 }
 /* End of file ${TM_FILENAME:admin.php} */
 /* Location: ./${TM_FILEPATH/.+((?:application).+)/Admin/:application/controllers/admin.php} */

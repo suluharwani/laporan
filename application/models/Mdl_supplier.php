@@ -22,7 +22,7 @@ class Mdl_supplier extends CI_Model{
       'catatan' => $data['catatan_supplier'],
       'npwp' => $data['npwp_supplier'],
       'opr' => $data['nama_admin'],
-      'dateopr' => date('d-m-Y H:i:s')
+      'dateopr' => date('Y-m-d H:i:s')
     );
     $this->db->where('codesup', $data['kode_supplier']);
     return $this->db->update('supplier', $obj);
@@ -40,7 +40,7 @@ class Mdl_supplier extends CI_Model{
         'catatan' => $data['catatan_supplier'],
         'npwp' => $data['npwp_supplier'],
         'opr' => $data['nama_admin'],
-        'dateopr' => date('d-m-Y H:i:s')
+        'dateopr' => date('Y-m-d H:i:s')
       );
       return $this->db->insert('supplier', $obj);
     }
@@ -70,5 +70,25 @@ class Mdl_supplier extends CI_Model{
     $this->db->select('codesup as code, nama,alamat, kota, telpon as telepon, catatan, npwp, opr as operator, dateopr as tanggal');
     $this->db->where('codesup', $code);
     return $this->db->get('supplier');
+  }
+  function get_data_sales($kode){
+    $this->db->select('sales.id as id, sales.codesup as codesup, sales.nama_sales as nama_sales, sales.hp as hp, sales.status as status, sales.tanggal_daftar as tanggal_daftar, sales.tanggal_edit as tanggal_edit');
+    $this->db->from('sales');
+    $this->db->join('supplier','sales.codesup = supplier.codesup');
+    $this->db->where('supplier.codesup', $kode);
+    $this->db->order_by('sales.status', 'desc');
+    return $this->db->get();
+  }
+  function check_nama_sales($nama_sales, $kode){
+    $this->db->where(array('nama_sales' => $nama_sales, 'codesup' => $kode));
+    $query = $this->db->get('sales');
+    if ($query->num_rows() >0) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+  function tambah_sales($obj){
+    return $this->db->insert('sales', $obj);
   }
 }

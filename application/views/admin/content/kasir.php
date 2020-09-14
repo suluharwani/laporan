@@ -392,7 +392,7 @@ $('#btn_cari_laporan').on('click',function(){
   var tanggal_akhir = $('#tanggal_akhir_laporan').val();
   $.ajax({
     type : "POST",
-    url  : "<?php echo site_url('admin/cari_laporan_kasir')?>",
+    url  : "<?php echo site_url('index.php/admin/cari_laporan_kasir')?>",
     dataType : "JSON",
     data : {tanggal_awal:tanggal_awal,tanggal_akhir:tanggal_akhir},
     success: function(data){
@@ -539,7 +539,7 @@ show_rekap();
 function show_laporan(){
   $.ajax({
     type  : 'ajax',
-    url   : "<?php echo base_url('admin/laporan_kasir_list')?>",
+    url   : "<?php echo base_url('index.php/admin/laporan_kasir_list')?>",
     async : false,
     dataType : 'json',
     success : function(data){
@@ -569,7 +569,7 @@ function show_laporan(){
 function show_rekap(){
   $.ajax({
     type  : 'ajax',
-    url   : "<?php echo base_url('admin/laporan_kasir_list_rekap')?>",
+    url   : "<?php echo base_url('index.php/admin/laporan_kasir_list_rekap')?>",
     async : false,
     dataType : 'json',
     success : function(data){
@@ -630,7 +630,7 @@ $('.confirm_hapus_laporan').on('click',function(){
   var id = $('#id_laporan_hps').val();
   $.ajax({
     type : "POST",
-    url  : "<?php echo site_url('admin/hapus_laporan_kasir')?>",
+    url  : "<?php echo site_url('index.php/admin/hapus_laporan_kasir')?>",
     dataType : "JSON",
     data : {id:id},
     success: function(data){
@@ -682,7 +682,7 @@ $('#simpan').on('click',function(){
   var tanggal_laporan = $('#tanggal_laporan').val();
   $.ajax({
     type : "POST",
-    url  : "<?php echo site_url('admin/tambah_laporan_kasir')?>",
+    url  : "<?php echo site_url('index.php/admin/tambah_laporan_kasir')?>",
     dataType : "JSON",
     data : {tanggal_laporan:tanggal_laporan,id_user_kasir:id_user_kasir,id_karyawan:id_karyawan,pendapatan_kasir:pendapatan_kasir,selisih:selisih,kas_masuk:kas_masuk,total_pengeluaran:total_pengeluaran,total_setor:total_setor,setor_ratusan:setor_ratusan,setor_puluhan:setor_puluhan,setor_koin:setor_koin},
     success: function(data){

@@ -8,7 +8,7 @@ public function __construct(){
 	public function index()
 	{
 		 // $this->output->set_status_header('404');
-		 $this->load->view('error');
+		 $this->load->view('Error');
 	}
 
 }

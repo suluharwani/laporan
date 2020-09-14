@@ -12,8 +12,8 @@
 <div class="container-fluid">
 
   <!-- Page Heading -->
-  <h1 class="h3 mb-1 text-gray-800">Data Supplier</h1>
-  <p class="mb-4">Data Supplier</p>
+  <h1 class="h3 mb-1 text-gray-800">Data Sales</h1>
+  <p class="mb-4">Data sales berdasarkan supplier</p>
   <!-- Content Row -->
   <div class="row">
 
@@ -22,7 +22,7 @@
 
       <div class="card position-relative">
         <div class="card-header py-3">
-          <div class="d-inline m-0 font-weight-bold text-primary">Daftar Supplier</div>
+          <div class="d-inline m-0 font-weight-bold text-primary">Tambah Sales</div>
           <div class="d-inline">
             <button class="btn btn-success float-right" data-toggle="modal" data-target="#modal_tambah_supplier">Tambah Supplier</button>
           </div>
@@ -31,7 +31,7 @@
           <div class="table-responsive" >
             <table id="mytable" class="display" cellspacing="0" width="100%">
               <thead>
-                <tr  class="text-center">
+                <tr>
                   <th>Kode</th>
                   <th>Nama</th>
                   <th>Action</th>
@@ -40,7 +40,7 @@
               <tbody>
               </tbody>
               <tfoot>
-                <tr class="text-center">
+                <tr>
                   <th>Kode</th>
                   <th>Nama</th>
                   <th>Action</th>
@@ -65,11 +65,12 @@
           <div class="mb-3">
             <div class="box-body no-padding">
               <div class="container">
-                <p>Rincian Supplier dan Sales</p>
+                <p>Rincian Supplier</p>
                 <table class="table">
                   <thead>
-                    <tr id="header_table_supplier">
-                      
+                    <tr>
+                      <th>Variabel Supplier</th>
+                      <th>Value</th>
                     </tr>
                   </thead>
                   <tbody id="data_sup_view">
@@ -248,54 +249,6 @@
   </div>
 </div>
 <!-- End of Main Content -->
-<!-- modal tambah sales -->
-<div class="modal fade" id="ModalTambahSales" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Sales</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group row">
-            <label for="kode_supplier" class="col-sm-2 col-form-label">Kode Supplier</label>
-            <div class="col-sm-10">
-              <input type="text" id="sales_kode_supplier" disabled class="form-control">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="nama_supplier" class="col-sm-2 col-form-label">Nama</label>
-            <div class="col-sm-10">
-              <input type="text" id="sales_nama_tambah" class="form-control">
-              <span id="nama_sales_check"></span>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="telepon_supplier" class="col-sm-2 col-form-label">No. Telepon</label>
-            <div class="col-sm-10">
-              <input type="text" id="sales_telepon_tambah" class="form-control">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="catatan_supplier" class="col-sm-2 col-form-label">Catatan</label>
-            <div class="col-sm-10">
-              <textarea class="form-control" id="sales_catatan_tambah" rows="4"></textarea>
-            </div>
-
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-primary" id="sales_simpan_tambah">Simpan</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- end modal tambah sales -->
 <!-- modal delete laporan -->
 <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -348,98 +301,7 @@
   <!-- Page level custom scripts -->
   <script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
   <script type="text/javascript">
-  function show_sales_supplier(kode){
-    $.ajax({
-      type  : 'post',
-      url   : "<?php echo base_url('index.php/admin/get_data_sales')?>",
-      async : false,
-      dataType : 'json',
-      data : {kode:kode},
-      success : function(data){
-        var i;
-        var no = 1;
-        var html = '';
-        var status = '';
-        var edit = '';
-        var view_data_sales ='';
-        var ubah_status_sales = '';
-        var header_table = '';
-        header_table ='<th>No</th>'+
-                      '<th>Nama</th>'+
-                      // '<th>HP</th>'+
-                      '<th style="text-align:center;">Status <a href="javascript:void(0);" class="btn btn-success btn-sm tambah_sales" kode_sup="'+kode+'" >Tambah</a></th>';
-        for(i=0; i<data.length; i++){
-          if (data[i].status == false) {
-            status = '<font color="red">OFF</font>';
-            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" >Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" >Aktifkan</a>';
-            
-          }else if(data[i].status == true) {
-            status = '<font color="green">AKTIF</font>';
-            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" >Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" >Nonaktifkan</a>';
-          }
-          edit = status+'|'+view_data_sales+ubah_status_sales;
-          html += '<tr>'+
-          '<td>'+ no++ +'</td>'+
-          '<td>'+data[i].nama_sales+'</td>'+
-          // '<td>'+data[i].hp+'</td>'+
-          '<td style="text-align:center;">'+edit+'</td>'+
-          '</tr>';
-        }
-        $('#header_table_supplier').html(header_table);
-        $('#data_sup_view').html(html);
-      }
-    });
-  };
-  $('#sales_simpan_tambah').on('click',function(){
-      var kode_supplier = $('#sales_kode_supplier').val();
-      var nama_sales = $('#sales_nama_tambah').val();
-      var telepon = $('#sales_telepon_tambah').val();
-      var catatan = $('#sales_catatan_tambah').val();
-      $.ajax({
-        type : "POST",
-        url  : "<?php echo site_url('index.php/admin/tambah_sales')?>",
-        // dataType : "JSON",
-        data : {kode_supplier:kode_supplier, nama_sales:nama_sales, telepon:telepon, catatan:catatan},
-        success: function(data){
-          $('#ModalTambahSales').modal('hide');
-          show_sales_supplier(kode_supplier)
-          swal ( "Sukses" ,  " "+nama_sales+" berhasil ditambahkan ke supplier"+kode_supplier+"!" ,  "success", {
-            buttons: false,
-            timer: 3000,
-          } );
-        },
-        error: (function(data) {
-          swal ( "Gagal" ,  "Sales gagal ditambahkan!" ,  "error",  {
-            buttons: false,
-            timer: 1000,
-          } );
-        })
-      });
-      return false;
-    });
-  $('#header_table_supplier').on('click','.tambah_sales',function(){
-      var kode=$(this).attr('kode_sup');
-      $('#sales_kode_supplier').val(kode);
-      $('#ModalTambahSales').modal('show');
-    });
-    $(document).ready(function(){
-    $('#sales_nama_tambah').keyup(function(){
-      var nama_sales = $('#sales_nama_tambah').val();
-      var kode = $('#sales_kode_supplier').val();
-      if(nama_sales != ''){
-        $.ajax({
-          url: "<?php echo base_url(); ?>index.php/admin/check_nama_sales",
-          method: "POST",
-          data: {nama_sales:nama_sales, kode:kode},
-          success: function(data){
-            $('#nama_sales_check').html(data);
-          }
-        });
-      }
-    });
-  });
+
   function show_data_dipilih(kode){
     $.ajax({
       type  : 'post',
@@ -449,9 +311,6 @@
       data : {kode:kode},
       success : function(data){
         var html = '';
-        var header_table = '';
-        header_table = '<th>Variabel Supplier</th>'+
-                      '<th>Value</th>';
         html =
         '<tr>'+
         '<td>Kode Supplier</td>'+
@@ -481,7 +340,6 @@
         '<td>Operator</td>'+
         '<td>'+ data[0].operator +'</td>'+
         '</tr>';
-        $('#header_table_supplier').html(header_table);
         $('#data_sup_view').html(html);
       }
     });
@@ -491,11 +349,6 @@
     var kode=$(this).attr('kode');
     show_data_dipilih(kode);
   });
-  $('#mytable').on('click','.sales',function(){
-    var kode=$(this).attr('kode');
-    show_sales_supplier(kode);
-  });
-
   $(document).ready(function(){
     $('#kode_supplier').keyup(function(){
       var kode_supplier = $('#kode_supplier').val();
@@ -548,7 +401,7 @@
           //render number format for price
           // {"data": "product_price", render: $.fn.dataTable.render.number(',', '.', '')},
           {"data": "codesup", mRender: function (data, type, row) {
-                       return '<a href="javascript:void(0);" class="sales btn btn-success" kode="'+row[`codesup`]+'">Sales</a> <a href="javascript:void(0);" class="view_record btn btn-info" kode="'+row[`codesup`]+'">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" code="'+row[`codesup`]+'">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" nama='+row["nama"]+' code="'+row[`codesup`]+'">Hapus</a>';
+                       return '<a href="javascript:void(0);" class="view_record btn btn-info" kode="'+row[`codesup`]+'">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" code="'+row[`codesup`]+'">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" nama='+row["nama"]+' code="'+row[`codesup`]+'">Hapus</a>';
           }
         }
         ],

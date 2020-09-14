@@ -47,7 +47,7 @@ class Login extends CI_Controller {
             $id_admin = $value->id;
           }
           $this->session->set_userdata(array('status_login' => 'admin_login', 'id_admin_login' => $id_admin));
-          redirect('/admin');
+          redirect('/index.php/admin');
         }else{
           $data['salah'] = "<font color='red'>Username atau password tidak ada!</font>";
           // $this->load->view('login/login', $data);
