@@ -10,6 +10,7 @@ class Mdl_login extends CI_Model {
       return $this->db->affected_rows();
   }
   function login_admin($username, $password){
+    
     $this->db->where('username', $username);
     $query = $this->db->get('admin_login');
     if ($query->num_rows() < 1) {

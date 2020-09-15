@@ -296,7 +296,7 @@
   </div>
 </div>
 <!-- end modal tambah sales -->
-<!-- modal delete laporan -->
+<!-- modal delete supplier -->
 <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -318,6 +318,117 @@
   </div>
 </div>
 <!-- print -->
+<!-- modal hapus sales -->
+<div class="modal fade" id="ModalDeleteSales" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalDelete">Hapus Sales</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hapus supplier <span id="kode_hapus"></span>, <span id="nama_hapus"></span>?
+        <input type="text" id="kode_hapus_supplier" hidden>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-danger confirm_hapus_supplier">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal aktifkan sales -->
+<div class="modal fade" id="ModalAktifkanSales" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalDelete">Aktifkan Sales</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hapus supplier <span id="kode_hapus"></span>, <span id="nama_hapus"></span>?
+        <input type="text" id="kode_hapus_supplier" hidden>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-danger confirm_hapus_supplier">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal nonaktifkan sales -->
+<div class="modal fade" id="ModalNonaktifkanSales" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalDelete">Aktifkan Sales</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hapus supplier <span id="kode_hapus"></span>, <span id="nama_hapus"></span>?
+        <input type="text" id="kode_hapus_supplier" hidden>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-danger confirm_hapus_supplier">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal data sales -->
+<div class="modal fade" id="ModalDataSales" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Sales</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="kode_supplier" class="col-sm-2 col-form-label">Kode Supplier</label>
+            <div class="col-sm-10">
+              <input type="text" id="sales_kode_supplier" disabled class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nama_supplier" class="col-sm-2 col-form-label">Nama</label>
+            <div class="col-sm-10">
+              <input type="text" id="sales_nama_tambah" class="form-control">
+              <span id="nama_sales_check"></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier" class="col-sm-2 col-form-label">No. Telepon</label>
+            <div class="col-sm-10">
+              <input type="text" id="sales_telepon_tambah" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="catatan_supplier" class="col-sm-2 col-form-label">Catatan</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="sales_catatan_tambah" rows="4"></textarea>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" id="sales_simpan_tambah">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal data sales -->
 <div class="modal fade" id="Modal_Faktur" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -372,14 +483,14 @@
           if (data[i].status == false) {
             status = '<font color="red">OFF</font>';
             view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" >Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" >Aktifkan</a>';
+            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" >Aktifkan</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_sales" >Hapus</a>';
             
           }else if(data[i].status == true) {
             status = '<font color="green">AKTIF</font>';
             view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" >Data</a>';
             ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" >Nonaktifkan</a>';
           }
-          edit = status+'|'+view_data_sales+ubah_status_sales;
+          edit = status+'|'+view_data_sales+' '+ubah_status_sales;
           html += '<tr>'+
           '<td>'+ no++ +'</td>'+
           '<td>'+data[i].nama_sales+'</td>'+
@@ -419,6 +530,26 @@
       });
       return false;
     });
+    $('#data_sup_view').on('click','.hapus_sales',function(){
+      var kode=$(this).attr('kode_sup');
+      $('#sales_kode_supplier').val(kode);
+      $('#ModalDeleteSales').modal('show');
+    });
+    $('#data_sup_view').on('click','.aktifkan_sales',function(){
+      var kode=$(this).attr('kode_sup');
+      $('#sales_kode_supplier').val(kode);
+      $('#ModalAktifkanSales').modal('show');
+    });
+    $('#data_sup_view').on('click','.view_data_sales',function(){
+      var kode=$(this).attr('kode_sup');
+      $('#sales_kode_supplier').val(kode);
+      $('#ModalDataSales').modal('show');
+    });
+    $('#data_sup_view').on('click','.nonaktifkan_sales',function(){
+      var kode=$(this).attr('kode_sup');
+      $('#sales_kode_supplier').val(kode);
+      $('#ModalNonaktifkanSales').modal('show');
+    });
   $('#header_table_supplier').on('click','.tambah_sales',function(){
       var kode=$(this).attr('kode_sup');
       $('#sales_kode_supplier').val(kode);
@@ -454,7 +585,7 @@
                       '<th>Value</th>';
         html =
         '<tr>'+
-        '<td>Kode Supplier</td>'+
+        '<td>Kode</td>'+
         '<td>'+ data[0].code +'</td>'+
         '</tr>'+
         '<tr>'+
@@ -474,11 +605,11 @@
         '<td>'+ data[0].catatan +'</td>'+
         '</tr>'+
         '<tr>'+
-        '<td>Tanggal Buat</td>'+
+        '<td>Dibuat</td>'+
         '<td>'+ data[0].tanggal +'</td>'+
         '</tr>'+
         '<tr>'+
-        '<td>Operator</td>'+
+        '<td>Adm</td>'+
         '<td>'+ data[0].operator +'</td>'+
         '</tr>';
         $('#header_table_supplier').html(header_table);
@@ -574,6 +705,8 @@
         success: function(data){
           $('#ModalDelete').modal('hide');
           show_supplier();
+          show_sales_supplier(kode_supplier);
+          $('#header_table_supplier').html('');
           swal ( "Sukses" ,  "Supplier "+kode_supplier+" berhasil dihapus!" ,  "success", {
             buttons: false,
             timer: 3000,

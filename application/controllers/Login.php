@@ -6,6 +6,9 @@ class Login extends CI_Controller {
     $this->load->model('mdl_login');
   }
   public function index(){
+    if($this->session->userdata('data_admin_login')){
+      $this->session->sess_destroy();
+      }
     $jumlah_admin = $this->db->get('admin')->num_rows();
     $submit = $this->input->post('submit',TRUE);
     if ($jumlah_admin<1) {
@@ -30,7 +33,7 @@ class Login extends CI_Controller {
         // $this->db->insert('admin', $object);
         $aff_row = $this->mdl_login->insert_login_admin($object_login);
         if ($aff_row>0) {
-          redirect('admin','refresh');
+          redirect('/index.php/admin','refresh');
         }
       }
       $this->load->view('register/register', $data);

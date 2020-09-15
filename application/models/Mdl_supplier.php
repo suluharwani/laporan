@@ -53,9 +53,8 @@ class Mdl_supplier extends CI_Model{
   //update data method
   //delete data method
   function hapus_supplier($kode){
-    $this->db->where('codesup',$kode);
-    $result=$this->db->delete('supplier');
-    return $result;
+    $this->db->delete('sales', array('codesup' => $kode));
+    return $this->db->delete('supplier', array('codesup' => $kode));
   }
   function check_kode($str){
     $this->db->where('codesup', $str);

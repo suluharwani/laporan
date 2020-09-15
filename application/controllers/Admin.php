@@ -81,8 +81,9 @@ class Admin extends CI_Controller {
   }
   function tambah_sales(){
     $this->_make_sure_is_admin();
-    $this->form_validation->set_rules('nama_sales', 'Nama Sales', 'required');
-    if ($this->form_validation->run() == FALSE)
+    $nama_sales = $this->input->post('nama_sales');
+      $kode = $this->input->post('kode_supplier');
+    if ($this->Mdl_supplier->check_nama_sales($nama_sales, $kode))
     {
       header('HTTP/1.1 500 Internal Server Error');
       header('Content-Type: application/json; charset=UTF-8');
@@ -108,9 +109,11 @@ class Admin extends CI_Controller {
     if($this->Mdl_supplier->check_nama_sales($nama_sales, $kode)){
       echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
       </i>Nama sudah ada</span></label>';
+      return FALSE;
     }
     else {
       echo '<label class="text-success"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i>Nama belum ada</span></label>';
+      return TRUE;
     }
   }
   //check input Supplier
@@ -570,23 +573,23 @@ function _make_sure_is_super_admin(){
   if (isset($level)) {
     if ($level != "1") {
       $this->session->sess_destroy();
-      redirect('login','refresh');
+      redirect('/index.php/login','refresh');
     }
   }else{
     $this->session->sess_destroy();
-    redirect('login','refresh');
+    redirect('/index.php/login','refresh');
   }
 }
 public function _make_sure_is_admin(){
   $is_user = $this->session->userdata('status_login');
   if ($is_user != "admin_login") {
     $this->session->sess_destroy();
-    redirect('login','refresh');
+    redirect('/index.php/login','refresh');
   }
 }
 function logout(){
   $this->session->sess_destroy();
-  redirect('adm','refresh');
+  redirect('/index.php','refresh');
 }
 }
 /* End of file ${TM_FILENAME:admin.php} */
