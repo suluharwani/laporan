@@ -71,7 +71,7 @@ class Mdl_supplier extends CI_Model{
     return $this->db->get('supplier');
   }
   function get_data_sales($kode){
-    $this->db->select('sales.id as id, sales.codesup as codesup, sales.nama_sales as nama_sales, sales.hp as hp, sales.status as status, sales.tanggal_daftar as tanggal_daftar, sales.tanggal_edit as tanggal_edit');
+    $this->db->select('sales.catatan as catatan, sales.id as id, sales.codesup as codesup, sales.nama_sales as nama_sales, sales.hp as hp, sales.status as status, sales.tanggal_daftar as tanggal_daftar, sales.tanggal_edit as tanggal_edit');
     $this->db->from('sales');
     $this->db->join('supplier','sales.codesup = supplier.codesup');
     $this->db->where('supplier.codesup', $kode);

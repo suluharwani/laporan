@@ -263,7 +263,7 @@
           <div class="form-group row">
             <label for="kode_supplier" class="col-sm-2 col-form-label">Kode Supplier</label>
             <div class="col-sm-10">
-              <input type="text" id="sales_kode_supplier" disabled class="form-control">
+              <input type="text" id="sales_kode_supplier_tambah" disabled class="form-control">
             </div>
           </div>
           <div class="form-group row">
@@ -329,12 +329,12 @@
         </button>
       </div>
       <div class="modal-body">
-        Hapus supplier <span id="kode_hapus"></span>, <span id="nama_hapus"></span>?
-        <input type="text" id="kode_hapus_supplier" hidden>
+        Hapus sales <span id="nama_sales_hapus"></span>?
+        <input type="text" id="sales_id_supplier_hapus" hidden>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-danger confirm_hapus_supplier">Hapus</button>
+        <button type="button" class="btn btn-danger confirm_hapus_sales">Hapus</button>
       </div>
     </div>
   </div>
@@ -350,12 +350,12 @@
         </button>
       </div>
       <div class="modal-body">
-        Hapus supplier <span id="kode_hapus"></span>, <span id="nama_hapus"></span>?
-        <input type="text" id="kode_hapus_supplier" hidden>
+        Aktifkan sales <span id="nama_sales_aktifkan"></span>?
+        <input type="text" id="sales_id_supplier_aktif" hidden>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-danger confirm_hapus_supplier">Hapus</button>
+        <button type="button" class="btn btn-success confirm_aktifkan_sales">Aktifkan Sales</button>
       </div>
     </div>
   </div>
@@ -386,7 +386,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Sales</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Data Sales</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -394,28 +394,27 @@
       <div class="modal-body">
         <form>
           <div class="form-group row">
-            <label for="kode_supplier" class="col-sm-2 col-form-label">Kode Supplier</label>
+            <label for="kode_supplier_sales_view" class="col-sm-2 col-form-label">Kode Supplier</label>
             <div class="col-sm-10">
-              <input type="text" id="sales_kode_supplier" disabled class="form-control">
+              <input type="text" id="kode_supplier_sales_view" disabled class="form-control">
             </div>
           </div>
           <div class="form-group row">
-            <label for="nama_supplier" class="col-sm-2 col-form-label">Nama</label>
+            <label for="nama_sales_data" class="col-sm-2 col-form-label">Nama</label>
             <div class="col-sm-10">
-              <input type="text" id="sales_nama_tambah" class="form-control">
-              <span id="nama_sales_check"></span>
+              <input type="text" id="nama_sales_data" class="form-control">
             </div>
           </div>
           <div class="form-group row">
-            <label for="telepon_supplier" class="col-sm-2 col-form-label">No. Telepon</label>
+            <label for="nomor_telepon_sales_data" class="col-sm-2 col-form-label">No. Telepon</label>
             <div class="col-sm-10">
-              <input type="text" id="sales_telepon_tambah" class="form-control">
+              <input type="text" id="nomor_telepon_sales_data" class="form-control">
             </div>
           </div>
           <div class="form-group row">
-            <label for="catatan_supplier" class="col-sm-2 col-form-label">Catatan</label>
+            <label for="catatan_sales_data" class="col-sm-2 col-form-label">Catatan</label>
             <div class="col-sm-10">
-              <textarea class="form-control" id="sales_catatan_tambah" rows="4"></textarea>
+              <textarea class="form-control" id="catatan_sales_data" rows="4"></textarea>
             </div>
 
           </div>
@@ -482,13 +481,13 @@
         for(i=0; i<data.length; i++){
           if (data[i].status == false) {
             status = '<font color="red">OFF</font>';
-            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" >Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" >Aktifkan</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_sales" >Hapus</a>';
+            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
+            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Aktifkan</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_sales" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'" >Hapus</a>';
             
           }else if(data[i].status == true) {
             status = '<font color="green">AKTIF</font>';
-            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" >Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" >Nonaktifkan</a>';
+            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
+            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'" >Nonaktifkan</a>';
           }
           edit = status+'|'+view_data_sales+' '+ubah_status_sales;
           html += '<tr>'+
@@ -504,7 +503,7 @@
     });
   };
   $('#sales_simpan_tambah').on('click',function(){
-      var kode_supplier = $('#sales_kode_supplier').val();
+      var kode_supplier = $('#sales_kode_supplier_tambah').val();
       var nama_sales = $('#sales_nama_tambah').val();
       var telepon = $('#sales_telepon_tambah').val();
       var catatan = $('#sales_catatan_tambah').val();
@@ -531,28 +530,42 @@
       return false;
     });
     $('#data_sup_view').on('click','.hapus_sales',function(){
-      var kode=$(this).attr('kode_sup');
-      $('#sales_kode_supplier').val(kode);
+      var kode=$(this).attr('kode_sales');
+      var nama = $(this).attr('nama');
+      $('#nama_sales_hapus').html(nama);
+      $('#sales_id_supplier_hapus').val(kode);
       $('#ModalDeleteSales').modal('show');
     });
     $('#data_sup_view').on('click','.aktifkan_sales',function(){
-      var kode=$(this).attr('kode_sup');
-      $('#sales_kode_supplier').val(kode);
+      var kode = $(this).attr('kode_sales');
+      var nama = $(this).attr('nama');
+      $('#nama_sales_aktifkan').html(nama);
+      $('#sales_id_supplier_aktif').val(kode);
       $('#ModalAktifkanSales').modal('show');
     });
     $('#data_sup_view').on('click','.view_data_sales',function(){
-      var kode=$(this).attr('kode_sup');
-      $('#sales_kode_supplier').val(kode);
+      var kode=$(this).attr('kode_sales');
+      var nama = $(this).attr('nama');
+      var kode_supplier = $(this).attr('kode_sup');
+      var catatan = $(this).attr('catatan');
+      var nomor_telepon = $(this).attr('nomor_telepon');
+      $('#nama_sales_data').val(nama);
+      $('#catatan_sales_data').val(catatan);
+      $('#nomor_telepon_sales_data').val(nomor_telepon);
+      $('#kode_supplier_sales_view').val(kode_supplier);
+      $('#sales_id_supplier_data').val(kode);
       $('#ModalDataSales').modal('show');
     });
     $('#data_sup_view').on('click','.nonaktifkan_sales',function(){
-      var kode=$(this).attr('kode_sup');
-      $('#sales_kode_supplier').val(kode);
+      var kode=$(this).attr('kode_sales');
+      var nama = $(this).attr('nama');
+      $('#nama_sales_nonaktifkan').html(nama);
+      $('#sales_id_supplier_nonatktif').val(kode);
       $('#ModalNonaktifkanSales').modal('show');
     });
   $('#header_table_supplier').on('click','.tambah_sales',function(){
       var kode=$(this).attr('kode_sup');
-      $('#sales_kode_supplier').val(kode);
+      $('#sales_kode_supplier_tambah').val(kode);
       $('#ModalTambahSales').modal('show');
     });
     $(document).ready(function(){
