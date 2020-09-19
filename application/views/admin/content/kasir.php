@@ -27,12 +27,13 @@
         <div class="card-body">
           <!-- <div class="mb-3">
         </div> -->
+        <form id='inputform'>
         <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Pelapor</a>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
               <select class="nav-link dropdown-toggle" id="id_karyawan"  name="pegawai">
-                <option disabled selected>Pilih Nama</option>
+                <option disabled selected data-index="1">Pilih Nama</option>
                 <?php
                 foreach ($pegawai as $key) {?>
                   <option type="button" class="dropdown-item" value="<?=$key->pegawai_id?>"><?=$key->nama?></option>
@@ -47,14 +48,14 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Id</span>
-              <input id="id_user_kasir" name="id_user_kasir" type="text"  style="text-transform:uppercase" maxlength="15" />
+              <input id="id_user_kasir" data-index="2" name="id_user_kasir" type="text"  style="text-transform:uppercase" maxlength="15" />
             </div>
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Periode</a>
           <ul class="navbar-nav ml-auto">
-            <input type="date" name="tanggal_laporan" id="tanggal_laporan" >
+            <input type="date" data-index="3" name="tanggal_laporan" id="tanggal_laporan" >
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-8">
@@ -62,7 +63,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="pendapatan_kasir" name="pendapatan_kasir" type="number" maxlength="15" />
+              <input id="pendapatan_kasir" data-index="4" name="pendapatan_kasir" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -71,7 +72,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="kas_masuk" name="kas_masuk" type="number" maxlength="15" />
+              <input id="kas_masuk" data-index="5" name="kas_masuk" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -80,16 +81,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="selisih" name="selisih" type="number" maxlength="15" />
-            </div>
-          </ul>
-        </nav>
-        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
-          <a class="navbar-brand">Total Pengeluaran</a>
-          <ul class="navbar-nav ml-auto">
-            <div class="flex">
-              <span class="currency">Rp</span>
-              <input id="total_pengeluaran" name="total_pengeluaran" type="number" maxlength="15" />
+              <input id="selisih" data-index="6" name="selisih" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -98,7 +90,16 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="total_setor" name="total_setor" type="number" maxlength="15" />
+              <input id="total_setor" data-index="7" name="total_setor" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <a class="navbar-brand">Total Pengeluaran</a>
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+              <span class="currency">Rp</span>
+              <input id="total_pengeluaran" data-index="8" name="total_pengeluaran" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -107,7 +108,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="setor_ratusan" name="setor_ratusan" type="number" maxlength="15" />
+              <input id="setor_ratusan" data-index="9" name="setor_ratusan" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -116,7 +117,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="setor_puluhan" name="setor_puluhan" type="number" maxlength="15" />
+              <input id="setor_puluhan" data-index="10" name="setor_puluhan" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -125,7 +126,7 @@
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
-              <input id="setor_koin" name="setor_koin" type="number" maxlength="15" />
+              <input id="setor_koin" data-index="11" name="setor_koin" type="number" maxlength="15" />
             </div>
           </ul>
         </nav>
@@ -165,6 +166,7 @@
   </span>
   <span class="text" id="cetak_gaji">Cetak</span>
 </button> -->
+</form>
 <div class="my-2"></div>
 <p class="mb-0 small">Note: Diisi setiap kasir tutup </p>
 <p class="mb-0 small">Yang mengisi adalah kasir atau pengawas </p>
@@ -330,7 +332,7 @@
   </div>
   <!-- print -->
   <div class="modal fade" id="Modal_Faktur" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
 
         <div class="modal-header">
@@ -359,34 +361,32 @@
   <!-- Page level custom scripts -->
   <script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
   <script>
+  $('#inputform').on('keydown', 'input', function (event) {
+    if (event.which == 13) {
+        event.preventDefault();
+        var $this = $(event.target);
+        var index = parseFloat($this.attr('data-index'));
+        $('[data-index="' + (index + 1).toString() + '"]').focus();
+    }
+});
   var date = new Date();
-
   var day = date.getDate();
   var month = date.getMonth() + 1;
   var year = date.getFullYear();
-
   if (month < 10) month = "0" + month;
   if (day < 10) day = "0" + day;
-
   var today = year + "-" + month + "-" + day;
-
-
   document.getElementById('tanggal_laporan').value = today;
-
   var mywindow;
   function printDiv(divName) {
    var printContents = document.getElementById(divName).innerHTML;
    var originalContents = document.body.innerHTML;
-
    document.body.innerHTML = printContents;
-
    window.print();
-
    document.body.innerHTML = originalContents;
  }
 </script>
 <script type="text/javascript" charset="utf-8" async defer>
-
 $('#btn_cari_laporan').on('click',function(){
   var tanggal_awal = $('#tanggal_awal_laporan').val();
   var tanggal_akhir = $('#tanggal_akhir_laporan').val();
@@ -578,6 +578,9 @@ function show_rekap(){
       var total_kas_masuk = 0;
       var total_pengeluaran_kasir = 0;
       var total_tambahan_modal = 0;
+      var total_ratusan = 0;
+      var total_puluhan = 0;
+      var total_koin = 0;
       var total_selisih = 0;
       var i;
       for(i=0; i<data.length; i++){
@@ -587,6 +590,9 @@ function show_rekap(){
         total_pengeluaran_kasir += parseInt(data[i].total_pengeluaran);
         total_tambahan_modal += parseInt(data[i].kas_masuk);
         total_selisih += parseInt(data[i].selisih);
+        total_ratusan += parseInt(data[i].setor_ratusan);
+        total_puluhan += parseInt(data[i].setor_puluhan);
+        total_koin += parseInt(data[i].setor_koin);
       }
       html =
       '<tr>'+
@@ -600,6 +606,18 @@ function show_rekap(){
       '<tr>'+
       '<td>Saldo Masuk</td>'+
       '<td>'+ convertToRupiah(total_kas_masuk) +'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<td>Ratusan</td>'+
+      '<td>'+ convertToRupiah(total_ratusan) +'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<td>Puluhan</td>'+
+      '<td>'+ convertToRupiah(total_puluhan) +'</td>'+
+      '</tr>'+
+      '<tr>'+
+      '<td>Koin</td>'+
+      '<td>'+ convertToRupiah(total_koin) +'</td>'+
       '</tr>'+
       '<tr>'+
       '<td>Pengeluaran Kasir</td>'+
@@ -619,7 +637,6 @@ $('#show_data_laporan').on('click','.hapus_laporan',function(){
   var id = $(this).attr('id_laporan');
   var id_kasir = $(this).attr('id_kasir');
   var tanggal_laporan = $(this).attr('tanggal_laporan');
-
   // $('#id_karyawan').val(id);
   $('#id_laporan_hps').val(id);
   $('#id_kasir_hps').html(id_kasir);
@@ -664,10 +681,11 @@ $('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#se
   var setor_koin = $('#setor_koin').val() || 0 ;
   var selisih_penghitungan = parseInt(pendapatan_kasir)+parseInt(kas_masuk)-total_pengeluaran-total_setor;
   var selisih_setor = total_setor-setor_ratusan-setor_puluhan-setor_koin;
+  var total_pengeluaran_def = parseInt(pendapatan_kasir) - parseInt(kas_masuk) - parseInt(total_setor);
+  $('[name="total_pengeluaran"]').val(total_pengeluaran_def)
   $('[name="selisih_setor"]').val(selisih_setor);
   $('[name="selisih_penghitungan"]').val(selisih_penghitungan);
 });
-
 $('#simpan').on('click',function(){
   var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
   var selisih = $('#selisih').val() || 0 ;
@@ -729,7 +747,6 @@ function date_ind(date_conv){
   var hasil = thisDay + ', ' + day + ' ' + months[month] + ' ' + year;
   return hasil;
 }
-
 function datediff(first, second) {
   return Math.round((second-first)/(1000*60*60*24));
 }
@@ -741,7 +758,6 @@ function format(s,r) {
   for(i=s[1].length;i<r;i++) {s[1]+="0";}
   return curr+t+decdelim+s[1];
 }
-
 function threedigit(word) {
   eja=Array("Nol","Satu","Dua","Tiga","Empat","Lima","Enam","Tujuh","Delapan","Sembilan");
   while(word.length<3) word="0"+word;
@@ -754,7 +770,6 @@ function threedigit(word) {
   word=word.replace(/Sepuluh ([^ ]+)/gi, "$1 Belas");
   word=word.replace(/Satu Belas/gi, "Sebelas");
   word=word.replace(/^[ ]+$/gi, "");
-
   return word;
 }
 function sayit(s) {
@@ -764,7 +779,6 @@ function sayit(s) {
   var word=s[0];
   var cent=s[1]?s[1]:"0";
   if(cent.length<2) cent+="0";
-
   var subword="";i=0;
   while(word.length>3) {
     subdigit=threedigit(word.substr(word.length-3, 3));
@@ -774,17 +788,97 @@ function sayit(s) {
   }
   subword=threedigit(word)+" "+thousand[i]+" "+subword;
   subword=subword.replace(/^ +$/gi,"");
-
   word=(subword==""?"NOL":subword.toUpperCase())+" RUPIAH";
   subword=threedigit(cent);
   cent=(subword==""?"":" ")+subword.toUpperCase()+(subword==""?"":" SEN");
   return word+cent;
 }
-function convertToRupiah(angka)
-{
+function convertToRupiah(angka){
   var rupiah = '';
   var angkarev = angka.toString().split('').reverse().join('');
   for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
   return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+}
+$("input[data-type='currency']").on({
+    keyup: function() {
+      formatCurrency($(this));
+    },
+    blur: function() { 
+      formatCurrency($(this), "blur");
+    }
+});
+
+
+function formatNumber(n) {
+  // format number 1000000 to 1,234,567
+  return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
+
+function formatCurrency(input, blur) {
+  // appends $ to value, validates decimal side
+  // and puts cursor back in right position.
+  
+  // get input value
+  var input_val = input.val();
+  
+  // don't validate empty input
+  if (input_val === "") { return; }
+  
+  // original length
+  var original_len = input_val.length;
+
+  // initial caret position 
+  var caret_pos = input.prop("selectionStart");
+    
+  // check for decimal
+  if (input_val.indexOf(".") >= 0) {
+
+    // get position of first decimal
+    // this prevents multiple decimals from
+    // being entered
+    var decimal_pos = input_val.indexOf(".");
+
+    // split number by decimal point
+    var left_side = input_val.substring(0, decimal_pos);
+    var right_side = input_val.substring(decimal_pos);
+
+    // add commas to left side of number
+    left_side = formatNumber(left_side);
+
+    // validate right side
+    right_side = formatNumber(right_side);
+    
+    // On blur make sure 2 numbers after decimal
+    if (blur === "blur") {
+      right_side += "00";
+    }
+    
+    // Limit decimal to only 2 digits
+    right_side = right_side.substring(0, 2);
+
+    // join number by .
+    input_val = "$" + left_side + "." + right_side;
+
+  } else {
+    // no decimal entered
+    // add commas to number
+    // remove all non-digits
+    input_val = formatNumber(input_val);
+    input_val = "$" + input_val;
+    
+    // final formatting
+    if (blur === "blur") {
+      input_val += ".00";
+    }
+  }
+  
+  // send updated string to input
+  input.val(input_val);
+
+  // put caret back in the right position
+  var updated_len = input_val.length;
+  caret_pos = updated_len - original_len + caret_pos;
+  input[0].setSelectionRange(caret_pos, caret_pos);
 }
 </script>

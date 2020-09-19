@@ -331,6 +331,8 @@
       <div class="modal-body">
         Hapus sales <span id="nama_sales_hapus"></span>?
         <input type="text" id="sales_id_supplier_hapus" hidden>
+        <input type="text" id="kode_supplier_sales_hapus" hidden>  
+        <input type="text" id="nama_sales_hapus1" hidden>  
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -351,7 +353,9 @@
       </div>
       <div class="modal-body">
         Aktifkan sales <span id="nama_sales_aktifkan"></span>?
-        <input type="text" id="sales_id_supplier_aktif" hidden>
+        <input type="text" id="sales_id_supplier_aktifkan" hidden>
+        <input type="text" id="nama_sales_aktifkan1" hidden>
+        <input type="text" id="kode_supplier_aktifkan_sales" hidden>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -371,12 +375,14 @@
         </button>
       </div>
       <div class="modal-body">
-        Hapus supplier <span id="kode_hapus"></span>, <span id="nama_hapus"></span>?
-        <input type="text" id="kode_hapus_supplier" hidden>
+        Hapus supplier <span id="nama_sales_nonaktifkan"></span>?
+        <input type="text" id="id_sales_nonaktifkan" hidden>
+        <input type="text" id="kodesup_sales_nonaktifkan" hidden>
+        <input type="text" id="nama_sales_nonaktifkan1" hidden>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-danger confirm_hapus_supplier">Hapus</button>
+        <button type="button" class="btn btn-warning confirm_nonaktifkan_sales">Nonaktifkan</button>
       </div>
     </div>
   </div>
@@ -482,12 +488,12 @@
           if (data[i].status == false) {
             status = '<font color="red">OFF</font>';
             view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Aktifkan</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_sales" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'" >Hapus</a>';
+            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" nama="'+data[i].nama_sales+'"  kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'">Aktifkan</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_sales" nama="'+data[i].nama_sales+'" kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'" >Hapus</a>';
             
           }else if(data[i].status == true) {
             status = '<font color="green">AKTIF</font>';
             view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'" >Nonaktifkan</a>';
+            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" nama="'+data[i].nama_sales+'"  kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'" >Nonaktifkan</a>';
           }
           edit = status+'|'+view_data_sales+' '+ubah_status_sales;
           html += '<tr>'+
@@ -532,16 +538,74 @@
     $('#data_sup_view').on('click','.hapus_sales',function(){
       var kode=$(this).attr('kode_sales');
       var nama = $(this).attr('nama');
+      var kode_sup = $(this).attr('kode_sup');
       $('#nama_sales_hapus').html(nama);
+      $('#nama_sales_hapus1').val(nama);
       $('#sales_id_supplier_hapus').val(kode);
+      $('#kode_supplier_sales_hapus').val(kode_sup);
       $('#ModalDeleteSales').modal('show');
+    });
+    $('.confirm_hapus_sales').on('click',function(){
+      var kode_sales = $('#sales_id_supplier_hapus').val();
+      var kodesup = $('#kode_supplier_sales_hapus').val();
+      var nama = $('#nama_sales_hapus1').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('index.php/admin/hapus_sales')?>",
+        // dataType : "JSON",
+        data : {kode_sales:kode_sales},
+        success: function(data){
+          show_sales_supplier(kodesup);
+          $('#ModalDeleteSales').modal('hide');
+          swal ( "Sukses" ,  "Sales "+nama+" berhasil dihapus!" ,  "success", {
+            buttons: false,
+            timer: 3000,
+          } );
+        },
+        error: (function(data) {
+          swal ( "Gagal" ,  "Sales gagal dihapus!" ,  "error",  {
+            buttons: false,
+            timer: 1000,
+          } );
+        })
+      });
+      return false;
     });
     $('#data_sup_view').on('click','.aktifkan_sales',function(){
       var kode = $(this).attr('kode_sales');
       var nama = $(this).attr('nama');
+      var kode_supplier = $(this).attr('kode_sup');
       $('#nama_sales_aktifkan').html(nama);
-      $('#sales_id_supplier_aktif').val(kode);
+      $('#nama_sales_aktifkan1').val(nama);
+      $('#sales_id_supplier_aktifkan').val(kode);
+      $('#kode_supplier_aktifkan_sales').val(kode_supplier);
       $('#ModalAktifkanSales').modal('show');
+    });
+    $('.confirm_aktifkan_sales').on('click',function(){
+      var kode_sales = $('#sales_id_supplier_aktifkan').val();
+      var kodesup = $('#kode_supplier_aktifkan_sales').val();
+      var nama = $('#nama_sales_aktifkan1').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('index.php/admin/aktifkan_sales')?>",
+        // dataType : "JSON",
+        data : {kode_sales:kode_sales},
+        success: function(data){
+          show_sales_supplier(kodesup);
+          $('#ModalAktifkanSales').modal('hide');
+          swal ( "Sukses" ,  "Sales "+nama+" berhasil diaktifkan!" ,  "success", {
+            buttons: false,
+            timer: 3000,
+          } );
+        },
+        error: (function(data) {
+          swal ( "Gagal" ,  "Sales "+nama+" gagal diaktifkan!" ,  "error",  {
+            buttons: false,
+            timer: 1000,
+          } );
+        })
+      });
+      return false;
     });
     $('#data_sup_view').on('click','.view_data_sales',function(){
       var kode=$(this).attr('kode_sales');
@@ -559,9 +623,38 @@
     $('#data_sup_view').on('click','.nonaktifkan_sales',function(){
       var kode=$(this).attr('kode_sales');
       var nama = $(this).attr('nama');
+      var kode_sup = $(this).attr('kode_sup');
       $('#nama_sales_nonaktifkan').html(nama);
-      $('#sales_id_supplier_nonatktif').val(kode);
+      $('#nama_sales_nonaktifkan1').val(nama);
+      $('#id_sales_nonaktifkan').val(kode);
+      $('#kodesup_sales_nonaktifkan').val(kode_sup);
       $('#ModalNonaktifkanSales').modal('show');
+    });
+    $('.confirm_nonaktifkan_sales').on('click',function(){
+      var kode_sales = $('#id_sales_nonaktifkan').val();
+      var kodesup = $('#kodesup_sales_nonaktifkan').val();
+      var nama = $('#nama_sales_nonaktifkan1').val();
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('index.php/admin/nonaktifkan_sales')?>",
+        // dataType : "JSON",
+        data : {kode_sales:kode_sales},
+        success: function(data){
+          show_sales_supplier(kodesup);
+          $('#ModalNonaktifkanSales').modal('hide');
+          swal ( "Sukses" ,  "Sales "+nama+" berhasil dinonaktifkan!" ,  "success", {
+            buttons: false,
+            timer: 3000,
+          } );
+        },
+        error: (function(data) {
+          swal ( "Gagal" ,  "Sales "+nama+" gagal dinonaktifkan!" ,  "error",  {
+            buttons: false,
+            timer: 1000,
+          } );
+        })
+      });
+      return false;
     });
   $('#header_table_supplier').on('click','.tambah_sales',function(){
       var kode=$(this).attr('kode_sup');
@@ -707,6 +800,7 @@
       });
     };
     // endshow
+    
     //hapus Supplier
     $('.confirm_hapus_supplier').on('click',function(){
       var kode_supplier = $('#kode_hapus_supplier').val();

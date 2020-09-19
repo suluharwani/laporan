@@ -90,4 +90,15 @@ class Mdl_supplier extends CI_Model{
   function tambah_sales($obj){
     return $this->db->insert('sales', $obj);
   }
+  function hapus_sales($kode){
+    return $this->db->delete('sales', array('id' => $kode));
+  }
+  function nonaktifkan_sales($id){
+    $this->db->where('id', $id);
+    return $this->db->update('sales', array('status'=> 0, 'tanggal_edit'=> date('Y-m-d H:i:s')));
+  }
+  function aktifkan_sales($id){
+    $this->db->where('id', $id);
+    return $this->db->update('sales', array('status'=> 1, 'tanggal_edit'=> date('Y-m-d H:i:s')));
+  }
 }

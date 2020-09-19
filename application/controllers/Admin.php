@@ -103,6 +103,42 @@ class Admin extends CI_Controller {
       return $this->Mdl_supplier->tambah_sales($obj);
      }
     }
+    function hapus_sales(){
+      $this->_make_sure_is_admin();
+      $kode = $this->input->post('kode_sales');
+      $data_hapus = $this->Mdl_supplier->hapus_sales($kode);
+      if ($this->db->affected_rows($data_hapus)>0) {
+        header('HTTP/1.1 200 OK');
+      }else{
+        header('HTTP/1.1 500 Internal Server Error');
+        header('Content-Type: application/json; charset=UTF-8');
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+      }
+    }
+  function nonaktifkan_sales(){
+    $this->_make_sure_is_admin();
+    $kode = $this->input->post('kode_sales');
+    $data_sales = $this->Mdl_supplier->nonaktifkan_sales($kode);
+    if ($this->db->affected_rows($data_sales)>0) {
+      header('HTTP/1.1 200 OK');
+    }else{
+      header('HTTP/1.1 500 Internal Server Error');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+  }
+  function aktifkan_sales(){
+    $this->_make_sure_is_admin();
+    $kode = $this->input->post('kode_sales');
+    $data_sales = $this->Mdl_supplier->aktifkan_sales($kode);
+    if ($this->db->affected_rows($data_sales)>0) {
+      header('HTTP/1.1 200 OK');
+    }else{
+      header('HTTP/1.1 500 Internal Server Error');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+  }
   function check_nama_sales(){
     $nama_sales = $this->input->post('nama_sales');
     $kode = $this->input->post('kode');
