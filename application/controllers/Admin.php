@@ -172,12 +172,10 @@ class Admin extends CI_Controller {
     $this->Mdl_supplier->insert_product();
     redirect('crud');
   }
-
   function update_supplier(){ //update record method
     $this->Mdl_supplier->update_product();
     redirect('crud');
   }
-
   function delete_supplier(){ //delete record method
     $this->Mdl_supplier->delete_product();
     redirect('crud');
@@ -185,18 +183,13 @@ class Admin extends CI_Controller {
   public function backup_database(){
     ini_set('memory_limit', '5024M');
     $this->load->dbutil();
-
     $prefs = array(
       'format'      => 'zip',
       'filename'    => 'my_db_backup.sql',
     );
-
-
     $backup =& $this->dbutil->backup($prefs);
-
     $db_name = 'backup-on-'. date("Y-m-d-H-i-s") .'.zip';
     $save = 'backup/'.$db_name;
-
     $this->load->helper('file');
     write_file($save, $backup);
     $this->load->helper('download');
@@ -224,10 +217,8 @@ class Admin extends CI_Controller {
   }
   function test_barcode(){
     try {
-
       $connector = new Escpos\PrintConnectors\FilePrintConnector("LPT1");
       $printer = new  Escpos\Printer($connector);
-
       /* Barcodes */
         $printer -> setBarcodeHeight(80);
           $printer -> text("Barcode \n");
@@ -271,7 +262,6 @@ class Admin extends CI_Controller {
       $this->_make_sure_is_admin();
       $tanggal_awal = $this->input->post('tanggal_awal');
       $tanggal_akhir = $this->input->post('tanggal_akhir');
-
       if ($tanggal_awal>$tanggal_akhir) {
         header('HTTP/1.1 500 Internal Server Booboo');
         header('Content-Type: application/json; charset=UTF-8');
@@ -292,7 +282,6 @@ class Admin extends CI_Controller {
         // $data = array_merge($data_admin, $data_laporan);
         echo json_encode($data_laporan);
       }
-
     }
     function laporan_kasir_list_rekap(){
       $this->_make_sure_is_admin();
