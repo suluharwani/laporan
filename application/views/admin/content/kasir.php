@@ -679,7 +679,7 @@ $('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#se
   var setor_ratusan = $('#setor_ratusan').val() || 0 ;
   var setor_puluhan = $('#setor_puluhan').val() || 0 ;
   var setor_koin = $('#setor_koin').val() || 0 ;
-  var selisih_penghitungan = parseInt(pendapatan_kasir)+parseInt(kas_masuk)-total_pengeluaran-total_setor;
+  var selisih_penghitungan = parseInt(pendapatan_kasir)-parseInt(kas_masuk)-total_pengeluaran-total_setor;
   var selisih_setor = total_setor-setor_ratusan-setor_puluhan-setor_koin;
   var total_pengeluaran_def = parseInt(pendapatan_kasir) - parseInt(kas_masuk) - parseInt(total_setor);
   $('[name="total_pengeluaran"]').val(total_pengeluaran_def)

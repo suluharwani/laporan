@@ -17,6 +17,8 @@
 
   <!-- Custom styles for this template-->
   <link href="<?=base_url('assets/sb/')?>css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="<?=base_url('assets/')?>css/calculator.css" rel="stylesheet">
   <script src="<?=base_url('assets/sb/')?>vendor/jquery/jquery.min.js"></script>
   <script src="<?=base_url('assets/')?>js/sweetalert.js"></script>
+  <script src="<?=base_url('assets/')?>js/calculator.js"></script>
 </head>

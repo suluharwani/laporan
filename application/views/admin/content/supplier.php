@@ -403,6 +403,7 @@
             <label for="kode_supplier_sales_view" class="col-sm-2 col-form-label">Kode Supplier</label>
             <div class="col-sm-10">
               <input type="text" id="kode_supplier_sales_view" disabled class="form-control">
+              <input type="text" id="sales_id_supplier_data" hidden class="form-control">
             </div>
           </div>
           <div class="form-group row">
@@ -456,6 +457,7 @@
     </div>
   </div>
 
+
   <!-- print -->
   <!-- modal delete laporan -->
   <script src="<?=base_url('assets/sb/')?>vendor/datatables/jquery.dataTables.min.js"></script>
@@ -464,6 +466,7 @@
   <!-- Page level custom scripts -->
   <script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
   <script type="text/javascript">
+ 
   function show_sales_supplier(kode){
     $.ajax({
       type  : 'post',
