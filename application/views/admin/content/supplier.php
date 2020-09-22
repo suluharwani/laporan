@@ -428,7 +428,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-primary" id="sales_simpan_tambah">Simpan</button>
+        <button type="button" class="btn btn-primary" id="sales_perbarui_data">Simpan</button>
       </div>
     </div>
   </div>
@@ -619,6 +619,36 @@
       $('#kode_supplier_sales_view').val(kode_supplier);
       $('#sales_id_supplier_data').val(kode);
       $('#ModalDataSales').modal('show');
+    });
+    
+    $('#sales_perbarui_data').on('click',function(){
+      var kode_sales = $('#sales_id_supplier_data').val();
+      var nama = $('#nama_sales_data').val();
+      var catatan = $('#catatan_sales_data').val();
+      var nomor_telepon = $('#nomor_telepon_sales_data').val();
+      var kodesup = $('#kode_supplier_sales_view').val();
+
+      $.ajax({
+        type : "POST",
+        url  : "<?php echo site_url('index.php/admin/edit_sales')?>",
+        // dataType : "JSON",
+        data : {kode_sales:kode_sales, nama:nama, catatan:catatan, nomor_telepon:nomor_telepon},
+        success: function(data){
+          show_sales_supplier(kodesup);
+          $('#ModalDataSales').modal('hide');
+          swal ( "Sukses" ,  "Sales berhasil disimpan!" ,  "success", {
+            buttons: false,
+            timer: 3000,
+          } );
+        },
+        error: (function(data) {
+          swal ( "Gagal" ,  "Sales gagal disimpan!" ,  "error",  {
+            buttons: false,
+            timer: 1000,
+          } );
+        })
+      });
+      return false;
     });
     $('#data_sup_view').on('click','.nonaktifkan_sales',function(){
       var kode=$(this).attr('kode_sales');

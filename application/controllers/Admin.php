@@ -79,6 +79,24 @@ class Admin extends CI_Controller {
     $data = $this->Mdl_supplier->get_data_supplier_dipilih($code);
     echo json_encode($data->result());
   }
+  function edit_sales(){
+    $this->_make_sure_is_admin();
+    $kode_sales = $this->input->post('kode_sales');
+    $obj = array(
+      'nama_sales' => $this->input->post('nama'),
+      'catatan' => $this->input->post('catatan'),
+      'hp' => $this->input->post('nomor_telepon'),
+      'tanggal_edit' => date('Y-m-d H:i:s')
+    );
+    $update = $this->Mdl_supplier->update_sales($kode_sales, $obj);
+    if ($this->db->affected_rows($update)>0) {
+      header('HTTP/1.1 200 OK');
+    }else{
+      header('HTTP/1.1 500 Internal Server Error');
+      header('Content-Type: application/json; charset=UTF-8');
+      die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+  }
   function tambah_sales(){
     $this->_make_sure_is_admin();
     $nama_sales = $this->input->post('nama_sales');
@@ -464,8 +482,6 @@ function simpan_data_karyawan(){
   $shiftpulang2 =   $this->input->post('shiftpulang2');
   $shiftmasuk1 =  $this->input->post('shiftmasuk1');
   $shiftmasuk2 =  $this->input->post('shiftmasuk2');
-
-
   $check_data_gaji = $this->db->get_where('gaji_pokok', array('id_karyawan'=>$id))->num_rows();
   $check_data_libur = $this->db->get_where('jatah_libur', array('id_karyawan'=>$id))->num_rows();
   $check_data_shift = $this->db->get_where('pegawai_shift', array('id_pegawai'=>$id))->num_rows();

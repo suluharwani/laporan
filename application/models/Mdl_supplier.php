@@ -101,4 +101,8 @@ class Mdl_supplier extends CI_Model{
     $this->db->where('id', $id);
     return $this->db->update('sales', array('status'=> 1, 'tanggal_edit'=> date('Y-m-d H:i:s')));
   }
+  function update_sales($kode_sales, $obj){
+    $this->db->where('id', $kode_sales);
+    return $this->db->update('sales', $obj);
+  }
 }
