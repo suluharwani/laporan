@@ -336,7 +336,7 @@ class Admin extends CI_Controller {
         $id_user_kasir= $this->input->post('id_user_kasir');
         $id_karyawan= $this->input->post('id_karyawan');
 
-        $selisih_penghitungan = $pendapatan_kasir+$kas_masuk-$total_pengeluaran-$total_setor;
+        $selisih_penghitungan = $pendapatan_kasir-$kas_masuk-$total_pengeluaran-$total_setor;
         $selisih_setor = $total_setor-$setor_ratusan-$setor_puluhan-$setor_koin;
         if ($selisih_penghitungan == 0 && $selisih_setor==0 && $pendapatan_kasir != 0) {
           $obj = array('pendapatan_kasir'=>$pendapatan_kasir,
@@ -426,7 +426,7 @@ function simpan_data_karyawan_info(){
   $this->load->model('Mdl_karyawan');
   $this->form_validation->set_rules('status', 'Status', 'required');
   $this->form_validation->set_rules('id_pegawai', 'Id Pegawai', 'required');
-  $this->form_validation->set_rules('masuk_kerja', 'masuk kerja', 'required');
+  // $this->form_validation->set_rules('masuk_kerja', 'masuk kerja', 'required');
   if ($this->form_validation->run() == FALSE){
     header('HTTP/1.1 500 Internal Server Booboo');
     header('Content-Type: application/json; charset=UTF-8');
@@ -465,7 +465,7 @@ function simpan_data_karyawan_info(){
         'status'=> $status,
         'masuk'=> $masuk_kerja,
         'berhenti'=> $berhenti,
-      );
+      ); 
       $data =  $this->Mdl_karyawan->update_info($obj,$id_pegawai);
     }
     echo json_encode($data);

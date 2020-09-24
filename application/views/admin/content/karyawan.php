@@ -278,7 +278,7 @@
     function show_karyawan(){
       $.ajax({
         type  : 'ajax',
-        url   : "<?php echo base_url('admin/karyawan_list')?>",
+        url   : "<?php echo base_url('index.php/admin/karyawan_list')?>",
         async : false,
         dataType : 'json',
         success : function(data){
@@ -329,7 +329,7 @@
       var berhenti_kerja = $('#berhenti_kerja').val();
       $.ajax({
         type : "POST",
-        url  : "<?php echo site_url('admin/simpan_data_karyawan_info')?>",
+        url  : "<?php echo site_url('index.php/admin/simpan_data_karyawan_info')?>",
         // dataType : "JSON",
         data : {kontak:kontak,status:status,id_pegawai:id_pegawai,posisi:posisi,masuk_kerja:masuk_kerja,berhenti_kerja:berhenti_kerja},
         success: function(data){
@@ -347,7 +347,7 @@
       var nama = $(this).attr('karyawan_nama');
       $.ajax({
         type : "POST",
-        url  : "<?php echo site_url('admin/get_info_karyawan')?>",
+        url  : "<?php echo site_url('index.php/admin/get_info_karyawan')?>",
         dataType : "JSON",
         data : {id:id},
         success: function(data){
@@ -403,7 +403,7 @@
       var gaji_pokok = $('#gaji_pokok').val();
       $.ajax({
         type : "POST",
-        url  : "<?php echo site_url('admin/simpan_data_karyawan')?>",
+        url  : "<?php echo site_url('index.php/admin/simpan_data_karyawan')?>",
         // dataType : "JSON",
         data : {gaji_pokok:gaji_pokok,jatah_libur:jatah_libur,id:id,shiftpulang1:shiftpulang1,shiftpulang2:shiftpulang2,shiftmasuk1:shiftmasuk1,shiftmasuk2:shiftmasuk2},
         success: function(data){
@@ -453,7 +453,7 @@
       var jumlah = $('#jumlah_tunjangan').val();
       $.ajax({
         type : "POST",
-        url  : "<?php echo site_url('admin/tambah_tunjangan')?>",
+        url  : "<?php echo site_url('index.php/admin/tambah_tunjangan')?>",
         dataType : "JSON",
         data : {id:id, nama:nama,jumlah:jumlah},
         success: function(data){
@@ -471,7 +471,7 @@
     function show_tunjangan(id){
       $.ajax({
         type  : 'POST',
-        url   : "<?php echo base_url('admin/tunjangan_list')?>",
+        url   : "<?php echo base_url('index.php/admin/tunjangan_list')?>",
         dataType : 'json',
         data : {id:id},
         success : function(data){
@@ -511,7 +511,7 @@
       var id_karyawan = $('#id_karyawan_tunjangan').val();
       $.ajax({
         type : "POST",
-        url  : "<?php echo site_url('admin/hapus_tunjangan')?>",
+        url  : "<?php echo site_url('index.php/admin/hapus_tunjangan')?>",
         dataType : "JSON",
         data : {id:id},
         success: function(data){

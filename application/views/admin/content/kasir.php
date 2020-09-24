@@ -558,7 +558,7 @@ function show_laporan(){
         '<td>'+convertToRupiah(data[i].selisih)+'</td>'+
         '<td>'+data[i].pelapor+'</td>'+
         '<td style="text-align:center;">'+
-        '<a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_laporan" tanggal_laporan="'+data[i].tanggal_laporan+'"  id_laporan="'+data[i].id+'" id_kasir="'+data[i].id_user_kasir+'">Hapus Data</a>'+
+        '<a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_laporan" tanggal_laporan="'+data[i].tanggal_laporan+'"  id_laporan="'+data[i].id+'" id_kasir="'+data[i].id_user_kasir+'">Hapus</a>'+
         '</td>'+
         '</tr>';
       }
@@ -670,7 +670,7 @@ $('.confirm_hapus_laporan').on('click',function(){
   });
   return false;
 });
-$('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#setor_puluhan,#setor_koin,#kas_masuk').on('keydown click change keyup paste blur load keyup',function(){
+$('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#setor_puluhan,#setor_koin,#kas_masuk').on('keydown click change keyup paste blur load',function(){
   var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
   var selisih = $('#selisih').val() || 0 ;
   var kas_masuk = $('#kas_masuk').val() || 0 ;
