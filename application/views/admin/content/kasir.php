@@ -68,11 +68,25 @@
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_pendapatan_kasir"></span>
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Kas Masuk(Tambahan Modal)</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
               <input id="kas_masuk" data-index="5" name="kas_masuk" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_kas_masuk"></span>
             </div>
           </ul>
         </nav>
@@ -86,11 +100,25 @@
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_selisih"></span>
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Total Setor(Saldo Masuk)</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
               <input id="total_setor" data-index="7" name="total_setor" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_total_setor"></span>
             </div>
           </ul>
         </nav>
@@ -104,11 +132,25 @@
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_total_pengeluaran"></span>
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Setor Ratusan</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
               <input id="setor_ratusan" data-index="9" name="setor_ratusan" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_setor_ratusan"></span>
             </div>
           </ul>
         </nav>
@@ -122,11 +164,25 @@
           </ul>
         </nav>
         <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_setor_puluhan"></span>
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
           <a class="navbar-brand">Setor Koin</a>
           <ul class="navbar-nav ml-auto">
             <div class="flex">
               <span class="currency">Rp</span>
               <input id="setor_koin" data-index="11" name="setor_koin" type="number" maxlength="15" />
+            </div>
+          </ul>
+        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-light mb-8">
+          <ul class="navbar-nav ml-auto">
+            <div class="flex">
+          <span class="text-light bg-info" id="convertRp_setor_koin"></span>
             </div>
           </ul>
         </nav>
@@ -670,7 +726,7 @@ $('.confirm_hapus_laporan').on('click',function(){
   });
   return false;
 });
-$('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#setor_puluhan,#setor_koin,#kas_masuk').on('keydown click change keyup paste blur load',function(){
+$('#pendapatan_kasir,#selisih,#total_setor,#setor_ratusan,#total_pengeluaran,#setor_puluhan,#setor_koin,#kas_masuk').on('keydown update click change keyup paste blur load',function(){
   var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
   var selisih = $('#selisih').val() || 0 ;
   var kas_masuk = $('#kas_masuk').val() || 0 ;
@@ -685,6 +741,15 @@ $('#pendapatan_kasir,#selisih,#total_pengeluaran,#total_setor,#setor_ratusan,#se
   $('[name="total_pengeluaran"]').val(total_pengeluaran_def)
   $('[name="selisih_setor"]').val(selisih_setor);
   $('[name="selisih_penghitungan"]').val(selisih_penghitungan);
+  $('#convertRp_pendapatan_kasir').html(convertToRupiah(pendapatan_kasir));
+  // $('#nominal_pendapatan_kasir').html(convertToRupiah(pendapatan_kasir));
+  $('#convertRp_selisih').html(convertToRupiah(selisih));
+  $('#convertRp_kas_masuk').html(convertToRupiah(kas_masuk));
+  $('#convertRp_total_pengeluaran').html(convertToRupiah(total_pengeluaran));
+  $('#convertRp_total_setor').html(convertToRupiah(total_setor));
+  $('#convertRp_setor_ratusan').html(convertToRupiah(setor_ratusan));
+  $('#convertRp_setor_puluhan').html(convertToRupiah(setor_puluhan));
+  $('#convertRp_setor_koin').html(convertToRupiah(setor_koin));
 });
 $('#simpan').on('click',function(){
   var pendapatan_kasir = $('#pendapatan_kasir').val() || 0 ;
