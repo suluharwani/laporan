@@ -321,7 +321,7 @@
           </div>
           <!-- /.row -->
         </div>
-        <p class="mb-0 small">Note: Tabel hanya menunjukkan 10 data terakhir</p>
+        <p class="mb-0 small">Note: Tabel hanya menunjukkan 100 data terakhir</p>
       </div>
     </div>
   </div>

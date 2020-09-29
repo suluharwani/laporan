@@ -310,7 +310,7 @@ class Admin extends CI_Controller {
     function laporan_kasir_list(){
       $this->_make_sure_is_admin();
       $this->load->model('Mdl_laporan');
-      $data = $this->Mdl_laporan->laporan_kasir_lim(10)->result();
+      $data = $this->Mdl_laporan->laporan_kasir_lim(100)->result();
       echo json_encode($data);
     }
     function hapus_laporan_kasir(){

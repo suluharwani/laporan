@@ -466,6 +466,50 @@
   <!-- Page level custom scripts -->
   <script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
   <script type="text/javascript">
+    function show_nota_supplier(kode){
+    $.ajax({
+      type  : 'post',
+      url   : "<?php echo base_url('index.php/admin/get_data_nota_supplier')?>",
+      async : false,
+      dataType : 'json',
+      data : {kode:kode},
+      success : function(data){
+        var i;
+        var no = 1;
+        var html = '';
+        var status = '';
+        var edit = '';
+        var view_data_sales ='';
+        var ubah_status_sales = '';
+        var header_table = '';
+        header_table ='<th>No</th>'+
+                      '<th>Nama</th>'+
+                      // '<th>HP</th>'+
+                      '<th style="text-align:center;">Status <a href="javascript:void(0);" class="btn btn-success btn-sm tambah_sales" kode_sup="'+kode+'" >Tambah</a></th>';
+        for(i=0; i<data.length; i++){
+          if (data[i].status == false) {
+            status = '<font color="red">OFF</font>';
+            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
+            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" nama="'+data[i].nama_sales+'"  kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'">Aktifkan</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_sales" nama="'+data[i].nama_sales+'" kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'" >Hapus</a>';
+            
+          }else if(data[i].status == true) {
+            status = '<font color="green">AKTIF</font>';
+            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
+            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" nama="'+data[i].nama_sales+'"  kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'" >Nonaktifkan</a>';
+          }
+          edit = status+'|'+view_data_sales+' '+ubah_status_sales;
+          html += '<tr>'+
+          '<td>'+ no++ +'</td>'+
+          '<td>'+data[i].nama_sales+'</td>'+
+          // '<td>'+data[i].hp+'</td>'+
+          '<td style="text-align:center;">'+edit+'</td>'+
+          '</tr>';
+        }
+        $('#header_table_supplier').html(header_table);
+        $('#data_sup_view').html(html);
+      }
+    });
+  };
  
   function show_sales_supplier(kode){
     $.ajax({
@@ -765,6 +809,10 @@
     var kode=$(this).attr('kode');
     show_sales_supplier(kode);
   });
+  $('#mytable').on('click','.hutang_bayar',function(){
+    var kode=$(this).attr('kode');
+    show_nota_supplier(kode);
+  });
 
   $(document).ready(function(){
     $('#kode_supplier').keyup(function(){
@@ -811,14 +859,15 @@
         },
         processing: true,
         serverSide: true,
-        ajax: {"url": "<?php echo base_url().'index.php/admin/get_supplier_json'?>", "type": "POST"},
+        ajax: {"url": "<?php echo base_url().'index.php/admin/get_supplier_json'?>", 
+              "type": "POST"},
         columns: [
           {"data": "codesup"},
           {"data": "nama"},
           //render number format for price
           // {"data": "product_price", render: $.fn.dataTable.render.number(',', '.', '')},
           {"data": "codesup", mRender: function (data, type, row) {
-                       return '<a href="javascript:void(0);" class="sales btn btn-success" kode="'+row[`codesup`]+'">Sales</a> <a href="javascript:void(0);" class="view_record btn btn-info" kode="'+row[`codesup`]+'">View</a> <a href="javascript:void(0);" class="edit_record btn btn-warning" code="'+row[`codesup`]+'">Edit</a>  <a href="javascript:void(0);" class="delete_record btn btn-danger" nama='+row["nama"]+' code="'+row[`codesup`]+'">Hapus</a>';
+                       return '<a href="javascript:void(0);" class="hutang_bayar btn btn-dark fa fa-usd" title="hutang dan pembayaran" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="sales btn btn-success fa fa-users" title="sales" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="view_record btn btn-info fa fa-eye" title="view" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="edit_record btn btn-warning fa fa-pencil" title="edit" code="'+row[`codesup`]+'"></a>  <a href="javascript:void(0);" class="delete_record btn btn-danger fa fa-trash" title="hapus" nama='+row["nama"]+' code="'+row[`codesup`]+'"></a>';
           }
         }
         ],
