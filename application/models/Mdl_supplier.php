@@ -71,7 +71,7 @@ class Mdl_supplier extends CI_Model{
     return $this->db->get('supplier');
   }
   function get_data_sales($kode){
-    $this->db->select('sales.catatan as catatan, sales.id as id, sales.codesup as codesup, sales.nama_sales as nama_sales, sales.hp as hp, sales.status as status, sales.tanggal_daftar as tanggal_daftar, sales.tanggal_edit as tanggal_edit');
+    $this->db->select('supplier.nama as nama_supplier, sales.catatan as catatan, sales.id as id, sales.codesup as codesup, sales.nama_sales as nama_sales, sales.hp as hp, sales.status as status, sales.tanggal_daftar as tanggal_daftar, sales.tanggal_edit as tanggal_edit');
     $this->db->from('sales');
     $this->db->join('supplier','sales.codesup = supplier.codesup');
     $this->db->where('supplier.codesup', $kode);
@@ -104,5 +104,13 @@ class Mdl_supplier extends CI_Model{
   function update_sales($kode_sales, $obj){
     $this->db->where('id', $kode_sales);
     return $this->db->update('sales', $obj);
+  }
+  function get_data_nota($kode){
+    $this->db->select('supplier.codesup as codesup, supplier.nama as nama, supplier_nota.id as id, supplier_nota.tanggal_nota as tanggal_nota, supplier_nota.nilai_nota as nilai_nota, supplier_nota.tanggal_jatuh_tempo as tanggal_jatuh_tempo, supplier_nota.catatan as catatan, supplier_nota.potongan as potongan, supplier_nota.status as status, supplier_nota.faktur as faktur, supplier_nota.nama_admin as nama_admin');
+    $this->db->join('supplier_nota', 'supplier.codesup = supplier_nota.codesup');
+    $this->db->limit(100);
+    $this->db->where('supplier_nota.codesup', $kode);
+    $this->db->order_by('supplier_nota.status', 'asc');
+    return $this->db->get('supplier');
   }
 }

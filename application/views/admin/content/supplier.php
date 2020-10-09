@@ -59,18 +59,18 @@
     <div class="col-lg-5">
       <div class="card position-relative">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Rincian Supplier</h6>
+          <h6 class="d-inline font-weight-bold text-primary">Rincian Supplier</h6>
+          <span class="d-inline btn_sup_add_data">
+            
+          </span>
         </div>
         <div class="card-body">
-          <div class="mb-3">
+          <div class="mb-3 table-responsive">
             <div class="box-body no-padding">
               <div class="container">
-                <p>Rincian Supplier dan Sales</p>
-                <table class="table">
-                  <thead>
-                    <tr id="header_table_supplier">
-                      
-                    </tr>
+                <p>Rincian Supplier dan Sales <span id="nama_supplier_table"></span> </p> 
+                <table class="table table-bordered datatable" >
+                  <thead id="header_table_supplier">
                   </thead>
                   <tbody id="data_sup_view">
 
@@ -80,7 +80,7 @@
 
               <!-- /.row -->
             </div>
-            <p class="mb-0 small">Note: Tabel hanya menunjukkan data terakhir. Untuk mencetak laporan silakan tentukan tanggal dan pilih cetak.</p>
+            <p class="mb-0 small">Note: <span id="notesupplier"></span></p>
           </div>
         </div>
       </div>
@@ -466,6 +466,10 @@
   <!-- Page level custom scripts -->
   <script src="<?=base_url('assets/sb/')?>js/demo/datatables-demo.js"></script>
   <script type="text/javascript">
+  $(document).ready(function() {
+     $('.datatable').dataTable( {
+    } );
+} );
     function show_nota_supplier(kode){
     $.ajax({
       type  : 'post',
@@ -482,31 +486,33 @@
         var view_data_sales ='';
         var ubah_status_sales = '';
         var header_table = '';
-        header_table ='<th>No</th>'+
-                      '<th>Nama</th>'+
-                      // '<th>HP</th>'+
-                      '<th style="text-align:center;">Status <a href="javascript:void(0);" class="btn btn-success btn-sm tambah_sales" kode_sup="'+kode+'" >Tambah</a></th>';
+        var btn = '';
+        var tagihan = '';
+        var note = "rincian tagihan klik pada nomor faktur faktur";
+        header_table ='<tr>'+
+                       '<th>No</th>'+
+                       '<th>Faktur</th>'+
+                       '<th style="text-align:center;">Status </th>'+
+                      '</tr>';
+        btn = '<a href="javascript:void(0);" class="btn btn-info float-center view_nota_lunas" kode_sup="'+kode+'">Nota Lunas</a>   <a href="javascript:void(0);" class="btn btn-success float-right tambah_nota" kode_sup="'+kode+'">Tambah Nota</a>';
         for(i=0; i<data.length; i++){
           if (data[i].status == false) {
-            status = '<font color="red">OFF</font>';
-            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-success btn-sm aktifkan_sales" nama="'+data[i].nama_sales+'"  kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'">Aktifkan</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm hapus_sales" nama="'+data[i].nama_sales+'" kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'" >Hapus</a>';
-            
+            status = '<font color="red">Belum</font> <a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales">Bayar</a> <a href="javascript:void(0);" class="delete_nota btn-sm btn-danger fa fa-trash" title="hapus"></a> ';
           }else if(data[i].status == true) {
-            status = '<font color="green">AKTIF</font>';
-            view_data_sales = '<a href="javascript:void(0);" class="btn btn-primary btn-sm view_data_sales" catatan="'+data[i].catatan+'" nomor_telepon="'+data[i].hp+'"  kode_sup="'+data[i].codesup+'" nama="'+data[i].nama_sales+'" kode_sales="'+data[i].id+'">Data</a>';
-            ubah_status_sales = '<a href="javascript:void(0);" class="btn btn-warning btn-sm nonaktifkan_sales" nama="'+data[i].nama_sales+'"  kode_sup="'+data[i].codesup+'" kode_sales="'+data[i].id+'" >Nonaktifkan</a>';
+            status = '<font color="green">Lunas</font> <a href="javascript:void(0);" class="btn btn-warning btn-sm view_data_sales">Batalkan</a> <a href="javascript:void(0);" class="delete_nota btn-sm btn-danger fa fa-trash" title="hapus"></a> ';
           }
+          tagihan = parseFloat(data[i].nilai_nota) - parseFloat(data[i].potongan);
           edit = status+'|'+view_data_sales+' '+ubah_status_sales;
           html += '<tr>'+
-          '<td>'+ no++ +'</td>'+
-          '<td>'+data[i].nama_sales+'</td>'+
-          // '<td>'+data[i].hp+'</td>'+
-          '<td style="text-align:center;">'+edit+'</td>'+
-          '</tr>';
+                      '<td>'+ no++ +'</td>'+
+                      '<td> <a href="javascript:void(0);" class="btn btn-info btn-sm data_nota" kode_sup="'+data[i].codesup+'" ">'+tagihan+'</a</td>'+
+                      '<td style="text-align:center;">'+status+'</td>'+
+                  '</tr>';
         }
         $('#header_table_supplier').html(header_table);
         $('#data_sup_view').html(html);
+        $('.btn_sup_add_data').html(btn);
+        $('#notesupplier').html(note);
       }
     });
   };
@@ -527,10 +533,13 @@
         var view_data_sales ='';
         var ubah_status_sales = '';
         var header_table = '';
+        var nama_supplier = '';
+        var btn = '';
         header_table ='<th>No</th>'+
                       '<th>Nama</th>'+
                       // '<th>HP</th>'+
-                      '<th style="text-align:center;">Status <a href="javascript:void(0);" class="btn btn-success btn-sm tambah_sales" kode_sup="'+kode+'" >Tambah</a></th>';
+                      '<th style="text-align:center;">Status</th>';
+        btn = '<a href="javascript:void(0);" class="btn btn-success float-right tambah_sales" kode_sup="'+kode+'">Tambah Sales</a>';
         for(i=0; i<data.length; i++){
           if (data[i].status == false) {
             status = '<font color="red">OFF</font>';
@@ -552,6 +561,7 @@
         }
         $('#header_table_supplier').html(header_table);
         $('#data_sup_view').html(html);
+        $('.btn_sup_add_data').html(btn);
       }
     });
   };
@@ -733,7 +743,7 @@
       });
       return false;
     });
-  $('#header_table_supplier').on('click','.tambah_sales',function(){
+  $('.btn_sup_add_data').on('click','.tambah_sales',function(){
       var kode=$(this).attr('kode_sup');
       $('#sales_kode_supplier_tambah').val(kode);
       $('#ModalTambahSales').modal('show');
@@ -741,7 +751,7 @@
     $(document).ready(function(){
     $('#sales_nama_tambah').keyup(function(){
       var nama_sales = $('#sales_nama_tambah').val();
-      var kode = $('#sales_kode_supplier').val();
+      var kode = $('#sales_kode_supplier_tambah').val();
       if(nama_sales != ''){
         $.ajax({
           url: "<?php echo base_url(); ?>index.php/admin/check_nama_sales",
@@ -764,6 +774,7 @@
       success : function(data){
         var html = '';
         var header_table = '';
+        var btn = '';
         header_table = '<th>Variabel Supplier</th>'+
                       '<th>Value</th>';
         html =
@@ -797,20 +808,27 @@
         '</tr>';
         $('#header_table_supplier').html(header_table);
         $('#data_sup_view').html(html);
+        $('.btn_sup_add_data').html(btn);
       }
     });
   };
 
   $('#mytable').on('click','.view_record',function(){
     var kode=$(this).attr('kode');
+    var nama_supplier=$(this).attr('nama_supplier');
+    $('#nama_supplier_table').html(nama_supplier);
     show_data_dipilih(kode);
   });
   $('#mytable').on('click','.sales',function(){
     var kode=$(this).attr('kode');
+    var nama_supplier=$(this).attr('nama_supplier');
+    $('#nama_supplier_table').html(nama_supplier);
     show_sales_supplier(kode);
   });
   $('#mytable').on('click','.hutang_bayar',function(){
     var kode=$(this).attr('kode');
+    var nama_supplier=$(this).attr('nama_supplier');
+    $('#nama_supplier_table').html(nama_supplier);
     show_nota_supplier(kode);
   });
 
@@ -867,7 +885,7 @@
           //render number format for price
           // {"data": "product_price", render: $.fn.dataTable.render.number(',', '.', '')},
           {"data": "codesup", mRender: function (data, type, row) {
-                       return '<a href="javascript:void(0);" class="hutang_bayar btn btn-dark fa fa-usd" title="hutang dan pembayaran" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="sales btn btn-success fa fa-users" title="sales" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="view_record btn btn-info fa fa-eye" title="view" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="edit_record btn btn-warning fa fa-pencil" title="edit" code="'+row[`codesup`]+'"></a>  <a href="javascript:void(0);" class="delete_record btn btn-danger fa fa-trash" title="hapus" nama='+row["nama"]+' code="'+row[`codesup`]+'"></a>';
+                       return '<a href="javascript:void(0);" class="hutang_bayar btn btn-dark fa fa-usd" title="hutang dan pembayaran" nama_supplier="'+row[`nama`]+'" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="sales btn btn-success fa fa-users" title="sales" nama_supplier="'+row[`nama`]+'" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="view_record btn btn-info fa fa-eye" title="view" nama_supplier="'+row[`nama`]+'" kode="'+row[`codesup`]+'"></a> <a href="javascript:void(0);" class="edit_record btn btn-warning fa fa-pencil" title="edit" code="'+row[`codesup`]+'"></a>  <a href="javascript:void(0);" class="delete_record btn btn-danger fa fa-trash" title="hapus" nama='+row["nama"]+' code="'+row[`codesup`]+'"></a>';
           }
         }
         ],
@@ -1010,5 +1028,154 @@
     });
     // End delete Records
   });
+
+
+  function date_ind(date_conv){
+  var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
+  var date = new Date(date_conv);
+  var day = date.getDate();
+  var month = date.getMonth();
+  var thisDay = date.getDay(),
+  thisDay = myDays[thisDay];
+  var yy = date.getYear();
+  var year = (yy < 1000) ? yy + 1900 : yy;
+  var hasil = thisDay + ', ' + day + ' ' + months[month] + ' ' + year;
+  return hasil;
+}
+function datediff(first, second) {
+  return Math.round((second-first)/(1000*60*60*24));
+}
+function format(s,r) {
+  s=Math.round(s*Math.pow(10,r))/Math.pow(10,r);
+  s=String(s);s=s.split(".");var l=s[0].length;var t="";var c=0;
+  while(l>0){t=s[0][l-1]+(c%3==0&&c!=0?thoudelim:"")+t;l--;c++;}
+  s[1]=s[1]==undefined?"0":s[1];
+  for(i=s[1].length;i<r;i++) {s[1]+="0";}
+  return curr+t+decdelim+s[1];
+}
+function threedigit(word) {
+  eja=Array("Nol","Satu","Dua","Tiga","Empat","Lima","Enam","Tujuh","Delapan","Sembilan");
+  while(word.length<3) word="0"+word;
+  word=word.split("");
+  a=word[0];b=word[1];c=word[2];
+  word="";
+  word+=(a!="0"?(a!="1"?eja[parseInt(a)]:"Se"):"")+(a!="0"?(a!="1"?" Ratus":"ratus"):"");
+  word+=" "+(b!="0"?(b!="1"?eja[parseInt(b)]:"Se"):"")+(b!="0"?(b!="1"?" Puluh":"puluh"):"");
+  word+=" "+(c!="0"?eja[parseInt(c)]:"");
+  word=word.replace(/Sepuluh ([^ ]+)/gi, "$1 Belas");
+  word=word.replace(/Satu Belas/gi, "Sebelas");
+  word=word.replace(/^[ ]+$/gi, "");
+  return word;
+}
+function sayit(s) {
+  var thousand=Array("","Ribu","Juta","Milyar","Trilyun");
+  s=Math.round(s*Math.pow(10,2))/Math.pow(10,2);
+  s=String(s);s=s.split(".");
+  var word=s[0];
+  var cent=s[1]?s[1]:"0";
+  if(cent.length<2) cent+="0";
+  var subword="";i=0;
+  while(word.length>3) {
+    subdigit=threedigit(word.substr(word.length-3, 3));
+    subword=subdigit+(subdigit!=""?" "+thousand[i]+" ":"")+subword;
+    word=word.substring(0, word.length-3);
+    i++;
+  }
+  subword=threedigit(word)+" "+thousand[i]+" "+subword;
+  subword=subword.replace(/^ +$/gi,"");
+  word=(subword==""?"NOL":subword.toUpperCase())+" RUPIAH";
+  subword=threedigit(cent);
+  cent=(subword==""?"":" ")+subword.toUpperCase()+(subword==""?"":" SEN");
+  return word+cent;
+}
+function convertToRupiah(angka){
+  var rupiah = '';
+  var angkarev = angka.toString().split('').reverse().join('');
+  for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+  return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+}
+$("input[data-type='currency']").on({
+    keyup: function() {
+      formatCurrency($(this));
+    },
+    blur: function() { 
+      formatCurrency($(this), "blur");
+    }
+});
+
+
+function formatNumber(n) {
+  // format number 1000000 to 1,234,567
+  return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
+
+function formatCurrency(input, blur) {
+  // appends $ to value, validates decimal side
+  // and puts cursor back in right position.
+  
+  // get input value
+  var input_val = input.val();
+  
+  // don't validate empty input
+  if (input_val === "") { return; }
+  
+  // original length
+  var original_len = input_val.length;
+
+  // initial caret position 
+  var caret_pos = input.prop("selectionStart");
+    
+  // check for decimal
+  if (input_val.indexOf(".") >= 0) {
+
+    // get position of first decimal
+    // this prevents multiple decimals from
+    // being entered
+    var decimal_pos = input_val.indexOf(".");
+
+    // split number by decimal point
+    var left_side = input_val.substring(0, decimal_pos);
+    var right_side = input_val.substring(decimal_pos);
+
+    // add commas to left side of number
+    left_side = formatNumber(left_side);
+
+    // validate right side
+    right_side = formatNumber(right_side);
+    
+    // On blur make sure 2 numbers after decimal
+    if (blur === "blur") {
+      right_side += "00";
+    }
+    
+    // Limit decimal to only 2 digits
+    right_side = right_side.substring(0, 2);
+
+    // join number by .
+    input_val = "$" + left_side + "." + right_side;
+
+  } else {
+    // no decimal entered
+    // add commas to number
+    // remove all non-digits
+    input_val = formatNumber(input_val);
+    input_val = "$" + input_val;
+    
+    // final formatting
+    if (blur === "blur") {
+      input_val += ".00";
+    }
+  }
+  
+  // send updated string to input
+  input.val(input_val);
+
+  // put caret back in the right position
+  var updated_len = input_val.length;
+  caret_pos = updated_len - original_len + caret_pos;
+  input[0].setSelectionRange(caret_pos, caret_pos);
+}
 
   </script>

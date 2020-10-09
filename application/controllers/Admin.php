@@ -2,40 +2,45 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin extends CI_Controller {
   function __construct() {
-    parent::__construct();
+    parent:: __construct();
     date_default_timezone_set('Asia/Jakarta');
     $this->load->model('Mdl_supplier');
   }
-  public function index(){
+public function index(){
     $this->_make_sure_is_admin();
     $data['title'] = "Dashboard";
     $this->load->view('admin/page/dashboard', $data);
-  }
-  public function sales(){
+}
+function get_data_nota_supplier(){
+    $this->_make_sure_is_admin();
+    $kode = $this->input->post('kode');
+    $data = $this->Mdl_supplier->get_data_nota($kode);
+    echo json_encode($data->result());
+}
+public function sales(){
     $this->_make_sure_is_admin();
     $data['title'] = "Sales";
-
     $this->load->view('admin/page/sales', $data);
-  }
-  function get_data_sales(){
+}
+function get_data_sales(){
     $this->_make_sure_is_admin();
     $kode = $this->input->post('kode');
     $data = $this->Mdl_supplier->get_data_sales($kode);
     echo json_encode($data->result());
-  }
-  public function customer(){
+}
+public function customer(){
     $this->_make_sure_is_admin();
     $data['title'] = "Customer";
     $this->load->view('admin/page/customer', $data);
-  }
-  public function supplier(){
+}
+public function supplier(){
     $this->_make_sure_is_admin();
     $data['title'] = "Supllier";
     $this->load->view('admin/page/supplier', $data);
-  }
-  function hapus_supplier(){
+}
+function hapus_supplier(){
     $this->_make_sure_is_admin();
-    $kode = $this->input->post('kode_supplier');
+    $kode       = $this->input->post('kode_supplier');
     $data_hapus = $this->Mdl_supplier->hapus_supplier($kode);
     if ($this->db->affected_rows($data_hapus)>0) {
       header('HTTP/1.1 200 OK');
@@ -44,14 +49,14 @@ class Admin extends CI_Controller {
       header('Content-Type: application/json; charset=UTF-8');
       die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
-  }
-  function edit_supplier(){
+}
+function edit_supplier(){
     $this->_make_sure_is_admin();
-    $adm = $this->data_admin();
+                $adm          = $this->data_admin();
     $data_admin['nama_admin'] = $adm['nama_depan'].' '.$adm['nama_belakang'];
-    $data_input = $this->input->post();
-    $data = array_merge($data_admin, $data_input);
-    $data_edit = $this->Mdl_supplier->edit_supplier($data);
+                $data_input   = $this->input->post();
+                $data         = array_merge($data_admin, $data_input);
+                $data_edit    = $this->Mdl_supplier->edit_supplier($data);
     if ($this->db->affected_rows($data_edit)>0) {
       header('HTTP/1.1 200 OK');
     }else{
@@ -59,33 +64,33 @@ class Admin extends CI_Controller {
       header('Content-Type: application/json; charset=UTF-8');
       die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
-  }
-  function get_data_edit(){
+}
+function get_data_edit(){
     $this->_make_sure_is_admin();
     $kode = $this->input->post('kode');
     $data = $this->Mdl_supplier->get_data_supplier_dipilih($kode);
     echo json_encode($data->result());
-  }
-  function tambah_supplier(){
-    $adm = $this->data_admin();
+}
+function tambah_supplier(){
+                $adm          = $this->data_admin();
     $data_admin['nama_admin'] = $adm['nama_depan'].' '.$adm['nama_belakang'];
-    $data_input = $this->input->post();
-    $data = array_merge($data_admin, $data_input);
-    $hasil = $this->Mdl_supplier->insert_data($data);
+                $data_input   = $this->input->post();
+                $data         = array_merge($data_admin, $data_input);
+                $hasil        = $this->Mdl_supplier->insert_data($data);
     echo json_encode($hasil);
-  }
-  function data_supplier_dipilih(){
+}
+function data_supplier_dipilih(){
     $code = $this->input->post('kode');
     $data = $this->Mdl_supplier->get_data_supplier_dipilih($code);
     echo json_encode($data->result());
-  }
-  function edit_sales(){
+}
+function edit_sales(){
     $this->_make_sure_is_admin();
     $kode_sales = $this->input->post('kode_sales');
-    $obj = array(
-      'nama_sales' => $this->input->post('nama'),
-      'catatan' => $this->input->post('catatan'),
-      'hp' => $this->input->post('nomor_telepon'),
+    $obj        = array(
+      'nama_sales'   => $this->input->post('nama'),
+      'catatan'      => $this->input->post('catatan'),
+      'hp'           => $this->input->post('nomor_telepon'),
       'tanggal_edit' => date('Y-m-d H:i:s')
     );
     $update = $this->Mdl_supplier->update_sales($kode_sales, $obj);
@@ -96,11 +101,11 @@ class Admin extends CI_Controller {
       header('Content-Type: application/json; charset=UTF-8');
       die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
-  }
-  function tambah_sales(){
+}
+function tambah_sales(){
     $this->_make_sure_is_admin();
     $nama_sales = $this->input->post('nama_sales');
-      $kode = $this->input->post('kode_supplier');
+    $kode       = $this->input->post('kode_supplier');
     if ($this->Mdl_supplier->check_nama_sales($nama_sales, $kode))
     {
       header('HTTP/1.1 500 Internal Server Error');
@@ -110,20 +115,20 @@ class Admin extends CI_Controller {
     else
     {
       $obj = array(
-        'codesup' => $this->input->post('kode_supplier'),
-        'nama_sales' => $this->input->post('nama_sales'),
-        'hp' => $this->input->post('telepon'),
-        'status' => TRUE,
-        'catatan' => $this->input->post('catatan'),
+        'codesup'        => $this->input->post('kode_supplier'),
+        'nama_sales'     => $this->input->post('nama_sales'),
+        'hp'             => $this->input->post('telepon'),
+        'status'         => TRUE,
+        'catatan'        => $this->input->post('catatan'),
         'tanggal_daftar' => date('Y-m-d H:i:s'),
-        'tanggal_edit' => date('Y-m-d H:i:s')
+        'tanggal_edit'   => date('Y-m-d H:i:s')
       );
       return $this->Mdl_supplier->tambah_sales($obj);
      }
     }
     function hapus_sales(){
       $this->_make_sure_is_admin();
-      $kode = $this->input->post('kode_sales');
+      $kode       = $this->input->post('kode_sales');
       $data_hapus = $this->Mdl_supplier->hapus_sales($kode);
       if ($this->db->affected_rows($data_hapus)>0) {
         header('HTTP/1.1 200 OK');
@@ -133,9 +138,9 @@ class Admin extends CI_Controller {
         die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
       }
     }
-  function nonaktifkan_sales(){
+function nonaktifkan_sales(){
     $this->_make_sure_is_admin();
-    $kode = $this->input->post('kode_sales');
+    $kode       = $this->input->post('kode_sales');
     $data_sales = $this->Mdl_supplier->nonaktifkan_sales($kode);
     if ($this->db->affected_rows($data_sales)>0) {
       header('HTTP/1.1 200 OK');
@@ -144,10 +149,10 @@ class Admin extends CI_Controller {
       header('Content-Type: application/json; charset=UTF-8');
       die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
-  }
-  function aktifkan_sales(){
+}
+function aktifkan_sales(){
     $this->_make_sure_is_admin();
-    $kode = $this->input->post('kode_sales');
+    $kode       = $this->input->post('kode_sales');
     $data_sales = $this->Mdl_supplier->aktifkan_sales($kode);
     if ($this->db->affected_rows($data_sales)>0) {
       header('HTTP/1.1 200 OK');
@@ -156,10 +161,10 @@ class Admin extends CI_Controller {
       header('Content-Type: application/json; charset=UTF-8');
       die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
-  }
-  function check_nama_sales(){
+}
+function check_nama_sales(){
     $nama_sales = $this->input->post('nama_sales');
-    $kode = $this->input->post('kode');
+    $kode       = $this->input->post('kode');
     if($this->Mdl_supplier->check_nama_sales($nama_sales, $kode)){
       echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
       </i>Nama sudah ada</span></label>';
@@ -169,9 +174,9 @@ class Admin extends CI_Controller {
       echo '<label class="text-success"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i>Nama belum ada</span></label>';
       return TRUE;
     }
-  }
-  //check input Supplier
-  function check_kode_supplier(){
+}
+//check input Supplier
+function check_kode_supplier(){
     if($this->Mdl_supplier->check_kode($_POST['kode_supplier'])){
       echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
       </i> Kode telah digunakan, coba kode yang lain</span></label>';
@@ -179,48 +184,47 @@ class Admin extends CI_Controller {
     else {
       echo '<label class="text-success"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i> Kode tersedia</span></label>';
     }
-  }
-  //serverside supplier data
-  function get_supplier_json() { //get product data and encode to be JSON object
+}
+//serverside supplier data
+function get_supplier_json() { //get product data and encode to be JSON object
     header('Content-Type: application/json');
     echo $this->Mdl_supplier->get_data();
-  }
-
-  function save_supplier(){ //insert record method
+}
+function save_supplier(){ //insert record method
     $this->Mdl_supplier->insert_product();
     redirect('crud');
-  }
-  function update_supplier(){ //update record method
+}
+function update_supplier(){ //update record method
     $this->Mdl_supplier->update_product();
     redirect('crud');
-  }
-  function delete_supplier(){ //delete record method
+}
+function delete_supplier(){ //delete record method
     $this->Mdl_supplier->delete_product();
     redirect('crud');
-  }
-  public function backup_database(){
+}
+public function backup_database(){
     ini_set('memory_limit', '5024M');
     $this->load->dbutil();
     $prefs = array(
-      'format'      => 'zip',
-      'filename'    => 'my_db_backup.sql',
+      'format'   => 'zip',
+      'filename' => 'my_db_backup.sql',
     );
-    $backup =& $this->dbutil->backup($prefs);
+    $backup  = & $this->dbutil->backup($prefs);
     $db_name = 'backup-on-'. date("Y-m-d-H-i-s") .'.zip';
-    $save = 'backup/'.$db_name;
+    $save    = 'backup/'.$db_name;
     $this->load->helper('file');
     write_file($save, $backup);
     $this->load->helper('download');
     force_download($db_name, $backup);
     return 0;
-  }
-  function test_print(){
+}
+function test_print(){
     try {
       $connector = new Escpos\PrintConnectors\WindowsPrintConnector("smb://Guest@192.168.1.30/TM-U220");
       // membuat objek $printer agar dapat di lakukan fungsinya
-      $printer = new Escpos\Printer($connector);
-      $data['title'] ="";
-      $a = $this->load->view('struk/struk','', true);
+            $printer = new Escpos\Printer($connector);
+      $data['title'] = "";
+            $a       = $this->load->view('struk/struk','', true);
       $printer ->initialize();
       for ($i=0; $i <1 ; $i++) {
 
@@ -232,11 +236,11 @@ class Admin extends CI_Controller {
     } catch (\Exception $e) {
       echo "alert('ada kesalahan')";
     }
-  }
-  function test_barcode(){
+}
+function test_barcode(){
     try {
       $connector = new Escpos\PrintConnectors\FilePrintConnector("LPT1");
-      $printer = new  Escpos\Printer($connector);
+      $printer   = new  Escpos\Printer($connector);
       /* Barcodes */
         $printer -> setBarcodeHeight(80);
           $printer -> text("Barcode \n");
@@ -270,15 +274,15 @@ class Admin extends CI_Controller {
       $data['title'] = "Laporan Kasir";
       $this->load->model('Mdl_karyawan');
       $this->load->model('Mdl_laporan');
-      $adm = $this->data_admin();
-      $data['nama_admin'] = $adm['nama_depan'].' '.$adm['nama_belakang'];
-      $data['pegawai'] = $this->Mdl_karyawan->active_karyawan()->result();
+            $adm                = $this->data_admin();
+      $data['nama_admin']       = $adm['nama_depan'].' '.$adm['nama_belakang'];
+      $data['pegawai']          = $this->Mdl_karyawan->active_karyawan()->result();
       $data['tanggal_terakhir'] = $this->Mdl_laporan->last_date_kasir();
       $this->load->view('admin/page/kasir', $data);
     }
     function cari_laporan_kasir(){
       $this->_make_sure_is_admin();
-      $tanggal_awal = $this->input->post('tanggal_awal');
+      $tanggal_awal  = $this->input->post('tanggal_awal');
       $tanggal_akhir = $this->input->post('tanggal_akhir');
       if ($tanggal_awal>$tanggal_akhir) {
         header('HTTP/1.1 500 Internal Server Booboo');
@@ -324,32 +328,32 @@ class Admin extends CI_Controller {
       $this->form_validation->set_rules('id_user_kasir', 'ID User Kasir', 'required');
       $this->form_validation->set_rules('id_karyawan', 'ID Karyawan', 'required');
       if ($this->form_validation->run() == TRUE){
-        $pendapatan_kasir = $this->input->post('pendapatan_kasir');
-        $selisih = $this->input->post('selisih');
-        $kas_masuk = $this->input->post('kas_masuk');
+        $pendapatan_kasir  = $this->input->post('pendapatan_kasir');
+        $selisih           = $this->input->post('selisih');
+        $kas_masuk         = $this->input->post('kas_masuk');
         $total_pengeluaran = $this->input->post('total_pengeluaran');
-        $total_setor = $this->input->post('total_setor');
-        $setor_ratusan = $this->input->post('setor_ratusan');
-        $setor_puluhan = $this->input->post('setor_puluhan');
-        $setor_koin = $this->input->post('setor_koin');
-        $tanggal_laporan= $this->input->post('tanggal_laporan');
-        $id_user_kasir= $this->input->post('id_user_kasir');
-        $id_karyawan= $this->input->post('id_karyawan');
+        $total_setor       = $this->input->post('total_setor');
+        $setor_ratusan     = $this->input->post('setor_ratusan');
+        $setor_puluhan     = $this->input->post('setor_puluhan');
+        $setor_koin        = $this->input->post('setor_koin');
+        $tanggal_laporan   = $this->input->post('tanggal_laporan');
+        $id_user_kasir     = $this->input->post('id_user_kasir');
+        $id_karyawan       = $this->input->post('id_karyawan');
 
         $selisih_penghitungan = $pendapatan_kasir-$kas_masuk-$total_pengeluaran-$total_setor;
-        $selisih_setor = $total_setor-$setor_ratusan-$setor_puluhan-$setor_koin;
+        $selisih_setor        = $total_setor-$setor_ratusan-$setor_puluhan-$setor_koin;
         if ($selisih_penghitungan == 0 && $selisih_setor==0 && $pendapatan_kasir != 0) {
           $obj = array('pendapatan_kasir'=>$pendapatan_kasir,
-          'selisih'=>$selisih,
-          'kas_masuk'=>$kas_masuk,
-          'total_pengeluaran'=>$total_pengeluaran,
-          'total_setor'=>$total_setor,
-          'setor_ratusan'=>$setor_ratusan,
-          'setor_puluhan'=>$setor_puluhan,
-          'setor_koin'=>$setor_koin,
-          'tanggal_laporan'=>$tanggal_laporan,
-          'id_user_kasir'=>strtoupper($id_user_kasir),
-          'id_karyawan'=>$id_karyawan
+          'selisih'           => $selisih,
+          'kas_masuk'         => $kas_masuk,
+          'total_pengeluaran' => $total_pengeluaran,
+          'total_setor'       => $total_setor,
+          'setor_ratusan'     => $setor_ratusan,
+          'setor_puluhan'     => $setor_puluhan,
+          'setor_koin'        => $setor_koin,
+          'tanggal_laporan'   => $tanggal_laporan,
+          'id_user_kasir'     => strtoupper($id_user_kasir),
+          'id_karyawan'       => $id_karyawan
         );
         $data = $this->db->insert('laporan_kasir', $obj);
         echo json_encode($data);
@@ -363,13 +367,13 @@ class Admin extends CI_Controller {
       header('Content-Type: application/json; charset=UTF-8');
       die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
-  }
-  function hitung_gaji(){
+}
+function hitung_gaji(){
     $this->_make_sure_is_admin();
-    $adm = $this->data_admin();
+    $adm         = $this->data_admin();
     $id_karyawan = $this->input->post('id_karyawan');
-    $tgl_awal = $this->input->post('tanggal_awal');
-    $tgl_akhir = $this->input->post('tanggal_akhir');
+    $tgl_awal    = $this->input->post('tanggal_awal');
+    $tgl_akhir   = $this->input->post('tanggal_akhir');
     // $this->db->select('datediff(masuk,pulang) as selisih_hari, datediff(masuk,tanggal) as selisih_masuk, datediff(pulang,tanggal) as selisih_pulang, DATE_FORMAT(masuk, "%H:%i:%s") as jam_masuk, DATE_FORMAT(pulang, "%H:%i:%s") as jam_pulang, timediff(pulang,masuk) as jam_kerja');
     // $this->db->where('pegawai_id', $id_karyawan);
     // $this->db->where('tanggal >=', $tgl_awal);
@@ -384,39 +388,39 @@ class Admin extends CI_Controller {
 
     $this->db->select('gaji_pokok');
     $this->db->where('id_karyawan', $id_karyawan);
-    $gp = $this->db->get('gaji_pokok')->row_array();
-    $data['gaji_pokok'] = $gp['gaji_pokok'];
-    $data['nama_dapan'] = $adm['nama_dapan'];
-    $data['nama_belakang'] =$adm['nama_belakang'];
-    $data['level'] =$adm['level'];
+          $gp              = $this->db->get('gaji_pokok')->row_array();
+    $data['gaji_pokok']    = $gp['gaji_pokok'];
+    $data['nama_dapan']    = $adm['nama_dapan'];
+    $data['nama_belakang'] = $adm['nama_belakang'];
+    $data['level']         = $adm['level'];
     $this->db->select('sum(nominal) as nominal');
     $this->db->where('id_pegawai', $id_karyawan);
-    $tj= $this->db->get('tunjangan')->row_array();
+          $tj          = $this->db->get('tunjangan')->row_array();
     $data['tunjangan'] = $tj['nominal'];
 
     $this->db->select('sum(jumlah) as sisa_bon');
     $this->db->where('id_karyawan', $id_karyawan);
-    $bon = $this->db->get('bon_karyawan')->row_array();
+          $bon        = $this->db->get('bon_karyawan')->row_array();
     $data['sisa_bon'] = $bon['sisa_bon'];
-    $data['total'] =  $gp['gaji_pokok']+$tj['nominal']+$bon['sisa_bon'];
+    $data['total']    = $gp['gaji_pokok']+$tj['nominal']+$bon['sisa_bon'];
     echo json_encode($data);
-  }
-  function update_presensi_karyawan(){
+}
+function update_presensi_karyawan(){
     $this->_make_sure_is_admin();
-    $id =   $this->input->post('id');
-    $pulang_kerja =   $this->input->post('pulang_kerja');
-    $masuk_kerja =   $this->input->post('masuk_kerja');
-    $tanggal_presensi =   $this->input->post('tanggal_presensi');
-    $object = array('masuk' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $masuk_kerja")),
+    $id               = $this->input->post('id');
+    $pulang_kerja     = $this->input->post('pulang_kerja');
+    $masuk_kerja      = $this->input->post('masuk_kerja');
+    $tanggal_presensi = $this->input->post('tanggal_presensi');
+    $object           = array('masuk' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $masuk_kerja")),
     'pulang' => date('Y-m-d H:i:s', strtotime("$tanggal_presensi $pulang_kerja")),
-  );
-  $this->db->where('id_presensi', $id);
-  $data = $this->db->update('absensi', $object);
-  echo json_encode($data);
+    );
+    $this->db->where('id_presensi', $id);
+    $data = $this->db->update('absensi', $object);
+    echo json_encode($data);
 }
 function get_info_karyawan(){
   $this->_make_sure_is_admin();
-  $id =   $this->input->post('id');
+  $id = $this->input->post('id');
   $this->load->model('Mdl_karyawan');
   $data = $this->Mdl_karyawan->get_info($id);
   echo json_encode($data->result());
@@ -432,11 +436,11 @@ function simpan_data_karyawan_info(){
     header('Content-Type: application/json; charset=UTF-8');
     die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
   }else{
-    $status = $this->input->post('status');
-    $id_pegawai = $this->input->post('id_pegawai');
-    $posisi = $this->input->post('posisi');
-    $kontak = $this->input->post('kontak');
-    $masuk_kerja = $this->input->post('masuk_kerja');
+    $status         = $this->input->post('status');
+    $id_pegawai     = $this->input->post('id_pegawai');
+    $posisi         = $this->input->post('posisi');
+    $kontak         = $this->input->post('kontak');
+    $masuk_kerja    = $this->input->post('masuk_kerja');
     $berhenti_kerja = $this->input->post('berhenti_kerja');
     if ($status == 1) {
       $berhenti = null;
@@ -447,42 +451,42 @@ function simpan_data_karyawan_info(){
     }else{
       $berhenti = null;
     }
-    $check_id =  $this->Mdl_karyawan->get_info($id_pegawai)->num_rows();
+    $check_id = $this->Mdl_karyawan->get_info($id_pegawai)->num_rows();
     if ($check_id  < 1) {
       $obj = array(
         'id_pegawai' => $id_pegawai,
-        'posisi'=> $posisi,
-        'kontak'=> $kontak,
-        'status'=> $status,
-        'masuk'=> $masuk_kerja,
-        'berhenti'=> $berhenti,
+        'posisi'     => $posisi,
+        'kontak'     => $kontak,
+        'status'     => $status,
+        'masuk'      => $masuk_kerja,
+        'berhenti'   => $berhenti,
       );
-      $data =  $this->Mdl_karyawan->insert_info($obj);
+      $data = $this->Mdl_karyawan->insert_info($obj);
     }else{
       $obj = array(
-        'posisi'=> $posisi,
-        'kontak'=> $kontak,
-        'status'=> $status,
-        'masuk'=> $masuk_kerja,
-        'berhenti'=> $berhenti,
+        'posisi'   => $posisi,
+        'kontak'   => $kontak,
+        'status'   => $status,
+        'masuk'    => $masuk_kerja,
+        'berhenti' => $berhenti,
       ); 
-      $data =  $this->Mdl_karyawan->update_info($obj,$id_pegawai);
+      $data = $this->Mdl_karyawan->update_info($obj,$id_pegawai);
     }
     echo json_encode($data);
   }
 }
 function simpan_data_karyawan(){
   $this->_make_sure_is_admin();
-  $gaji_pokok =   $this->input->post('gaji_pokok');
-  $jatah_libur =  $this->input->post('jatah_libur');
-  $id =   $this->input->post('id');
+  $gaji_pokok  = $this->input->post('gaji_pokok');
+  $jatah_libur = $this->input->post('jatah_libur');
+  $id          = $this->input->post('id');
   // $nama =   $this->input->post('nama');
-  $jumlah =   $this->input->post('jumlah');
-  $shiftpulang1 =   $this->input->post('shiftpulang1');
-  $shiftpulang2 =   $this->input->post('shiftpulang2');
-  $shiftmasuk1 =  $this->input->post('shiftmasuk1');
-  $shiftmasuk2 =  $this->input->post('shiftmasuk2');
-  $check_data_gaji = $this->db->get_where('gaji_pokok', array('id_karyawan'=>$id))->num_rows();
+  $jumlah           = $this->input->post('jumlah');
+  $shiftpulang1     = $this->input->post('shiftpulang1');
+  $shiftpulang2     = $this->input->post('shiftpulang2');
+  $shiftmasuk1      = $this->input->post('shiftmasuk1');
+  $shiftmasuk2      = $this->input->post('shiftmasuk2');
+  $check_data_gaji  = $this->db->get_where('gaji_pokok', array('id_karyawan'=>$id))->num_rows();
   $check_data_libur = $this->db->get_where('jatah_libur', array('id_karyawan'=>$id))->num_rows();
   $check_data_shift = $this->db->get_where('pegawai_shift', array('id_pegawai'=>$id))->num_rows();
 
@@ -542,16 +546,16 @@ function tambah_tunjangan(){
   }
   else
   {
-    $id = $this->input->post('id');
-    $nama = $this->input->post('nama');
+    $id     = $this->input->post('id');
+    $nama   = $this->input->post('nama');
     $jumlah = $this->input->post('jumlah');
     $object = array('id_pegawai'=>$id,
     'nama_tunjangan' => $nama,
-    'nominal'=> $jumlah
+    'nominal'        => $jumlah
   );
   $data = $this->db->insert('tunjangan', $object);
   echo json_encode($data);
-}
+  }
 }
 function karyawan_list(){
   $this->_make_sure_is_admin();
@@ -580,8 +584,8 @@ public function gaji(){
 }
 function get_tanggal_absen(){
   $this->_make_sure_is_admin();
-  $tgl_awal = $this->input->post('tanggal_awal');
-  $tgl_akhir = $this->input->post('tanggal_akhir');
+  $tgl_awal    = $this->input->post('tanggal_awal');
+  $tgl_akhir   = $this->input->post('tanggal_akhir');
   $id_karyawan = $this->input->post('id_karyawan');
   $this->db->select('*, datediff(masuk,pulang) as selisih_hari, datediff(masuk,tanggal) as selisih_masuk, datediff(pulang,tanggal) as selisih_pulang, DATE_FORMAT(masuk, "%H:%i:%s") as jam_masuk, DATE_FORMAT(pulang, "%H:%i:%s") as jam_pulang ');
   $this->db->where('pegawai_id', $id_karyawan);
@@ -598,16 +602,16 @@ function data_admin(){
   $this->db->where('id', $id_admin);
   $data_admin = $this->db->get();
   foreach ($data_admin->result() as $key) {
-    $data['nama_depan'] = $key->nama_depan;
+    $data['nama_depan']    = $key->nama_depan;
     $data['nama_belakang'] = $key->nama_belakang;
-    $data['level'] = $key->level;
+    $data['level']         = $key->level;
   }
   return $data;
 }
 function _make_sure_is_super_admin(){
-  $status = $this->session->userdata('status_login');
+  $status   = $this->session->userdata('status_login');
   $id_admin = $this->session->userdata('id_admin_login');
-  $admin = $this->db->get_where('admin', array('id'=>$id_admin));
+  $admin    = $this->db->get_where('admin', array('id'=>$id_admin));
   foreach ($admin->result() as $value) {
     $level = $value->level;
   }
