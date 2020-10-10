@@ -6,6 +6,7 @@ class Admin extends CI_Controller {
     date_default_timezone_set('Asia/Jakarta');
     $this->load->model('Mdl_supplier');
   }
+  
 public function index(){
     $this->_make_sure_is_admin();
     $data['title'] = "Dashboard";
@@ -469,7 +470,7 @@ function simpan_data_karyawan_info(){
         'status'   => $status,
         'masuk'    => $masuk_kerja,
         'berhenti' => $berhenti,
-      ); 
+      );
       $data = $this->Mdl_karyawan->update_info($obj,$id_pegawai);
     }
     echo json_encode($data);
