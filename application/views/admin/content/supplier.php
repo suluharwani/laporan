@@ -456,8 +456,83 @@
       </div>
     </div>
   </div>
+  <!-- modal tambah nota -->
+  <div class="modal fade" id="ModalTambahNota" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Nota <span id="nama_sup_tambah_nota"> </span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="kode_supplier" class="col-sm-2 col-form-label">Kode Supplier</label>
+            <div class="col-sm-10">
+              <input type="text" id="kode_sup_tambah_nota" disabled class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nama_supplier" class="col-sm-2 col-form-label">Faktur</label>
+            <div class="col-sm-10">
+              <input type="text" id="faktur_tambah" class="form-control">
+              <span id="check_faktur"></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier" class="col-sm-2 col-form-label">Tanggal Nota</label>
+            <div class="col-sm-10">
+              <input type="date" id="tanggal_nota_tambah" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier" class="col-sm-2 col-form-label">Tanggal Jatuh Tempo</label>
+            <div class="col-sm-10">
+              <input type="date" id="tanggal_nota_tambah" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier" class="col-sm-2 col-form-label">Nilai Nota</label>
+            <div class="col-sm-10">
+              <input type="number" id="nilai_nota_tambah" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier" class="col-sm-2 col-form-label">Potongan</label>
+            <div class="col-sm-10">
+              <input type="number" id="potongan_nota_tambah" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier" class="col-sm-2 col-form-label">Tambahan</label>
+            <div class="col-sm-10">
+              <input type="number" id="tambahan_nota_tambah" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="telepon_supplier" class="col-sm-2 col-form-label">Pembayaran</label>
+            <div class="col-sm-10">
+              <input type="text" id="status_nota_tambah" class="form-control">
+            </div>
+          </div> 
+          <div class="form-group row">
+            <label for="catatan_supplier" class="col-sm-2 col-form-label">Catatan</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="nota_catatan_tambah" rows="4"></textarea>
+            </div>
 
-
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" id="nota_simpan_tambah">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- print -->
   <!-- modal delete laporan -->
   <script src="<?=base_url('assets/sb/')?>vendor/datatables/jquery.dataTables.min.js"></script>
@@ -743,6 +818,14 @@
       });
       return false;
     });
+    $('.btn_sup_add_data').on('click','.tambah_nota',function(){
+      var kode=$(this).attr('kode_sup');
+      var nama=$(this).attr('nama_sup');
+      $('#kode_sup_tambah_nota').val(kode);
+      $('#nama_sup_tambah_nota').html(nama);
+      $('#ModalTambahNota').modal('show');
+    });
+    
   $('.btn_sup_add_data').on('click','.tambah_sales',function(){
       var kode=$(this).attr('kode_sup');
       $('#sales_kode_supplier_tambah').val(kode);
