@@ -170,7 +170,7 @@
       </div>
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url('admin/karyawan')?>">
+        <a class="nav-link" href="<?=base_url('index.php/admin/karyawan')?>">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Data Karyawan</span></a>
       </li>
