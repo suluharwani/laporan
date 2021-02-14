@@ -41,7 +41,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Data:</h6>
             <a class="collapse-item" href="<?=base_url('index.php/admin/supplier')?>">Supplier</a>
-            <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/customer')?>">Customer</a> -->
+            <a class="collapse-item" href="<?=base_url('index.php/admin/calendar')?>">Kalender</a>
             <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Grouping Barang</a> -->
             <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Departemen Barang</a> -->
             <!-- <a class="collapse-item" href="<?=base_url('index.php/admin/fisik_uang')?>">Sub Departemen</a> -->

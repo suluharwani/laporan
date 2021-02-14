@@ -6,7 +6,6 @@ class Admin extends CI_Controller {
     date_default_timezone_set('Asia/Jakarta');
     $this->load->model('Mdl_supplier');
   }
-  
 public function index(){
     $this->_make_sure_is_admin();
     $data['title'] = "Dashboard";
@@ -269,6 +268,11 @@ function test_barcode(){
       $this->_make_sure_is_admin();
       $data['title'] = "Karyawan";
       $this->load->view('admin/page/karyawan', $data);
+    }
+    public function calendar(){
+      $this->_make_sure_is_admin();
+      $data['title'] = "Kalender";
+      $this->load->view('admin/page/kalender', $data);
     }
     public function kasir(){
       $this->_make_sure_is_admin();
